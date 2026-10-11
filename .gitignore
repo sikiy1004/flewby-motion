@@ -3,3 +3,4 @@ node_modules/
 *.log
 /out/*
 !/out/.gitkeep
+!/out/interview-memo.mp4
