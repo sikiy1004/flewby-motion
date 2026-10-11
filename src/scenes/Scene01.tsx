@@ -4,50 +4,54 @@ import {Canvas, DrawLine, DrawPath} from '../components/AnimatedLine';
 import {Block, SceneFrame} from '../components/Grid';
 import {FadeUp, Heading, Label, MaskReveal, Txt, useProgress} from '../components/Typography';
 import {COPY} from '../data/scenes';
-import {COLORS, EASE, FONTS, colX, span} from '../theme';
+import {COLORS, EASE, FONTS, GRID, VIDEO, colX, span} from '../theme';
 import type {SceneProps} from '../Video';
 
 const C = COPY.scene01;
 
-// Diagram geometry (px). Origin box spans columns 0–1.
-const ORIGIN = {x: colX(0), y: 505, w: span(2), h: 120};
-const MID_Y = ORIGIN.y + ORIGIN.h / 2;
-const BRANCH_X = colX(3);
-const TRACK_Y = [450, 680];
-const NODE_X = colX(4) + 22;
-const LABEL_X = colX(4) + 70;
-const TRACK_START = NODE_X + 24;
-const TRACK_END = colX(11) + 118;
+// Table geometry: header row, then one row per track.
+const HEADER_Y = 326;
+const HEADER_RULE = 366;
+const ROW_H = 130;
+const ROW_Y = [HEADER_RULE + ROW_H / 2, HEADER_RULE + ROW_H * 1.5];
+const TABLE_X0 = colX(2);
+const TABLE_X1 = VIDEO.width - GRID.marginX;
+const ORIGIN = {x: colX(0), w: span(2), h: 120};
+const ORIGIN_MID = HEADER_RULE + ROW_H;
+const NODE_X = colX(2) + 34;
+const FIELD_COLS = [4, 6, 9];
+const REASON_Y = 690;
 
 // Timing (frames) — follows the narration cues.
-const T = {origin: 40, stem: 70, branch: 100, a: 180, b: 258, split: 370, why: 470};
+const T = {origin: 30, header: 56, rows: [100, 211], reasons: [300, 446]};
 
 export const Scene01: React.FC<SceneProps> = ({meta, showGrid}) => {
 	const frame = useCurrentFrame();
 	const originP = useProgress(T.origin, 24);
-	const cross = useProgress(T.split + 30, 16);
 
 	return (
 		<SceneFrame meta={meta} showGrid={showGrid}>
 			<Block col={0} top={168}>
-				<Heading size={80} delay={14}>
+				<Heading size={80} delay={12}>
 					{C.heading}
 				</Heading>
 			</Block>
-			<Block col={0} top={286}>
-				<FadeUp delay={34}>
-					<Txt size={30} color="#55554F">
-						{C.lead}
-					</Txt>
-				</FadeUp>
-			</Block>
+
+			{/* Column headers. */}
+			{C.fields.map((f, i) => (
+				<Block key={f} col={FIELD_COLS[i]} top={HEADER_Y}>
+					<FadeUp delay={T.header + i * 5} distance={8}>
+						<span style={{fontFamily: FONTS.jp, fontWeight: 700, fontSize: 20, letterSpacing: '0.12em', color: i === 2 ? COLORS.red : '#6E6E6A'}}>{f}</span>
+					</FadeUp>
+				</Block>
+			))}
 
 			{/* Origin: the single request. */}
 			<div
 				style={{
 					position: 'absolute',
 					left: ORIGIN.x,
-					top: ORIGIN.y,
+					top: ORIGIN_MID - ORIGIN.h / 2,
 					width: ORIGIN.w,
 					height: ORIGIN.h,
 					background: COLORS.black,
@@ -61,30 +65,31 @@ export const Scene01: React.FC<SceneProps> = ({meta, showGrid}) => {
 			</div>
 
 			<Canvas>
-				<DrawLine x1={ORIGIN.x + ORIGIN.w} y1={MID_Y} x2={BRANCH_X} y2={MID_Y} delay={T.stem} duration={20} width={3} />
-				{TRACK_Y.map((y, i) => (
-					<DrawPath key={y} d={`M ${BRANCH_X} ${MID_Y} V ${y} H ${NODE_X - 24}`} delay={T.branch + i * 8} duration={26} width={3} />
+				<DrawLine x1={TABLE_X0} y1={HEADER_RULE} x2={TABLE_X1} y2={HEADER_RULE} delay={T.header - 6} duration={30} width={2} />
+				{ROW_Y.map((y, i) => (
+					<React.Fragment key={y}>
+						<DrawPath
+							d={`M ${ORIGIN.x + ORIGIN.w} ${ORIGIN_MID} H ${TABLE_X0 - 8} V ${y} H ${NODE_X - 24}`}
+							delay={T.rows[i] - 14}
+							duration={20}
+							width={3}
+						/>
+						<DrawLine x1={TABLE_X0} y1={y + ROW_H / 2} x2={TABLE_X1} y2={y + ROW_H / 2} delay={T.rows[i] + 4} duration={34} width={1} color={COLORS.gray} />
+					</React.Fragment>
 				))}
-				<DrawLine x1={TRACK_START} y1={TRACK_Y[0]} x2={TRACK_END} y2={TRACK_Y[0]} delay={T.a + 2} duration={50} width={3} />
-				<DrawLine x1={TRACK_START} y1={TRACK_Y[1]} x2={TRACK_END} y2={TRACK_Y[1]} delay={T.b + 2} duration={50} width={3} />
-				{/* A would-be merge of the two tracks, drawn then struck out. */}
-				<DrawLine x1={TRACK_END - 60} y1={TRACK_Y[0] + 16} x2={TRACK_END - 60} y2={TRACK_Y[1] - 16} delay={T.split} duration={24} color={COLORS.gray} width={3} dashed />
-				<g opacity={cross} transform={`translate(${TRACK_END - 60} ${(TRACK_Y[0] + TRACK_Y[1]) / 2})`}>
-					<line x1={-26 * cross} y1={-26 * cross} x2={26 * cross} y2={26 * cross} stroke={COLORS.red} strokeWidth={6} />
-					<line x1={26 * cross} y1={-26 * cross} x2={-26 * cross} y2={26 * cross} stroke={COLORS.red} strokeWidth={6} />
-				</g>
 			</Canvas>
 
 			{C.tracks.map((t, i) => {
-				const start = i === 0 ? T.a : T.b;
-				const node = interpolate(frame, [start - 6, start + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.out});
+				const start = T.rows[i];
+				const node = interpolate(frame, [start - 4, start + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.out});
+				const y = ROW_Y[i];
 				return (
 					<React.Fragment key={t.key}>
 						<div
 							style={{
 								position: 'absolute',
 								left: NODE_X - 24,
-								top: TRACK_Y[i] - 24,
+								top: y - 24,
 								width: 48,
 								height: 48,
 								borderRadius: 24,
@@ -95,38 +100,48 @@ export const Scene01: React.FC<SceneProps> = ({meta, showGrid}) => {
 								justifyContent: 'center',
 								fontFamily: FONTS.en,
 								fontWeight: 800,
-								fontSize: 22,
+								fontSize: 20,
 								color: COLORS.offWhite,
 							}}
 						>
-							{t.key}
+							{i === 0 ? 'A' : 'B'}
 						</div>
-						<div style={{position: 'absolute', left: LABEL_X, top: TRACK_Y[i] - 78}}>
-							<MaskReveal delay={start + 4}>
-								<Txt size={48} weight={800}>
-									{t.jp}
+						<div style={{position: 'absolute', left: NODE_X + 40, top: y - 34}}>
+							<MaskReveal delay={start + 2}>
+								<Txt size={40} weight={800}>
+									{t.key}
 								</Txt>
 							</MaskReveal>
-						</div>
-						<div style={{position: 'absolute', left: LABEL_X, top: TRACK_Y[i] + 20}}>
-							<Label delay={start + 12} size={15} color="#6E6E6A">
+							<Label delay={start + 8} size={13} color="#6E6E6A" style={{marginTop: 2}}>
 								{t.en}
 							</Label>
 						</div>
+						{t.cells.map((cell, j) => (
+							<div key={cell} style={{position: 'absolute', left: colX(FIELD_COLS[j]), top: y - 26}}>
+								<MaskReveal delay={start + 10 + j * 8}>
+									<Txt size={j === 0 ? 32 : 27} weight={j === 0 ? 800 : 700}>
+										{cell}
+									</Txt>
+								</MaskReveal>
+							</div>
+						))}
 					</React.Fragment>
 				);
 			})}
 
-			<Block col={4} top={TRACK_Y[1] + 92} style={{marginLeft: LABEL_X - colX(4)}}>
-				<FadeUp delay={T.why}>
-					<div style={{display: 'flex', alignItems: 'center', gap: 24}}>
-						<Label delay={T.why} color={COLORS.red} size={16}>
-							{C.whyLabel}
-						</Label>
-						<Txt size={28}>{C.why}</Txt>
-					</div>
-				</FadeUp>
-			</Block>
+			{/* Why: the memo's reasons for the split. */}
+			{C.reasons.map((r, i) => (
+				<Block key={r} col={0} top={REASON_Y + i * 62}>
+					<FadeUp delay={T.reasons[i]}>
+						<div style={{display: 'flex', alignItems: 'center', gap: 20}}>
+							<div style={{width: 6, height: 30, background: i === 0 ? COLORS.black : COLORS.red}} />
+							<Txt size={28} weight={i === 1 ? 700 : 500}>
+								{r}
+							</Txt>
+						</div>
+					</FadeUp>
+				</Block>
+			))}
 		</SceneFrame>
 	);
 };

@@ -1,31 +1,32 @@
 import React from 'react';
-import {Canvas, DrawLine, DrawRect} from '../components/AnimatedLine';
+import {Canvas, DrawRect} from '../components/AnimatedLine';
 import {Counter} from '../components/Counter';
 import {Block, SceneFrame} from '../components/Grid';
 import {FadeUp, Heading, Label, MaskReveal, Txt} from '../components/Typography';
 import {COPY} from '../data/scenes';
-import {COLORS, FONTS, VIDEO, GRID, colX, span} from '../theme';
+import {COLORS, FONTS, colX, span} from '../theme';
 import type {SceneProps} from '../Video';
 
 const C = COPY.scene06;
 
-const CARD = {y: 352, h: 236, w: span(4)};
-const NOTE_RULE_Y = 664;
+const CARD = {y: 318, h: 468, w: span(4), pad: 36};
 
-const T = {count: 40, cards: 86, rule: 212, date: 275, text: 352};
+// Each card enters as the narration names it (frames).
+const CARD_AT = [100, 278, 423];
+const T = {count: 30};
 
 export const Scene06: React.FC<SceneProps> = ({meta, showGrid}) => (
 	<SceneFrame meta={meta} showGrid={showGrid}>
-		<Block col={0} top={168}>
-			<Heading size={72} delay={12}>
+		<Block col={0} top={160}>
+			<Heading size={64} delay={10}>
 				{C.heading}
 			</Heading>
 		</Block>
-		<Block col={8} top={168}>
+		<Block col={8} top={150}>
 			<div style={{display: 'flex', alignItems: 'flex-end', gap: 24}}>
 				<Counter value={C.count} delay={T.count} size={124} color={COLORS.red} />
 				<div style={{paddingBottom: 12}}>
-					<Label delay={T.count + 14} size={15} color="#6E6E6A">
+					<Label delay={T.count + 14} size={14} color="#6E6E6A">
 						{C.countLabel}
 					</Label>
 				</div>
@@ -34,49 +35,51 @@ export const Scene06: React.FC<SceneProps> = ({meta, showGrid}) => (
 
 		<Canvas>
 			{C.resources.map((_, i) => (
-				<DrawRect key={i} x={colX(i * 4)} y={CARD.y} w={CARD.w} h={CARD.h} delay={T.cards + i * 12} duration={34} width={3} />
+				<DrawRect key={i} x={colX(i * 4)} y={CARD.y} w={CARD.w} h={CARD.h} delay={CARD_AT[i] - 10} duration={30} width={3} />
 			))}
-			<DrawLine x1={GRID.marginX} y1={NOTE_RULE_Y} x2={VIDEO.width - GRID.marginX} y2={NOTE_RULE_Y} delay={T.rule} duration={36} width={2} />
 		</Canvas>
-		{C.resources.map((r, i) => (
-			<div key={i} style={{position: 'absolute', left: colX(i * 4) + 36, top: CARD.y + 34}}>
-				<FadeUp delay={T.cards + 16 + i * 12}>
-					<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 30, color: COLORS.black}}>{String(i + 1).padStart(2, '0')}</span>
-				</FadeUp>
-				<div style={{marginTop: 92}}>
-					<MaskReveal delay={T.cards + 24 + i * 12}>
-						<Txt size={34} weight={700}>
-							{r}
-						</Txt>
-					</MaskReveal>
-				</div>
-			</div>
-		))}
 
-		{/* Source note: a date stated in the original memo, shown as such. */}
-		<Block col={0} top={NOTE_RULE_Y + 30}>
-			<Label delay={T.rule + 10} size={15} color="#6E6E6A">
-				{C.dateLabel}
-			</Label>
-		</Block>
-		<Block col={0} top={NOTE_RULE_Y + 68}>
-			<MaskReveal delay={T.date}>
-				<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 72, color: COLORS.red, letterSpacing: '-0.01em', lineHeight: 1}}>{C.date}</span>
-			</MaskReveal>
-		</Block>
-		<Block col={5} top={NOTE_RULE_Y + 76}>
-			<MaskReveal delay={T.text}>
-				<Txt size={44} weight={800}>
-					{C.dateText}
-				</Txt>
-			</MaskReveal>
-		</Block>
-		<Block col={9} top={NOTE_RULE_Y + 92}>
-			<FadeUp delay={T.text + 16}>
-				<span style={{fontFamily: FONTS.jp, fontWeight: 500, fontSize: 24, color: '#6E6E6A', letterSpacing: '0.04em', borderLeft: `3px solid ${COLORS.gray}`, paddingLeft: 16}}>
-					{C.dateNote}
-				</span>
-			</FadeUp>
-		</Block>
+		{C.resources.map((r, i) => {
+			const at = CARD_AT[i];
+			const inner = CARD.w - CARD.pad * 2;
+			return (
+				<div key={r.title} style={{position: 'absolute', left: colX(i * 4) + CARD.pad, top: CARD.y + CARD.pad, width: inner, height: CARD.h - CARD.pad * 2}}>
+					<FadeUp delay={at + 4}>
+						<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 28, color: COLORS.black}}>{String(i + 1).padStart(2, '0')}</span>
+					</FadeUp>
+					<div style={{marginTop: 22}}>
+						<MaskReveal delay={at + 10}>
+							<Txt size={28} weight={800} width={inner} lineHeight={1.4}>
+								{r.title}
+							</Txt>
+						</MaskReveal>
+					</div>
+					{r.date ? (
+						<div style={{marginTop: 14, display: 'flex', alignItems: 'baseline', gap: 12}}>
+							<MaskReveal delay={at + 22}>
+								<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 52, color: COLORS.red, letterSpacing: '-0.01em', lineHeight: 1}}>{r.date}</span>
+							</MaskReveal>
+							<FadeUp delay={at + 32}>
+								<span style={{fontFamily: FONTS.jp, fontWeight: 700, fontSize: 24, color: COLORS.red}}>{r.dateNote}</span>
+							</FadeUp>
+						</div>
+					) : null}
+					<div style={{marginTop: 22}}>
+						<FadeUp delay={at + 26}>
+							<Txt size={22} color="#3A3A38" width={inner} lineHeight={1.75}>
+								{r.body}
+							</Txt>
+						</FadeUp>
+					</div>
+					{r.url ? (
+						<div style={{position: 'absolute', left: 0, bottom: 0}}>
+							<FadeUp delay={at + 36}>
+								<span style={{fontFamily: FONTS.en, fontWeight: 500, fontSize: 16, color: '#6E6E6A', letterSpacing: '0.02em'}}>{r.url}</span>
+							</FadeUp>
+						</div>
+					) : null}
+				</div>
+			);
+		})}
 	</SceneFrame>
 );

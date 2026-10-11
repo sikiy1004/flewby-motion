@@ -10,28 +10,37 @@ import type {SceneProps} from '../Video';
 
 const C = COPY.scene05;
 
-const LIST_TOP = 300;
-const ROW_H = 70;
-const PANEL = {x: colX(8), y: LIST_TOP, w: span(4), h: ROW_H * 7};
+const LIST_TOP = 286;
+const ROW_H = 76;
+const LIST_X = colX(3);
+const LIST_W = span(9);
 
-const T = {rows: 104, count: 247, panel: 342, record: 481, exLabel: 597, ex: 677, note: 772};
+// Each item enters as the narration reaches it (frames, from narration cues).
+const ITEM_AT = [130, 238, 325, 407, 542, 681, 781];
+const T = {count: 30, rules: 60};
 
 export const Scene05: React.FC<SceneProps> = ({meta, showGrid}) => {
 	const frame = useCurrentFrame();
-	const panel = useProgress(T.panel, 26, EASE.inOut);
+	const active = ITEM_AT.reduce((acc, at, i) => (frame >= at ? i : acc), -1);
+	// The marker steps down one row each time a new item is read.
+	const barY = ITEM_AT.slice(1).reduce(
+		(acc, at) => acc + interpolate(frame, [at, at + 10], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.inOut}),
+		0,
+	);
+	const barIn = useProgress(ITEM_AT[0], 10);
 
 	return (
 		<SceneFrame meta={meta} showGrid={showGrid}>
-			<Block col={0} top={168}>
-				<Heading size={72} delay={12}>
+			<Block col={0} top={160}>
+				<Heading size={64} delay={10}>
 					{C.heading}
 				</Heading>
 			</Block>
 
 			{/* Count. */}
-			<Block col={0} top={LIST_TOP - 6}>
-				<Counter value={C.count} delay={T.count} countFrames={30} size={300} color={COLORS.red} />
-				<div style={{display: 'flex', alignItems: 'baseline', gap: 14, marginTop: 18}}>
+			<Block col={0} top={LIST_TOP + 4}>
+				<Counter value={C.count} delay={T.count} countFrames={24} size={280} color={COLORS.red} />
+				<div style={{display: 'flex', alignItems: 'baseline', gap: 14, marginTop: 16}}>
 					<FadeUp delay={T.count + 14}>
 						<span style={{fontFamily: FONTS.jp, fontWeight: 800, fontSize: 40}}>{C.countUnit}</span>
 					</FadeUp>
@@ -39,98 +48,78 @@ export const Scene05: React.FC<SceneProps> = ({meta, showGrid}) => {
 						{C.countLabel}
 					</Label>
 				</div>
+				<div style={{marginTop: 34}}>
+					<MaskReveal delay={T.count + 30}>
+						<span style={{display: 'inline-block', background: COLORS.black, color: COLORS.offWhite, fontFamily: FONTS.jp, fontWeight: 700, fontSize: 22, padding: '8px 16px', letterSpacing: '0.06em'}}>
+							{C.sameText}
+						</span>
+					</MaskReveal>
+				</div>
 			</Block>
 
 			{/* The seven items, ruled like a table. */}
 			<Canvas>
-				<DrawLine x1={colX(3)} y1={LIST_TOP} x2={colX(7) + span(1)} y2={LIST_TOP} delay={T.rows - 10} duration={24} width={2} />
+				<DrawLine x1={LIST_X} y1={LIST_TOP} x2={LIST_X + LIST_W} y2={LIST_TOP} delay={T.rules} duration={26} width={2} />
 				{C.items.map((_, i) => (
 					<DrawLine
 						key={i}
-						x1={colX(3)}
+						x1={LIST_X}
 						y1={LIST_TOP + ROW_H * (i + 1)}
-						x2={colX(7) + span(1)}
+						x2={LIST_X + LIST_W}
 						y2={LIST_TOP + ROW_H * (i + 1)}
-						delay={T.rows + i * 10}
+						delay={T.rules + 6 + i * 5}
 						duration={22}
 						width={1}
 						color={COLORS.gray}
 					/>
 				))}
 			</Canvas>
+
+			{/* Reading position. */}
+			<div
+				style={{
+					position: 'absolute',
+					left: LIST_X,
+					top: LIST_TOP + ROW_H * barY + 16,
+					width: 6,
+					height: ROW_H - 32,
+					background: COLORS.red,
+					opacity: barIn,
+				}}
+			/>
+
 			{C.items.map((item, i) => {
-				const p = interpolate(frame, [T.rows + 6 + i * 10, T.rows + 26 + i * 10], [0, 1], {
-					extrapolateLeft: 'clamp',
-					extrapolateRight: 'clamp',
-					easing: EASE.out,
-				});
+				const shown = useProgress(ITEM_AT[i], 18);
+				const isActive = i === active;
 				return (
 					<div
-						key={i}
+						key={item.text}
 						style={{
 							position: 'absolute',
-							left: colX(3),
+							left: LIST_X + 30,
 							top: LIST_TOP + ROW_H * i,
 							height: ROW_H,
 							display: 'flex',
 							alignItems: 'center',
-							gap: 28,
-							opacity: p,
-							transform: `translateX(${(1 - p) * -14}px)`,
+							gap: 26,
+							opacity: shown,
+							transform: `translateX(${(1 - shown) * -14}px)`,
 						}}
 					>
-						<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 22, width: 32, color: COLORS.black}}>{String(i + 1).padStart(2, '0')}</span>
-						<Txt size={28}>{item}</Txt>
+						<span style={{fontFamily: FONTS.en, fontWeight: 800, fontSize: 22, width: 30, color: item.key ? COLORS.red : COLORS.black}}>
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<Txt size={27} weight={item.key || isActive ? 700 : 500} color={isActive || item.key ? COLORS.black : '#55554F'}>
+							{item.text}
+						</Txt>
+						{item.note ? (
+							<Txt size={20} color="#6E6E6A" style={{marginLeft: 4}}>
+								{`（${item.note}）`}
+							</Txt>
+						) : null}
 					</div>
 				);
 			})}
-
-			{/* Black panel: how records are handled. */}
-			<div
-				style={{
-					position: 'absolute',
-					left: PANEL.x,
-					top: PANEL.y,
-					width: PANEL.w,
-					height: PANEL.h,
-					background: COLORS.black,
-					clipPath: `inset(0 0 0 ${(1 - panel) * 100}%)`,
-					padding: 44,
-					boxSizing: 'border-box',
-				}}
-			>
-				<Label delay={T.panel + 16} size={15} color={COLORS.gray}>
-					{C.recordLabel}
-				</Label>
-				<div style={{marginTop: 22}}>
-					{C.recordLines.map((line, i) => (
-						<MaskReveal key={line} delay={T.record + i * 8}>
-							<div style={{fontFamily: FONTS.jp, fontWeight: 800, fontSize: 44, lineHeight: 1.32, color: COLORS.offWhite}}>{line}</div>
-						</MaskReveal>
-					))}
-				</div>
-				<div style={{height: 2, background: '#3A3A38', width: `${useProgress(T.exLabel - 12, 20, EASE.line) * 100}%`, marginTop: 26}} />
-				<div style={{marginTop: 24}}>
-					<Label delay={T.exLabel} size={15} color={COLORS.red}>
-						{C.exceptionLabel}
-					</Label>
-				</div>
-				<div style={{marginTop: 22, display: 'flex', flexDirection: 'column', gap: 12}}>
-					{C.exceptions.map((ex, i) => (
-						<FadeUp key={ex} delay={T.ex + i * 14} distance={10}>
-							<div style={{display: 'flex', alignItems: 'center', gap: 18}}>
-								<div style={{width: 14, height: 14, background: COLORS.red}} />
-								<span style={{fontFamily: FONTS.jp, fontWeight: 700, fontSize: 36, color: COLORS.offWhite}}>{ex}</span>
-							</div>
-						</FadeUp>
-					))}
-				</div>
-				<div style={{marginTop: 16}}>
-					<FadeUp delay={T.note}>
-						<span style={{fontFamily: FONTS.jp, fontWeight: 500, fontSize: 24, color: COLORS.gray, letterSpacing: '0.04em'}}>{C.exceptionNote}</span>
-					</FadeUp>
-				</div>
-			</div>
 		</SceneFrame>
 	);
 };

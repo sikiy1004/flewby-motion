@@ -1,6 +1,5 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {isPdfPlaceholder} from '../data/scenes';
 import {COLORS, EASE, FONTS} from '../theme';
 
 /** 0→1 progress for an entrance starting at `delay` frames. */
@@ -114,46 +113,30 @@ type TextProps = {
 	size?: number;
 	weight?: 400 | 500 | 700 | 800;
 	color?: string;
+	/** Give a width to let the text wrap inside it (Japanese wraps per character). */
+	width?: number;
+	lineHeight?: number;
 	style?: React.CSSProperties;
 };
 
-/**
- * Japanese body text. Strings marked with PDF() are rendered as a visibly flagged
- * placeholder so that untranscribed source wording can never pass as final copy.
- */
-export const Txt: React.FC<TextProps> = ({children, size = 32, weight = 500, color = COLORS.black, style}) => {
-	if (isPdfPlaceholder(children)) {
-		return (
-			<span
-				style={{
-					fontFamily: FONTS.jp,
-					fontWeight: 500,
-					fontSize: size * 0.8,
-					color: '#8C8C87',
-					borderBottom: `2px dashed ${COLORS.gray}`,
-					paddingBottom: 2,
-					whiteSpace: 'nowrap',
-					...style,
-				}}
-			>
-				{children}
-			</span>
-		);
-	}
-	return (
-		<span
-			style={{
-				fontFamily: FONTS.jp,
-				fontWeight: weight,
-				fontSize: size,
-				lineHeight: 1.5,
-				letterSpacing: '0.03em',
-				color,
-				whiteSpace: 'nowrap',
-				...style,
-			}}
-		>
-			{children}
-		</span>
-	);
-};
+/** Japanese body text. Single line by default; wraps when given a width. */
+export const Txt: React.FC<TextProps> = ({children, size = 32, weight = 500, color = COLORS.black, width, lineHeight = 1.5, style}) => (
+	<span
+		style={{
+			display: width ? 'block' : 'inline',
+			width,
+			fontFamily: FONTS.jp,
+			fontWeight: weight,
+			fontSize: size,
+			lineHeight,
+			letterSpacing: '0.03em',
+			color,
+			whiteSpace: width ? 'normal' : 'nowrap',
+			lineBreak: 'strict',
+			textWrap: width ? 'pretty' : undefined,
+			...style,
+		}}
+	>
+		{children}
+	</span>
+);

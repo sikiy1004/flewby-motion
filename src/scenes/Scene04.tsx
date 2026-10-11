@@ -1,165 +1,102 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {Canvas, DrawLine, DrawPath, DrawRect} from '../components/AnimatedLine';
+import {Canvas, DrawLine, DrawPath} from '../components/AnimatedLine';
 import {Block, SceneFrame} from '../components/Grid';
-import {FadeUp, Heading, Label, MaskReveal, Txt, useProgress} from '../components/Typography';
+import {Heading, Label, MaskReveal, Txt} from '../components/Typography';
 import {COPY} from '../data/scenes';
-import {COLORS, EASE, FONTS, colX, span} from '../theme';
+import {COLORS, EASE, GRID, VIDEO, colX} from '../theme';
 import type {SceneProps} from '../Video';
 
 const C = COPY.scene04;
 
-const PANEL_TOP = 330;
-const ICON_Y = 520;
-const STEP = 96;
-const STEPS_X0 = colX(5);
-const STEP_GAP = (span(7) - STEP * 4) / 3;
-const ARROW_Y = ICON_Y;
-const PHRASE_Y = 690;
+const LABEL_Y = 300;
+const RULE_Y = 336;
+const ROW_H = 140;
+const rowMid = (i: number) => RULE_Y + ROW_H * (i + 0.5);
+const ARROW_X0 = colX(3) + 20;
+const ARROW_X1 = colX(4) - 24;
 
-const T = {person: 50, strike: 140, arrow: 200, process: 214, from: 287, fromStrike: 318, to: 350, focus: 476};
+const T = {labels: 40, rows: [138, 307, 500]};
+
+const Cross: React.FC<{cx: number; cy: number; p: number}> = ({cx, cy, p}) => (
+	<g opacity={p} transform={`translate(${cx} ${cy})`}>
+		<line x1={-12 * p} y1={-12 * p} x2={12 * p} y2={12 * p} stroke={COLORS.red} strokeWidth={4} />
+		<line x1={12 * p} y1={-12 * p} x2={-12 * p} y2={12 * p} stroke={COLORS.red} strokeWidth={4} />
+	</g>
+);
 
 export const Scene04: React.FC<SceneProps> = ({meta, showGrid}) => {
 	const frame = useCurrentFrame();
-	const person = useProgress(T.person, 20);
-	const personDim = interpolate(useProgress(T.strike, 20), [0, 1], [1, 0.35]);
-	const personCx = colX(0) + span(4) / 2;
+	const at = (start: number, dur = 14) =>
+		interpolate(frame, [start, start + dur], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp', easing: EASE.out});
 
 	return (
 		<SceneFrame meta={meta} showGrid={showGrid}>
-			<Block col={0} top={168}>
-				<Heading size={72} delay={12}>
+			<Block col={0} top={160}>
+				<Heading size={64} delay={10}>
 					{C.heading}
 				</Heading>
 			</Block>
 
-			{/* Left: person as subject. */}
-			<Block col={0} top={PANEL_TOP}>
-				<Label delay={T.person} size={15} color="#6E6E6A">
-					{C.person.label}
+			<Block col={0} top={LABEL_Y}>
+				<Label delay={T.labels} size={14} color={COLORS.red}>
+					{`× ${C.badLabel}`}
 				</Label>
-				<div style={{marginTop: 14, opacity: personDim}}>
-					<MaskReveal delay={T.person + 6}>
-						<Txt size={36} weight={700}>
-							{C.person.jp}
-						</Txt>
-					</MaskReveal>
-				</div>
 			</Block>
-
-			{/* Right: process as subject. */}
-			<Block col={5} top={PANEL_TOP}>
-				<Label delay={T.process} size={15} color="#6E6E6A">
-					{C.process.label}
+			<Block col={4} top={LABEL_Y}>
+				<Label delay={T.labels + 6} size={14} color={COLORS.black}>
+					{`○ ${C.goodLabel}`}
 				</Label>
-				<div style={{marginTop: 14}}>
-					<MaskReveal delay={T.process + 6}>
-						<Txt size={36} weight={700}>
-							{C.process.jp}
-						</Txt>
-					</MaskReveal>
-				</div>
 			</Block>
 
 			<Canvas>
-				{/* Person glyph. */}
-				<g opacity={person * personDim} transform={`translate(${personCx} ${ICON_Y})`}>
-					<circle cx={0} cy={-34} r={30} fill="none" stroke={COLORS.black} strokeWidth={3} />
-					<path d="M -56 70 V 40 Q -56 10 -26 10 H 26 Q 56 10 56 40 V 70" fill="none" stroke={COLORS.black} strokeWidth={3} />
-				</g>
-				<DrawLine x1={personCx - 110} y1={ICON_Y + 90} x2={personCx + 110} y2={ICON_Y - 90} delay={T.strike} duration={16} width={5} color={COLORS.red} />
-
-				{/* Arrow: person → process. */}
-				<DrawLine x1={colX(4) - 4} y1={ARROW_Y} x2={colX(5) - 28} y2={ARROW_Y} delay={T.arrow} duration={18} width={3} />
-				<DrawPath d={`M ${colX(5) - 44} ${ARROW_Y - 14} L ${colX(5) - 28} ${ARROW_Y} L ${colX(5) - 44} ${ARROW_Y + 14}`} delay={T.arrow + 14} duration={8} width={3} />
-
-				{/* Process: four steps joined in sequence. */}
-				{C.process.steps.map((_, i) => {
-					const x = STEPS_X0 + i * (STEP + STEP_GAP);
+				<DrawLine x1={GRID.marginX} y1={RULE_Y} x2={VIDEO.width - GRID.marginX} y2={RULE_Y} delay={T.labels - 8} duration={30} width={2} />
+				{C.pairs.map((_, i) => {
+					const y = rowMid(i);
+					const start = T.rows[i];
 					return (
 						<React.Fragment key={i}>
-							<DrawRect x={x} y={ICON_Y - STEP / 2} w={STEP} h={STEP} delay={T.process + 10 + i * 12} duration={18} width={3} />
-							{i < 3 ? (
-								<DrawLine x1={x + STEP} y1={ICON_Y} x2={x + STEP + STEP_GAP} y2={ICON_Y} delay={T.process + 22 + i * 12} duration={14} width={3} />
-							) : null}
+							<Cross cx={colX(0) + 12} cy={y} p={at(start)} />
+							<DrawLine x1={ARROW_X0} y1={y} x2={ARROW_X1} y2={y} delay={start + 26} duration={14} width={3} />
+							<DrawPath d={`M ${ARROW_X1 - 14} ${y - 12} L ${ARROW_X1} ${y} L ${ARROW_X1 - 14} ${y + 12}`} delay={start + 36} duration={6} width={3} />
+							<circle cx={colX(4) + 12} cy={y} r={12 * at(start + 40)} fill="none" stroke={COLORS.black} strokeWidth={4} />
+							<DrawLine
+								x1={GRID.marginX}
+								y1={RULE_Y + ROW_H * (i + 1)}
+								x2={VIDEO.width - GRID.marginX}
+								y2={RULE_Y + ROW_H * (i + 1)}
+								delay={start + 6}
+								duration={34}
+								width={1}
+								color={COLORS.gray}
+							/>
 						</React.Fragment>
 					);
 				})}
 			</Canvas>
-			{C.process.steps.map((n, i) => {
-				const x = STEPS_X0 + i * (STEP + STEP_GAP);
-				const p = interpolate(frame, [T.process + 20 + i * 12, T.process + 36 + i * 12], [0, 1], {
-					extrapolateLeft: 'clamp',
-					extrapolateRight: 'clamp',
-					easing: EASE.out,
-				});
+
+			{C.pairs.map((p, i) => {
+				const y = rowMid(i);
+				const start = T.rows[i];
 				return (
-					<div
-						key={n}
-						style={{
-							position: 'absolute',
-							left: x,
-							top: ICON_Y - STEP / 2,
-							width: STEP,
-							height: STEP,
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							fontFamily: FONTS.en,
-							fontWeight: 800,
-							fontSize: 28,
-							color: COLORS.black,
-							opacity: p,
-						}}
-					>
-						{n}
-					</div>
+					<React.Fragment key={p.bad}>
+						<div style={{position: 'absolute', left: colX(0) + 44, top: y - 24, opacity: interpolate(at(start + 40, 20), [0, 1], [1, 0.5])}}>
+							<MaskReveal delay={start + 2}>
+								<Txt size={30} weight={700} color="#55554F">
+									{p.bad}
+								</Txt>
+							</MaskReveal>
+						</div>
+						<div style={{position: 'absolute', left: colX(4) + 44, top: y - 27}}>
+							<MaskReveal delay={start + 40} duration={26}>
+								<Txt size={33} weight={800}>
+									{p.good}
+								</Txt>
+							</MaskReveal>
+						</div>
+					</React.Fragment>
 				);
 			})}
-
-			{/* Phrase contrast. */}
-			<Block col={0} top={PHRASE_Y}>
-				<div style={{position: 'relative', opacity: interpolate(useProgress(T.fromStrike, 16), [0, 1], [1, 0.45])}}>
-					<FadeUp delay={T.from}>
-						<Txt size={48} weight={700}>
-							{C.phraseFrom}
-						</Txt>
-					</FadeUp>
-					<div
-						style={{
-							position: 'absolute',
-							left: 0,
-							top: 38,
-							height: 4,
-							width: 200 * useProgress(T.fromStrike, 14, EASE.line),
-							background: COLORS.red,
-						}}
-					/>
-				</div>
-			</Block>
-			<Canvas>
-				<DrawLine x1={colX(2) + 8} y1={PHRASE_Y + 38} x2={colX(3) - 40} y2={PHRASE_Y + 38} delay={T.to - 12} duration={14} width={3} />
-				<DrawPath
-					d={`M ${colX(3) - 56} ${PHRASE_Y + 24} L ${colX(3) - 40} ${PHRASE_Y + 38} L ${colX(3) - 56} ${PHRASE_Y + 52}`}
-					delay={T.to}
-					duration={8}
-					width={3}
-				/>
-			</Canvas>
-			<Block col={3} top={PHRASE_Y}>
-				<MaskReveal delay={T.to}>
-					<Txt size={48} weight={800}>
-						{C.phraseTo}
-					</Txt>
-				</MaskReveal>
-			</Block>
-			<Block col={3} top={PHRASE_Y + 92}>
-				<FadeUp delay={T.focus}>
-					<Txt size={30} color="#55554F">
-						{C.focus}
-					</Txt>
-				</FadeUp>
-			</Block>
 		</SceneFrame>
 	);
 };

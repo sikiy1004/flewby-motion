@@ -3,17 +3,19 @@ import {AbsoluteFill, interpolate, useCurrentFrame} from 'remotion';
 import {Canvas, DrawLine} from '../components/AnimatedLine';
 import {Counter} from '../components/Counter';
 import {SceneFrame} from '../components/Grid';
-import {FadeUp, Label, MaskReveal, useProgress} from '../components/Typography';
-import {COPY, SCENES} from '../data/scenes';
+import {FadeUp, Label, MaskReveal, Txt, useProgress} from '../components/Typography';
+import {COPY, DOC_DATE} from '../data/scenes';
 import {COLORS, COL_W, EASE, FONTS, GRID, VIDEO, colX, span} from '../theme';
 import type {SceneProps} from '../Video';
 
 const C = COPY.scene00;
 
+// Premises appear with the narration (frames).
+const PREMISE_AT = [50, 90, 140, 215];
+
 export const Scene00: React.FC<SceneProps> = ({meta, showGrid}) => {
 	const frame = useCurrentFrame();
 	const square = useProgress(8, 16);
-	const chapters = SCENES.filter((s) => s.chapter);
 
 	return (
 		<SceneFrame meta={meta} showGrid={showGrid} bare>
@@ -35,13 +37,10 @@ export const Scene00: React.FC<SceneProps> = ({meta, showGrid}) => {
 
 			<div style={{position: 'absolute', left: colX(0), top: 262, width: span(9)}}>
 				<MaskReveal delay={22} duration={28}>
-					<div style={titleStyle}>
-						{C.titleLines[0]}
-						{C.titleLines[1]}
-					</div>
+					<div style={titleStyle}>{C.titleLines[0]}</div>
 				</MaskReveal>
 				<MaskReveal delay={34} duration={28}>
-					<div style={titleStyle}>{C.titleLines[2]}</div>
+					<div style={titleStyle}>{C.titleLines[1]}</div>
 				</MaskReveal>
 			</div>
 
@@ -58,43 +57,43 @@ export const Scene00: React.FC<SceneProps> = ({meta, showGrid}) => {
 				</div>
 			</div>
 
-			<FadeUp delay={98} style={{position: 'absolute', left: colX(0), top: 648}}>
-				<span style={{fontFamily: FONTS.jp, fontWeight: 500, fontSize: 34, color: COLORS.offWhite, letterSpacing: '0.04em'}}>
-					{C.subtitle}
-				</span>
-			</FadeUp>
-
-			{/* Table of contents: eight chapters in a 4 × 2 grid. */}
+			{/* The memo's premise line, set as a four-column register. */}
 			<AbsoluteFill>
-				{chapters.map((s, i) => {
-					const col = (i % 4) * 3;
-					const row = Math.floor(i / 4);
-					const p = interpolate(frame, [130 + i * 6, 150 + i * 6], [0, 1], {
+				{C.premises.map((p, i) => {
+					const t = interpolate(frame, [PREMISE_AT[i], PREMISE_AT[i] + 20], [0, 1], {
 						extrapolateLeft: 'clamp',
 						extrapolateRight: 'clamp',
 						easing: EASE.out,
 					});
+					const last = i === C.premises.length - 1;
 					return (
 						<div
-							key={s.id}
+							key={p.label}
 							style={{
 								position: 'absolute',
-								left: colX(col),
-								top: 738 + row * 52,
+								left: colX(i * 3),
+								top: 652,
 								width: span(3),
-								display: 'flex',
-								alignItems: 'baseline',
-								gap: 16,
-								opacity: p,
-								transform: `translateX(${(1 - p) * -12}px)`,
+								opacity: t,
+								transform: `translateY(${(1 - t) * 12}px)`,
 							}}
 						>
-							<span style={{fontFamily: FONTS.en, fontWeight: 700, fontSize: 18, color: COLORS.red, letterSpacing: '0.04em'}}>{s.chapter}</span>
-							<span style={{fontFamily: FONTS.jp, fontWeight: 500, fontSize: 21, color: COLORS.gray, whiteSpace: 'nowrap'}}>{s.title}</span>
+							<div style={{fontFamily: FONTS.en, fontWeight: 700, fontSize: 14, letterSpacing: '0.18em', color: last ? COLORS.red : COLORS.gray}}>
+								{String(i + 1).padStart(2, '0')} — {p.label}
+							</div>
+							<div style={{marginTop: 14}}>
+								<Txt size={26} weight={last ? 700 : 500} color={COLORS.offWhite} width={span(3) - 24} lineHeight={1.55}>
+									{p.text}
+								</Txt>
+							</div>
 						</div>
 					);
 				})}
 			</AbsoluteFill>
+
+			<div style={{position: 'absolute', right: GRID.marginX, top: 176, opacity: square}}>
+				<span style={{fontFamily: FONTS.en, fontWeight: 500, fontSize: 16, letterSpacing: '0.08em', color: COLORS.gray}}>{DOC_DATE}</span>
+			</div>
 		</SceneFrame>
 	);
 };
