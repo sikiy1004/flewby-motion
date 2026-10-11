@@ -1,0 +1,27 @@
+{
+  "name": "flewby-motion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "外部顧問・従業員面談 設計メモ — Remotion explainer video",
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "still": "remotion still InterviewMemo",
+    "render": "remotion render InterviewMemo out/interview-memo.mp4 --codec=h264",
+    "sfx": "bash scripts/generate-sfx.sh"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.525",
+    "@remotion/paths": "^4.0.525",
+    "@remotion/transitions": "4.0.525",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "remotion": "4.0.525"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.12",
+    "typescript": "5.9.2"
+  }
+}
