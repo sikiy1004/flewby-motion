@@ -1,5 +1,7 @@
 # 外部顧問・従業員面談 設計メモ — 解説動画（Remotion）
 
+> このリポジトリには flew by の Instagram 広告冒頭フック（`FlewbyHook`、1080×1920・6.5 秒）も含まれます。素材・カット割り・合成手順は [`docs/flewby-hook.md`](docs/flewby-hook.md) を参照してください。
+
 Swiss International Typographic Style をベースにした、約 165 秒の日本語解説動画です。
 Remotion / React / TypeScript で構成し、1920×1080・30fps・H.264 MP4 で書き出します。
 

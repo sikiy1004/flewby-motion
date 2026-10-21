@@ -10,7 +10,10 @@
     "lint": "tsc --noEmit",
     "still": "remotion still InterviewMemo",
     "render": "remotion render InterviewMemo out/interview-memo.mp4 --codec=h264",
-    "sfx": "bash scripts/generate-sfx.sh"
+    "sfx": "bash scripts/generate-sfx.sh",
+    "hook:assets": "bash scripts/prepare-hook-assets.sh",
+    "hook:still": "remotion still FlewbyHook out/flewby-hook-still.png",
+    "hook:render": "remotion render FlewbyHook out/flewby-hook.mp4 --codec=h264"
   },
   "dependencies": {
     "@remotion/cli": "4.0.525",
