@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Easing, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Easing, Img, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
 import {ASSET_PATHS, CUTS, FOOTAGE_TRIM, HOOK, SCREEN_TRACK, TIMING, type AssetAvailability, type Quad} from './config';
 import {quadAt, quadCenter, quadToMatrix3d} from './geometry';
 import {InstagramScreen, SCREEN} from './InstagramScreen';
@@ -36,8 +36,11 @@ const expandQuad = (q: Quad, k: number): Quad => {
 	return q.map(([x, y]) => [cx + (x - cx) * k, cy + (y - cy) * k]) as Quad;
 };
 
-/** Stand-in plate so the timing can be reviewed before the AI footage exists. */
-const PlaceholderPlate: React.FC<{kind: PlateKind; quad: Quad}> = ({kind, quad}) => {
+/**
+ * Stand-in plate so the timing can be reviewed before the AI footage exists.
+ * Uses the Susukino crossing photo as the defocused background when it is in public/hook.
+ */
+const PlaceholderPlate: React.FC<{kind: PlateKind; quad: Quad; hasBackground: boolean}> = ({kind, quad, hasBackground}) => {
 	const lights = Array.from({length: 26}, (_, i) => ({
 		x: random(`x${i}`) * HOOK.width,
 		y: random(`y${i}`) * HOOK.height * 0.75,
@@ -48,7 +51,13 @@ const PlaceholderPlate: React.FC<{kind: PlateKind; quad: Quad}> = ({kind, quad})
 	const body = expandQuad(quad, kind === 'wide' ? 1.08 : 1.05);
 	return (
 		<AbsoluteFill style={{background: 'radial-gradient(120% 80% at 50% 30%, #1b1420 0%, #0b0a0f 60%, #050507 100%)'}}>
-			<AbsoluteFill style={{filter: 'blur(18px)'}}>
+			{hasBackground ? (
+				// Focus is on the phone: the crossing stays soft, and goes to pure bokeh in the close-up.
+				<AbsoluteFill style={{filter: `blur(${kind === 'wide' ? 7 : 22}px) brightness(0.8) saturate(1.05)`, transform: 'scale(1.04)'}}>
+					<Img src={staticFile(ASSET_PATHS.background)} style={{width: HOOK.width, height: HOOK.height, objectFit: 'cover'}} />
+				</AbsoluteFill>
+			) : null}
+			<AbsoluteFill style={{filter: 'blur(18px)', display: hasBackground ? 'none' : undefined}}>
 				{lights.map((l, i) => (
 					<div
 						key={i}
@@ -137,7 +146,7 @@ export const Plate: React.FC<{
 							style={{width: HOOK.width, height: HOOK.height, objectFit: 'cover'}}
 						/>
 					) : (
-						<PlaceholderPlate kind={kind} quad={quad} />
+						<PlaceholderPlate kind={kind} quad={quad} hasBackground={assets.background} />
 					)}
 				</AbsoluteFill>
 				{/* Phone screen composited onto the tracked corners; it rides the same camera transform. */}

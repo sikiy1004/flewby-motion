@@ -33,6 +33,11 @@ export const TIMING = {
 export const ASSET_PATHS = {
 	/** CUT01 用 AI 生成映像：女性を後方斜め45°・やや高い位置から。背景はすすきの交差点（上 4 割にボケた看板）。1080×1920 / 30fps。 */
 	wide: 'hook/cut01_wide.mp4',
+	/**
+	 * すすきの交差点の夜景写真（ニッカの看板・時計塔）。9:16 に切り出した背景。
+	 * AI 映像が届くまでのプレビュー背景と、image-to-video の背景参照に使う。
+	 */
+	background: 'hook/susukino_crossing.jpg',
 	/** CUT02–04 用 AI 生成映像：肩越しの手元接写。指が画面をタップする動作を含む。 */
 	closeup: 'hook/cut02_closeup.mp4',
 	/**
@@ -53,6 +58,7 @@ export type AssetAvailability = Record<AssetKey, boolean>;
 
 export const NO_ASSETS: AssetAvailability = {
 	wide: false,
+	background: false,
 	closeup: false,
 	handForeground: false,
 	logo: false,

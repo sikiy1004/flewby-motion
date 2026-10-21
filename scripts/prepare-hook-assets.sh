@@ -5,6 +5,7 @@
 #     --main-ad "~/Downloads/flewby１０月広告動画文字入り.mp4" \
 #     --store   "~/Downloads/MKT02421.jpg" \
 #     --logo    "~/Downloads/flew by ロゴ透過.png" \
+#     --bg-x 0.27 --background ~/Downloads/susukino.jpg \
 #     --wide    ai/cut01_wide.mp4 \
 #     --closeup ai/cut02_closeup.mp4 \
 #     --hand    ai/cut02_hand_fg.mov
@@ -28,6 +29,16 @@ while [[ $# -gt 0 ]]; do
 			# アルファ付き（ProRes 4444 / PNG 連番 mov 等）→ VP9 WebM（yuva420p）
 			ffmpeg -loglevel error -y -i "$src" -vf "$FIT,fps=30,setsar=1,format=yuva420p" -an \
 				-c:v libvpx-vp9 -b:v 0 -crf 20 -auto-alt-ref 0 "$OUT/cut02_hand_fg.webm"
+			;;
+		--bg-x)
+			# 横長写真から 9:16 を切り出すときの左右位置（0 = 左端, 1 = 右端）。--background より前に指定する。
+			BG_X="$src"
+			;;
+		--background)
+			# 横長の夜景写真から 9:16 を切り出して 1080×1920 に拡大（ボケさせて使うので解像度は低くてよい）
+			ffmpeg -loglevel error -y -i "$src" \
+				-vf "crop=ih*9/16:ih:(iw-ih*9/16)*${BG_X:-0.5}:0,scale=1080:1920:flags=lanczos,setsar=1" \
+				-q:v 2 "$OUT/susukino_crossing.jpg"
 			;;
 		--main-ad)
 			# 本編の 1 フレーム目をそのまま書き出す（フック最終フレーム＝本編冒頭）
