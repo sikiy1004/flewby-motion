@@ -7,12 +7,14 @@
 
 | カット | 秒 | フレーム | 内容 |
 |---|---|---|---|
-| CUT01 | 0–1.5 | 0–45 | 後方斜め45°・やや高い位置。スマホは最初から画面内。カメラは 1.00→1.06 でゆっくり前進 |
-| CUT02 | 1.5–3.5 | 45–105 | スマホへ滑らかにズーム（1.06→3.2）→ 72f で手元接写にマッチカット。76–98f で「すすきの バー」を入力 |
+| CUT01 | 0–1.5 | 0–45 | 後方斜め45°・やや高い位置。スマホは最初から画面内。カメラは最初からゆっくり前進（38f からズームが滑らかに加速） |
+| CUT02 | 1.5–3.5 | 45–105 | スマホへ滑らかにズーム（〜3.2 倍）→ 78f で手元接写にマッチカット（速度をつないだまま減速して落ち着く）。82–100f で「すすきの バー」を入力 |
 | CUT03 | 3.5–5.5 | 105–165 | 106f で検索結果。「shisha cafe bar flew by」のアカウントと広告投稿（実店舗写真）。**150f でタップ** |
 | CUT04 | 5.5–6.5 | 165–195 | 158–170f で広告の再生画面へ遷移（一時停止・0:00）。170–188f で画面へ寄り、180–188f で本編 1 フレーム目にクロスフェード。188–195f は本編 1 フレーム目そのもの |
 
-テロップ・派手なトランジションは入れていません。画面内の UI と文字はすべて React で描画しています。
+テロップ・派手なトランジションは入れていません。
+
+カメラワーク（`src/hook/camera.ts`）は実機の動きに寄せています。倍率は対数で補間して等速に感じる動きにし、速度はマッチカットをまたいでも途切れません（引きで加速 → 接写側で減速して落ち着く）。わずかな手持ちの揺れを常に加え、速く動く区間にはモーションブラー（シャッター角 180°）をかけています。画面内の UI と文字はすべて React で描画しています。
 
 ## 必要な素材
 
@@ -60,12 +62,12 @@ bash scripts/prepare-hook-assets.sh \
 
 **cut02_closeup（約 4.5 秒、9:16）**
 
-> Same woman, same location, lighting and color grade. Over-the-shoulder close-up of her hands holding the smartphone; the phone fills most of the frame, screen plain black with visible corners. Behind her, the Susukino crossing neon is heavily defocused into warm and colored bokeh. At about 2.6 seconds her index finger taps once in the middle-lower part of the screen and lifts. Slow subtle push-in. 50mm look, shallow depth of field, subtle film grain. No text, no UI.
+> Same woman, same location, lighting and color grade. Over-the-shoulder close-up of her hands holding the smartphone; the phone fills most of the frame, screen plain black with visible corners. Behind her, the Susukino crossing neon is heavily defocused into warm and colored bokeh. At about 2.4 seconds her index finger taps once in the middle-lower part of the screen and lifts. Slow subtle push-in. 50mm look, shallow depth of field, subtle film grain. No text, no UI.
 
 ## 合成の調整
 
 1. **画面の 4 隅**：`SCREEN_TRACK` に素材内フレームごとの 4 隅（左上・右上・右下・左下、1080×1920 座標）を入れます。間は線形補間です。Studio で Props の `showTrackingGuide: true` にすると水色の枠が出るので、実際の画面の縁に合うまで値を調整します。カメラが動く素材なら、キーフレームを数点増やします（AE / Mocha などのコーナーピン値をそのまま転記できます）。
-2. **タップの同期**：接写素材で指が画面に触れるフレームが `TIMING.tap`（150f＝接写の 78f 目）に来るよう、`FOOTAGE_TRIM.closeup` で素材の開始位置をずらします。押下の暗転・波紋・効果音はすべて `TIMING.tap` 基準で動きます。
+2. **タップの同期**：接写素材で指が画面に触れるフレームが `TIMING.tap`（150f＝接写の 72f 目）に来るよう、`FOOTAGE_TRIM.closeup` で素材の開始位置をずらします。押下の暗転・波紋・効果音はすべて `TIMING.tap` 基準で動きます。
 3. **指を画面の上に出す**：合成した画面は素材の上に載るため、そのままだと指が画面に隠れます。接写素材から手・指を切り抜いたアルファ付き動画を `--hand` で入れると、画面の上に重なります。
 4. **本編との接続**：最後の 7 フレーム（188–194f）は本編 1 フレーム目の静止画だけで、グレイン・周辺減光も 0 にしています。本編をそのまま後ろにつなげば継ぎ目なく再生が始まります。
 
