@@ -42,9 +42,9 @@ export const ASSET_PATHS = {
 	handForeground: 'hook/cut02_hand_fg.webm',
 	/** Drive「flew byデザインデータ / flew by ロゴ透過.png」 */
 	logo: 'hook/flewby_logo.png',
-	/** 実店舗の写真（Drive「家からflewby散歩」などから 1 枚）。AI 再生成は禁止。 */
+	/** 実店舗の写真（Drive「MKT02421.jpg」）。AI 再生成は禁止。 */
 	storePhoto: 'hook/store_photo.jpg',
-	/** 本編広告の 1 フレーム目（scripts/prepare-hook-assets.sh で書き出す）。 */
+	/** 本編広告「flewby１０月広告動画文字入り.mp4」の 1 フレーム目（scripts/prepare-hook-assets.sh で書き出す）。 */
 	mainAdFirstFrame: 'hook/main_ad_first_frame.jpg',
 } as const;
 
@@ -85,8 +85,8 @@ export const SCREEN_TRACK: {wide: TrackKey[]; closeup: TrackKey[]} = {
 export const COPY = {
 	query: 'すすきの バー',
 	storeName: 'shisha cafe bar flew by',
-	/** Instagram のユーザーネーム。未確定のため null（null なら店名のみ表示）。 */
-	handle: null as string | null,
+	/** Instagram のユーザーネーム（@ なしで表示するのが Instagram の表記）。 */
+	handle: 'flewby.sapporo' as string | null,
 	/** 店舗企画書の記載（業態・立地）に基づく。 */
 	category: 'シーシャバー · 札幌 すすきの',
 	sponsored: '広告',

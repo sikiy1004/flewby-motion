@@ -22,8 +22,8 @@
 | ファイル | 内容 | 入手元 |
 |---|---|---|
 | `flewby_logo.png` | ロゴ（透過） | Drive「flew byデザインデータ / flew by ロゴ透過.png」 |
-| `store_photo.jpg` | 広告投稿に出す実店舗写真 | Drive「家からflewby散歩」等の実写写真から 1 枚 |
-| `main_ad_first_frame.jpg` | 本編広告の 1 フレーム目 | Drive「flew by 動画 / flewby１０月広告動画（文字入り）.mp4」から `--main-ad` で自動抽出 |
+| `store_photo.jpg` | 広告投稿に出す実店舗写真 | Drive「MKT02421.jpg」 |
+| `main_ad_first_frame.jpg` | 本編広告の 1 フレーム目 | Drive「flew by 動画 / flewby１０月広告動画文字入り.mp4」から `--main-ad` で自動抽出 |
 | `cut01_wide.mp4` | CUT01–02 の引き（AI 生成） | 下記プロンプト |
 | `cut02_closeup.mp4` | CUT02–04 の手元接写（AI 生成） | 下記プロンプト |
 | `cut02_hand_fg.webm` | 任意：接写から指・手だけを切り抜いたアルファ付き動画 | 接写素材をロトスコープ |
@@ -33,7 +33,7 @@
 ```bash
 bash scripts/prepare-hook-assets.sh \
   --logo    "flew by ロゴ透過.png" \
-  --store   "家からflewby散歩MKT02714.jpg" \
+  --store   "MKT02421.jpg" \
   --main-ad "flewby１０月広告動画文字入り.mp4" \
   --wide    cut01_wide.mp4 \
   --closeup cut02_closeup.mp4
@@ -75,5 +75,5 @@ ffmpeg -i out/flewby-hook.mp4 -i flewby１０月広告動画文字入り.mp4 \
 
 ## 未確定事項
 
-- Instagram のユーザーネームは未確定のため表示していません（`COPY.handle` に入れると表示されます）。
+- Instagram のユーザーネームは `flewby.sapporo`（`COPY.handle`）。検索結果では 1 行目にユーザーネーム、2 行目に店名「shisha cafe bar flew by」を表示します。
 - `out/flewby-hook-preview.mp4` は AI 映像・店舗写真・本編フレームが未配置の状態の確認用です（プレースホルダー表示）。

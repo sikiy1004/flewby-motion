@@ -3,7 +3,7 @@
 # 指定したものだけ処理する。例:
 #   bash scripts/prepare-hook-assets.sh \
 #     --main-ad "~/Downloads/flewby１０月広告動画文字入り.mp4" \
-#     --store   "~/Downloads/家からflewby散歩MKT02714.jpg" \
+#     --store   "~/Downloads/MKT02421.jpg" \
 #     --logo    "~/Downloads/flew by ロゴ透過.png" \
 #     --wide    ai/cut01_wide.mp4 \
 #     --closeup ai/cut02_closeup.mp4 \
