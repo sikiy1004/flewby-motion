@@ -69,6 +69,17 @@ bash scripts/prepare-hook-assets.sh \
 3. **指を画面の上に出す**：合成した画面は素材の上に載るため、そのままだと指が画面に隠れます。接写素材から手・指を切り抜いたアルファ付き動画を `--hand` で入れると、画面の上に重なります。
 4. **本編との接続**：最後の 7 フレーム（188–194f）は本編 1 フレーム目の静止画だけで、グレイン・周辺減光も 0 にしています。本編をそのまま後ろにつなげば継ぎ目なく再生が始まります。
 
+## VS Code だけで作業する場合
+
+必要なのは **VS Code・Node.js（v18 以上）・Git** の 3 つです。ffmpeg は Remotion に同梱されているものを使うので、別に入れる必要はありません（`scripts/prepare-hook-assets.sh` は ffmpeg が無ければ自動で同梱版に切り替えます）。
+
+1. VS Code の「ソース管理」→「リポジトリのクローン」で `https://github.com/sikiy1004/flewby-motion.git` を開き、左下のブランチ名から `claude/clever-edison-ld32bt` に切り替える。
+2. メニュー「ターミナル」→「新しいターミナル」を開き、`npm install`。
+   - **Windows** はターミナル右上の「∨」から **Git Bash** を選ぶ（素材準備スクリプトが bash のため）。
+3. 素材を取り込む：`npm run hook:assets -- --logo … --store … --main-ad … --wide … --closeup …`
+4. `npm run dev` → ブラウザで Studio が開くので、`FlewbyHook` を選んで確認・調整（`src/hook/config.ts` を VS Code で編集すると即座にプレビューに反映）。
+5. `npm run hook:render` → `out/flewby-hook.mp4`。
+
 ## プレビュー・書き出し
 
 ```bash
