@@ -31,7 +31,7 @@ export const TIMING = {
 
 /** public/ 以下の素材。未配置のものはプレースホルダー表示になる（書き出しは止まらない）。 */
 export const ASSET_PATHS = {
-	/** CUT01 用 AI 生成映像：女性を後方斜め45°・やや高い位置から。1080×1920 / 30fps。 */
+	/** CUT01 用 AI 生成映像：女性を後方斜め45°・やや高い位置から。背景はすすきの交差点（上 4 割にボケた看板）。1080×1920 / 30fps。 */
 	wide: 'hook/cut01_wide.mp4',
 	/** CUT02–04 用 AI 生成映像：肩越しの手元接写。指が画面をタップする動作を含む。 */
 	closeup: 'hook/cut02_closeup.mp4',

@@ -43,13 +43,22 @@ bash scripts/prepare-hook-assets.sh \
 
 スマホの画面は後から Remotion で合成するので、**画面は真っ黒（消灯）またはグリーン一色**で生成します。画面の 4 隅がはっきり見えることが重要です。
 
-**cut01_wide（約 3 秒、9:16）**
+### 背景：すすきの交差点（ニッカの看板・COCONO SUSUKINO）
 
-> Cinematic realism, DSLR photo look, 50mm lens, natural shallow depth of field. Night in Susukino, Sapporo: wet street, realistic neon signs softly out of focus. A young woman seen from behind at a 45-degree angle, camera slightly above her shoulder, looking down at a smartphone held in both hands; the phone is clearly visible in frame from the first frame, its screen plain black. Natural skin and hair detail, subtle film grain, dark but natural color grade. Camera slowly dollies forward toward the phone. No text, no logos.
+背景は「すすきの交差点の夜。ニッカの看板と COCONO SUSUKINO がボケて写っている」状態にします。
+
+- **実写の写真を起点にする（推奨）**：AI に看板やビルをゼロから描かせると、ニッカの看板の人物やロゴ、ビルの外観が崩れ、「似ているけれど違う」看板になります。看板もビルも実在するので、交差点を実際に撮った夜の写真を **image-to-video の開始フレーム（または参照画像）** として渡し、女性と手元だけを生成します。Drive「Tontuからすすきのまで」の写真に交差点が写っているものがあれば、それが候補になります。無ければ、女性の肩越しの高さと向きで交差点を 1 枚撮ってください。
+- **構図**：CUT01 で背景が見えるのは最初の約 1.5 秒だけです。後方斜め 45°・やや高い位置は保ったまま、カメラの下向きの角度を浅くし、**画面の上 4 割に交差点の看板が入る**ようにします。スマホと手は画面の下半分に置きます。CUT02 以降は画面に寄るので、交差点のネオンは色のついたボケとして残る程度で十分です。
+- **ピント**：ピントはスマホに合わせ、看板とビルはボケさせます。形と色で「すすきの交差点だ」と分かれば十分で、看板の文字やロゴを読ませる必要はありません。
+- **権利面の注意**：ニッカの看板は他社の商標、COCONO SUSUKINO は商業施設の名称です。街の風景として背景にボケて写るのが目安です。看板を主役に見せる、ロゴを読める大きさで写す、お酒の広告として提携しているように見える、といった使い方は避けてください。広告審査や権利の判断が気になる場合は、出稿前にご確認ください。
+
+**cut01_wide（約 3 秒、9:16）** — 交差点の写真を開始フレームにして生成する
+
+> Cinematic realism, DSLR photo look, 50mm lens, natural shallow depth of field. Night at the Susukino crossing in Sapporo, keep the background exactly as in the reference photo: the large illuminated whisky billboard and the modern COCONO SUSUKINO building stay in the upper part of the frame, softly out of focus, wet asphalt reflecting the neon. In the foreground a young woman seen from behind at a 45-degree angle, camera slightly above her shoulder and tilted only slightly down, looking at a smartphone held in both hands in the lower half of the frame; the phone is clearly visible from the first frame, its screen plain black. Natural skin and hair detail, subtle film grain, dark but natural color grade. Camera slowly dollies forward toward the phone. Do not add or change any text or signs.
 
 **cut02_closeup（約 4.5 秒、9:16）**
 
-> Same woman, same lighting and color grade. Over-the-shoulder close-up of her hands holding the smartphone; the phone fills most of the frame, screen plain black with visible corners. At about 2.6 seconds her index finger taps once in the middle-lower part of the screen and lifts. Slow subtle push-in. 50mm look, shallow depth of field, neon bokeh behind, subtle film grain. No text, no UI.
+> Same woman, same location, lighting and color grade. Over-the-shoulder close-up of her hands holding the smartphone; the phone fills most of the frame, screen plain black with visible corners. Behind her, the Susukino crossing neon is heavily defocused into warm and colored bokeh. At about 2.6 seconds her index finger taps once in the middle-lower part of the screen and lifts. Slow subtle push-in. 50mm look, shallow depth of field, subtle film grain. No text, no UI.
 
 ## 合成の調整
 
