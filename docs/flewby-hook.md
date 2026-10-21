@@ -62,6 +62,16 @@ bash scripts/prepare-hook-assets.sh \
 
 > Same woman, same location, lighting and color grade. Over-the-shoulder close-up of her hands holding the smartphone; the phone fills most of the frame, screen plain black with visible corners. Behind her, the Susukino crossing neon is heavily defocused into warm and colored bokeh. At about 2.6 seconds her index finger taps once in the middle-lower part of the screen and lifts. Slow subtle push-in. 50mm look, shallow depth of field, subtle film grain. No text, no UI.
 
+## 静止画 1 枚で作る（現在の構成）
+
+`public/hook/woman_still.jpg`（肩越しにスマホを見ている女性の静止画、`--still` で配置）があり、動画素材（`cut01_wide.mp4` / `cut02_closeup.mp4`）が無い場合は、この 1 枚から引き → スマホへの寄り → 画面への寄りまでをカメラワークで作ります。
+
+- カメラ：0–1.5 秒はゆっくり前進、1.5–2.8 秒で滑らかにスマホへ寄る（約 3.4 倍）、その後わずかに前進を続け、5.7–6.3 秒で画面に寄り切って本編 1 フレーム目へ。1 枚の写真なのでカットの切り替えはありません。
+- 画面：写真のスマホ画面（ガラス部分）の 4 隅 `STILL.quad` に合わせて合成。
+- 手前のもの：肩・右手・左手の指は `STILL.matte` の範囲を写真から切り抜いて画面の上に重ねるので、画面の下側は自然に肩に隠れます。
+- タップ：写真なので指は動きません。押した瞬間の暗転と波紋、タップ音で表現しています。
+- 画質：元の写真が 1000×1573 のため、寄ったときに手や袖はやや柔らかくなります（画面の UI はプログラム描画なので鮮明）。同じ写真の高解像度版（横 2000px 以上）があれば差し替えるだけで改善します。写真を差し替えて構図が変わった場合は `STILL.quad` / `STILL.matte` / `STILL.focus` を合わせ直します。
+
 ## 合成の調整
 
 1. **画面の 4 隅**：`SCREEN_TRACK` に素材内フレームごとの 4 隅（左上・右上・右下・左下、1080×1920 座標）を入れます。間は線形補間です。Studio で Props の `showTrackingGuide: true` にすると水色の枠が出るので、実際の画面の縁に合うまで値を調整します。カメラが動く素材なら、キーフレームを数点増やします（AE / Mocha などのコーナーピン値をそのまま転記できます）。

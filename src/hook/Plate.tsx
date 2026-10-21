@@ -1,6 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Easing, Img, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
-import {ASSET_PATHS, CUTS, FOOTAGE_TRIM, HOOK, SCREEN_TRACK, TIMING, type AssetAvailability, type Quad} from './config';
+import {ASSET_PATHS, CUTS, FOOTAGE_TRIM, HOOK, SCREEN_TRACK, STILL, TIMING, type AssetAvailability, type Quad} from './config';
 import {quadAt, quadCenter, quadToMatrix3d} from './geometry';
 import {InstagramScreen, SCREEN} from './InstagramScreen';
 
@@ -30,6 +30,28 @@ const cameraAt = (kind: PlateKind, frame: number, quad: Quad) => {
 	const s = base + (fill - base) * p;
 	return {s, fx: CX + (qx - CX) * p, fy: CY + (qy - CY) * p};
 };
+
+/**
+ * Single-still mode: one continuous move on woman_still.jpg — slow creep, ease into the phone,
+ * a gentle drift while she searches, then the push into the screen. No cut, so no velocity jump.
+ */
+const stillCameraAt = (frame: number, quad: Quad) => {
+	const [qx, qy] = STILL.focus;
+	const width = (quad[1][0] - quad[0][0] + quad[2][0] - quad[3][0]) / 2;
+	const fill = HOOK.width / width;
+	const creep = interpolate(frame, [0, CUTS.cut01.to], [1, 1.06], clamp);
+	const zoom = interpolate(frame, [CUTS.cut01.to, STILL.zoomTo], [creep, STILL.zoomScale], {
+		...clamp,
+		easing: Easing.bezier(0.5, 0, 0.2, 1),
+	});
+	const drift = frame < CUTS.cut01.to ? creep : zoom * interpolate(frame, [STILL.zoomTo, TIMING.pushFrom], [1, 1.035], clamp);
+	const p = interpolate(frame, [TIMING.pushFrom, TIMING.pushTo], [0, 1], {...clamp, easing: Easing.bezier(0.45, 0, 0.2, 1)});
+	const s = drift + (fill - drift) * p;
+	const k = Math.min(1, (Math.min(s, STILL.zoomScale) - 1) / (STILL.zoomScale - 1));
+	return {s, fx: CX + (qx - CX) * k, fy: CY + (qy - CY) * k};
+};
+
+const mattePath = STILL.matte.map((poly) => `M${poly.map((p) => p.join(' ')).join(' L')} Z`).join(' ');
 
 const expandQuad = (q: Quad, k: number): Quad => {
 	const [cx, cy] = quadCenter(q);
@@ -128,16 +150,19 @@ export const Plate: React.FC<{
 }> = ({kind, offset, assets, showTrackingGuide}) => {
 	const local = useCurrentFrame();
 	const frame = local + offset;
-	const quad = quadAt(SCREEN_TRACK[kind], local);
-	const {s, fx, fy} = cameraAt(kind, frame, quad);
 	const hasFootage = assets[kind];
+	// Without footage for this shot, the woman still covers both shots as one continuous move.
+	const useStill = !hasFootage && assets.still;
+	const quad = useStill ? STILL.quad : quadAt(SCREEN_TRACK[kind], local);
+	const {s, fx, fy} = useStill ? stillCameraAt(frame, quad) : cameraAt(kind, frame, quad);
+	const grade = `contrast(1.06) saturate(0.9) brightness(0.94)`;
 	// Shallow DOF: the plate softens slightly as the camera closes in on the screen.
 	const plateBlur = kind === 'closeup' ? interpolate(frame, [TIMING.pushFrom, TIMING.pushTo], [0, 6], clamp) : 0;
 
 	return (
 		<AbsoluteFill style={{overflow: 'hidden', background: '#000'}}>
 			<AbsoluteFill style={{transformOrigin: '0 0', transform: `translate(${CX}px, ${CY}px) scale(${s}) translate(${-fx}px, ${-fy}px)`}}>
-				<AbsoluteFill style={{filter: `contrast(1.06) saturate(0.9) brightness(0.94) blur(${plateBlur}px)`}}>
+				<AbsoluteFill style={{filter: `${grade} blur(${plateBlur}px)`}}>
 					{hasFootage ? (
 						<OffthreadVideo
 							src={staticFile(ASSET_PATHS[kind])}
@@ -145,6 +170,8 @@ export const Plate: React.FC<{
 							muted
 							style={{width: HOOK.width, height: HOOK.height, objectFit: 'cover'}}
 						/>
+					) : useStill ? (
+						<Img src={staticFile(ASSET_PATHS.still)} style={{width: HOOK.width, height: HOOK.height}} />
 					) : (
 						<PlaceholderPlate kind={kind} quad={quad} hasBackground={assets.background} />
 					)}
@@ -168,8 +195,14 @@ export const Plate: React.FC<{
 					{/* Faint glass sheen so the UI sits in the plate rather than on top of it. */}
 					<div style={{position: 'absolute', inset: 0, background: 'linear-gradient(155deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0) 38%)'}} />
 				</div>
+				{useStill ? (
+					// Shoulder and fingers sit in front of the phone: redraw them from the still over the screen.
+					<AbsoluteFill style={{filter: `${grade} blur(${plateBlur}px)`, clipPath: `path('${mattePath}')`}}>
+						<Img src={staticFile(ASSET_PATHS.still)} style={{width: HOOK.width, height: HOOK.height}} />
+					</AbsoluteFill>
+				) : null}
 				{kind === 'closeup' && assets.handForeground ? (
-					<AbsoluteFill style={{filter: `contrast(1.06) saturate(0.9) brightness(0.94) blur(${plateBlur}px)`}}>
+					<AbsoluteFill style={{filter: `${grade} blur(${plateBlur}px)`}}>
 						<OffthreadVideo
 							src={staticFile(ASSET_PATHS.handForeground)}
 							startFrom={FOOTAGE_TRIM.closeup}

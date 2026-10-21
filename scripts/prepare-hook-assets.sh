@@ -6,6 +6,7 @@
 #     --store   "~/Downloads/MKT02421.jpg" \
 #     --logo    "~/Downloads/flew by ロゴ透過.png" \
 #     --bg-x 0.27 --background ~/Downloads/susukino.jpg \
+#     --still   ~/Downloads/woman.webp \
 #     --wide    ai/cut01_wide.mp4 \
 #     --closeup ai/cut02_closeup.mp4 \
 #     --hand    ai/cut02_hand_fg.mov
@@ -47,6 +48,10 @@ while [[ $# -gt 0 ]]; do
 			"${FFMPEG[@]}" -loglevel error -y -i "$src" \
 				-vf "crop=ih*9/16:ih:(iw-ih*9/16)*${BG_X:-0.5}:0,scale=1080:1920:flags=lanczos" \
 				-q:v 2 "$OUT/susukino_crossing.jpg"
+			;;
+		--still)
+			# 女性の静止画 1 枚（動画の代わり）。1080×1920 に cover で整える。座標は config.ts の STILL。
+			"${FFMPEG[@]}" -loglevel error -y -i "$src" -vf "$FIT" -q:v 2 "$OUT/woman_still.jpg"
 			;;
 		--main-ad)
 			# 本編の 1 フレーム目をそのまま書き出す（フック最終フレーム＝本編冒頭）
