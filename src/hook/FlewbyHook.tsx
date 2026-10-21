@@ -1,5 +1,4 @@
 import React from 'react';
-import {CameraMotionBlur} from '@remotion/motion-blur';
 import {AbsoluteFill, Audio, Img, Sequence, interpolate, staticFile, useCurrentFrame} from 'remotion';
 import {ASSET_PATHS, HOOK, TIMING, TOTAL_FRAMES, type AssetAvailability} from './config';
 import {Plate} from './Plate';
@@ -47,16 +46,11 @@ const Handoff: React.FC<{assets: AssetAvailability}> = ({assets}) => {
 
 export const FlewbyHook: React.FC<HookProps> = ({assets, showTrackingGuide, tapSound}) => (
 	<AbsoluteFill style={{background: '#000'}}>
-		{/* 180° shutter, applied per shot so the blur never bleeds across the match cut. */}
 		<Sequence durationInFrames={TIMING.matchCut} name="CUT01–02 wide">
-			<CameraMotionBlur shutterAngle={180} samples={6}>
-				<Plate kind="wide" offset={0} assets={assets} showTrackingGuide={showTrackingGuide} />
-			</CameraMotionBlur>
+			<Plate kind="wide" offset={0} assets={assets} showTrackingGuide={showTrackingGuide} />
 		</Sequence>
 		<Sequence from={TIMING.matchCut} durationInFrames={TOTAL_FRAMES - TIMING.matchCut} name="CUT02–04 close-up">
-			<CameraMotionBlur shutterAngle={180} samples={6}>
-				<Plate kind="closeup" offset={TIMING.matchCut} assets={assets} showTrackingGuide={showTrackingGuide} />
-			</CameraMotionBlur>
+			<Plate kind="closeup" offset={TIMING.matchCut} assets={assets} showTrackingGuide={showTrackingGuide} />
 		</Sequence>
 		<Grade />
 		<Handoff assets={assets} />

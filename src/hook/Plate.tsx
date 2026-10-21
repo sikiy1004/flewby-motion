@@ -1,7 +1,6 @@
 import React from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
-import {ASSET_PATHS, FOOTAGE_TRIM, HOOK, SCREEN_TRACK, TIMING, type AssetAvailability, type Quad} from './config';
-import {HANDHELD_OVERSCAN, cameraAt, handheldAt} from './camera';
+import {AbsoluteFill, Easing, Img, OffthreadVideo, interpolate, random, staticFile, useCurrentFrame} from 'remotion';
+import {ASSET_PATHS, CUTS, FOOTAGE_TRIM, HOOK, SCREEN_TRACK, TIMING, type AssetAvailability, type Quad} from './config';
 import {quadAt, quadCenter, quadToMatrix3d} from './geometry';
 import {InstagramScreen, SCREEN} from './InstagramScreen';
 
@@ -10,6 +9,27 @@ export type PlateKind = 'wide' | 'closeup';
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'} as const;
 const CX = HOOK.width / 2;
 const CY = HOOK.height / 2;
+
+/** Camera as (scale, focus point in plate coords). The focus point is placed at frame center. */
+const cameraAt = (kind: PlateKind, frame: number, quad: Quad) => {
+	const [qx, qy] = quadCenter(quad);
+	if (kind === 'wide') {
+		// CUT01: slow dolly-in from the first frame. CUT02: smooth zoom onto the phone into the match cut.
+		const s =
+			frame < CUTS.cut01.to
+				? interpolate(frame, [0, CUTS.cut01.to], [1, 1.06])
+				: interpolate(frame, [CUTS.cut01.to, TIMING.matchCut], [1.06, 3.2], {...clamp, easing: Easing.in(Easing.quad)});
+		const k = (s - 1) / 2.2;
+		return {s, fx: CX + (qx - CX) * k, fy: CY + (qy - CY) * k};
+	}
+	// Close-up: keep a slow push, then push into the screen until the player fills the frame.
+	const width = (quad[1][0] - quad[0][0] + quad[2][0] - quad[3][0]) / 2;
+	const fill = HOOK.width / width;
+	const base = interpolate(frame, [TIMING.matchCut, TIMING.pushFrom], [1, 1.035], clamp);
+	const p = interpolate(frame, [TIMING.pushFrom, TIMING.pushTo], [0, 1], {...clamp, easing: Easing.bezier(0.45, 0, 0.2, 1)});
+	const s = base + (fill - base) * p;
+	return {s, fx: CX + (qx - CX) * p, fy: CY + (qy - CY) * p};
+};
 
 const expandQuad = (q: Quad, k: number): Quad => {
 	const [cx, cy] = quadCenter(q);
@@ -110,19 +130,13 @@ export const Plate: React.FC<{
 	const frame = local + offset;
 	const quad = quadAt(SCREEN_TRACK[kind], local);
 	const {s, fx, fy} = cameraAt(kind, frame, quad);
-	const shake = handheldAt(frame);
 	const hasFootage = assets[kind];
 	// Shallow DOF: the plate softens slightly as the camera closes in on the screen.
 	const plateBlur = kind === 'closeup' ? interpolate(frame, [TIMING.pushFrom, TIMING.pushTo], [0, 6], clamp) : 0;
 
 	return (
 		<AbsoluteFill style={{overflow: 'hidden', background: '#000'}}>
-			<AbsoluteFill
-				style={{
-					transformOrigin: '0 0',
-					transform: `translate(${CX + shake.x}px, ${CY + shake.y}px) rotate(${shake.rot}deg) scale(${s * HANDHELD_OVERSCAN}) translate(${-fx}px, ${-fy}px)`,
-				}}
-			>
+			<AbsoluteFill style={{transformOrigin: '0 0', transform: `translate(${CX}px, ${CY}px) scale(${s}) translate(${-fx}px, ${-fy}px)`}}>
 				<AbsoluteFill style={{filter: `contrast(1.06) saturate(0.9) brightness(0.94) blur(${plateBlur}px)`}}>
 					{hasFootage ? (
 						<OffthreadVideo

@@ -15,9 +15,9 @@ export const TOTAL_FRAMES = CUTS.cut04.to;
 
 /** 主要タイミング（フレーム）。接写素材の指の動きはここに合わせて素材側をトリムする。 */
 export const TIMING = {
-	matchCut: 78, // 引きの素材 → 手元接写素材に切り替えるフレーム
-	typeFrom: 82, // 「すすきの バー」入力開始
-	typeTo: 100, // 入力完了
+	matchCut: 72, // 引きの素材 → 手元接写素材に切り替えるフレーム
+	typeFrom: 76, // 「すすきの バー」入力開始
+	typeTo: 98, // 入力完了
 	resultsIn: 106, // 検索結果が表示される
 	tap: 150, // 指が広告に触れるフレーム（＝タップの瞬間）
 	tapRelease: 155,
@@ -79,11 +79,11 @@ export type TrackKey = {frame: number; quad: Quad};
 export const SCREEN_TRACK: {wide: TrackKey[]; closeup: TrackKey[]} = {
 	wide: [
 		{frame: 0, quad: [[452, 1046], [688, 1068], [700, 1500], [430, 1474]]},
-		{frame: 78, quad: [[454, 1040], [690, 1060], [702, 1494], [432, 1468]]},
+		{frame: 72, quad: [[454, 1040], [690, 1060], [702, 1494], [432, 1468]]},
 	],
 	closeup: [
 		{frame: 0, quad: [[112, 96], [972, 124], [990, 1876], [92, 1850]]},
-		{frame: 117, quad: [[108, 92], [976, 118], [994, 1880], [88, 1856]]},
+		{frame: 123, quad: [[108, 92], [976, 118], [994, 1880], [88, 1856]]},
 	],
 };
 
