@@ -75,8 +75,8 @@ const Avatar: React.FC<{size: number; assets: AssetAvailability; ring?: boolean}
 				width: '100%',
 				height: '100%',
 				borderRadius: '50%',
-				background: '#F2F0EA',
-				border: ring ? `${u(2)}px solid ${IG.bg}` : 'none',
+				background: '#121212',
+				border: ring ? `${u(2)}px solid ${IG.bg}` : `1px solid #2b2b2b`,
 				boxSizing: 'border-box',
 				overflow: 'hidden',
 				display: 'flex',
@@ -87,7 +87,7 @@ const Avatar: React.FC<{size: number; assets: AssetAvailability; ring?: boolean}
 			{assets.logo ? (
 				<Img src={staticFile(ASSET_PATHS.logo)} style={{width: '78%', height: '78%', objectFit: 'contain'}} />
 			) : (
-				<span style={{fontFamily: IG.font, fontSize: size * 0.22, color: '#555', fontWeight: 700}}>LOGO</span>
+				<span style={{fontFamily: IG.font, fontSize: size * 0.22, color: '#777', fontWeight: 700}}>LOGO</span>
 			)}
 		</div>
 	</div>

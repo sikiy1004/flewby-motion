@@ -108,4 +108,6 @@ ffmpeg -i out/flewby-hook.mp4 -i flewby１０月広告動画文字入り.mp4 \
 ## 未確定事項
 
 - Instagram のユーザーネームは `flewby.sapporo`（`COPY.handle`）。検索結果では 1 行目にユーザーネーム、2 行目に店名「shisha cafe bar flew by」を表示します。
-- `out/flewby-hook-preview.mp4` は AI 映像・店舗写真・本編フレームが未配置の状態の確認用です（プレースホルダー表示）。
+- 完成版は `out/flewby-hook.mp4`。最終フレームは本編 1 フレーム目と一致（PSNR 約 42.5 dB、差は圧縮由来のみ）。
+- 本編広告は 23.976fps、フックは 30fps。つなぐときは上の ffmpeg コマンドのように本編側を 30fps に揃えるか、編集ソフトのタイムラインに両方を並べてください。
+- ロゴは白の透過 PNG のため、アイコンの円は黒にしています。`flewby_logo.png` は余白だけを切り詰めたものです。
