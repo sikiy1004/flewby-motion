@@ -1031,9 +1031,14 @@ def build_logo(display, coll):
     tex.image = out
     tex.interpolation = "Cubic"
     tex.extension = "CLIP"
+    # cut vinyl has crisp edges: sharpen the (possibly low-res) artwork
+    ramp = nt.nodes.new("ShaderNodeValToRGB")
+    ramp.color_ramp.elements[0].position = 0.35
+    ramp.color_ramp.elements[1].position = 0.6
+    nt.links.new(tex.outputs["Color"], ramp.inputs["Fac"])
     transparent = nt.nodes.new("ShaderNodeBsdfTransparent")
     mix = nt.nodes.new("ShaderNodeMixShader")
-    nt.links.new(tex.outputs["Color"], mix.inputs[0])
+    nt.links.new(ramp.outputs["Color"], mix.inputs[0])
     nt.links.new(transparent.outputs[0], mix.inputs[1])
     nt.links.new(bsdf.outputs[0], mix.inputs[2])
     nt.links.new(mix.outputs[0], mout.inputs["Surface"])
