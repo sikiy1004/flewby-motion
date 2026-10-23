@@ -62,7 +62,7 @@ python scripts/create_display.py [options]
 | `--no-render` | `.blend` の生成のみ |
 
 検証環境：Blender 5.2.3 LTS（bpy モジュール）、CPU 4 コア。最終レンダリング 4 枚の所要時間は
-v1 で約 33 分、v2 で約 32 分、v3 で約 33 分、v4 で約 RENDER_MIN 分（柱の合成を含む）。
+v1 で約 33 分、v2 で約 32 分、v3 で約 33 分、v4 で約 42 分（柱の合成を含む）。
 
 ## モデルの構成（実寸・Metric / m 管理）
 
