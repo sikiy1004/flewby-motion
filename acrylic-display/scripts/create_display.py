@@ -40,9 +40,11 @@ from mathutils.bvhtree import BVHTree
 MM = 0.001  # mm -> m
 
 # --- 02. Acrylic box (outer dimensions are fixed by the brief) --------------
-BOX_W = 350.0           # outer width
-BOX_H = 100.0           # outer height
-BOX_D = 80.0            # outer depth (front face to wall)
+# v1 was 350 x 100 x 80 (about 8 packages); v2 is enlarged to hold
+# roughly 3-4x as many.
+BOX_W = 600.0           # outer width
+BOX_H = 150.0           # outer height
+BOX_D = 120.0           # outer depth (front face to wall)
 ACRYLIC_T = 3.0         # sheet thickness (provisional)
 ACRYLIC_EDGE_BEVEL = 0.3  # polished edge radius
 
@@ -66,7 +68,7 @@ REF_FRONT_QUAD = [(167, 42), (577, 80), (577, 821), (170, 866)]
 REF_SIDE_QUAD = [(81, 57), (167, 42), (170, 866), (83, 852)]
 
 # --- 04. Random arrangement -------------------------------------------------
-SEED = 69
+SEED = 9
 MAX_PACKS = 40          # upper bound; the fill usually stops earlier
 CLEARANCE = 1.0         # min gap to every acrylic wall (mm)
 PACK_FRICTION = 0.65
@@ -82,21 +84,23 @@ ROW_FAILS = 40          # consecutive misses before moving to the next row
 #   side_view      narrow side facing the viewer
 #   flat           lying on its face (edge visible from the front)
 #   tumbled        any rotation that fits the chamber
-# rows (back -> front): relative depth position and family weights. The
-# usable depth (~64 mm) holds two rows of 22 mm packages, not three.
-ROWS = [
-    (0.80, {"front_upright": 0.25, "leaning_back": 0.20, "front_on_side": 0.30,
-            "side_view": 0.10, "tumbled": 0.15}),
-    (0.20, {"front_upright": 0.25, "front_on_side": 0.40, "side_view": 0.10,
-            "flat": 0.10, "tumbled": 0.15}),
-    # a second pass over the whole depth fills what is left (e.g. on top of
-    # packages lying on their long edge)
-    (0.50, {"flat": 0.45, "front_on_side": 0.35, "tumbled": 0.20}),
-]
+# Rows are spread over the usable depth (one per ~26 mm, back to front),
+# followed by fill passes over the whole depth for what is left on top.
+ROW_PITCH = 26.0        # mm of depth per row of packages
+ROW_WEIGHTS = {
+    "back": {"front_upright": 0.25, "leaning_back": 0.20, "front_on_side": 0.30,
+             "side_view": 0.10, "tumbled": 0.15},
+    "middle": {"front_upright": 0.25, "front_on_side": 0.30, "side_view": 0.15,
+               "flat": 0.10, "tumbled": 0.20},
+    "front": {"front_upright": 0.25, "front_on_side": 0.40, "side_view": 0.10,
+              "flat": 0.10, "tumbled": 0.15},
+    "fill": {"flat": 0.35, "front_on_side": 0.35, "tumbled": 0.30},
+}
+FILL_PASSES = 5
 
 # --- 05. Lighting -----------------------------------------------------------
 LED_TEMPERATURE_K = 5000.0
-LED_POWER_W = 2.0       # Blender area-light watts (tuned by test renders)
+LED_POWER_PER_M2 = 65.0  # area-light watts per m² of LED panel (tuned)
 LED_EDGE_GLOW = 4.0     # light leaking from the LED panel edge (emission)
 AMBIENT_STRENGTH = 0.3  # dim shop ambience (world); 0 = LED only
 EXPOSURE = 0.0
@@ -487,8 +491,9 @@ SIM_SCALE = 10.0  # Bullet is unstable at mm scale; simulate 10x larger
 def layout_key():
     keys = dict(SEED=SEED, BOX=(BOX_W, BOX_H, BOX_D, ACRYLIC_T, BACK_PLATE_T,
                 LED_MODULE_T), PACK=(PACK_W, PACK_H, PACK_D), MAX=MAX_PACKS,
-                CLEARANCE=CLEARANCE, ROWS=ROWS, GAP=PLACE_GAP, FAILS=ROW_FAILS, TILT=TILT_NEEDS_SUPPORT,
-                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=14)
+                CLEARANCE=CLEARANCE, ROWS=(ROW_PITCH, ROW_WEIGHTS, FILL_PASSES),
+                GAP=PLACE_GAP, FAILS=ROW_FAILS, TILT=TILT_NEEDS_SUPPORT,
+                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=17)
     return hashlib.sha1(json.dumps(keys, sort_keys=True).encode()).hexdigest()
 
 
@@ -568,13 +573,25 @@ def lowest_free_z(rot, x, y, ext, trees, z_floor, z_max, step=1.0 * MM):
     return None
 
 
+def layout_rows(b):
+    """(relative depth, family weights) per row, back to front, then the
+    fill passes."""
+    n = max(2, int((b["y1"] - b["y0"]) / (ROW_PITCH * MM)))
+    rows = []
+    for i in range(n):
+        rel = 1 - (i + 0.5) / n
+        kind = "back" if i == 0 else "front" if i == n - 1 else "middle"
+        rows.append((rel, ROW_WEIGHTS[kind]))
+    return rows + [(None, ROW_WEIGHTS["fill"])] * FILL_PASSES  # any depth
+
+
 def place_by_hand(rng, b):
     """Bottom-left fill: rows from back to front; each package gets a random
     pose and is put at the left-most spot where it rests on the floor (or,
     failing that, the lowest spot on top of others)."""
     placed, trees = [], []
     gap = PLACE_GAP * MM
-    for rel_y, weights in ROWS:
+    for rel_y, weights in layout_rows(b):
         misses = 0
         while misses < ROW_FAILS and len(placed) < MAX_PACKS:
             left_to_right = rng.random() < 0.5
@@ -588,8 +605,11 @@ def place_by_hand(rng, b):
             if ylo > yhi:
                 misses += 1
                 continue
-            y = min(max(b["y0"] + rel_y * (b["y1"] - b["y0"]) + rng.uniform(-5, 5) * MM,
-                        ylo), yhi)
+            if rel_y is None:
+                y = rng.uniform(ylo, yhi)
+            else:
+                y = min(max(b["y0"] + rel_y * (b["y1"] - b["y0"])
+                            + rng.uniform(-5, 5) * MM, ylo), yhi)
             if fam == "leaning_back":
                 y = yhi
             xs = np.arange(b["x0"] + ext[0] + gap, b["x1"] - ext[0] - gap, 2 * MM)
@@ -599,7 +619,7 @@ def place_by_hand(rng, b):
             best = None
             if abs(tilt) > TILT_NEEDS_SUPPORT:
                 # a tilted package only stays tilted when it is propped:
-                # one end on the floor, the other on / against a neighbour
+                # floor + a neighbour, or (on top of the pile) two neighbours
                 for x in xs[::2]:
                     z = lowest_free_z(rot, x, y, ext, trees, b["z0"], zcap, 1.0 * MM)
                     if z is None:
@@ -607,7 +627,8 @@ def place_by_hand(rng, b):
                     m = Matrix.Translation(Vector((x, y, z))) @ rot.to_4x4()
                     on_floor = min(c.z for c in pack_corners(m)) < b["z0"] + gap + 1.0 * MM
                     t = pack_tree(m, gap + 1.5 * MM)
-                    if on_floor and any(t.overlap(o) for o in trees):
+                    touching = sum(1 for o in trees if t.overlap(o))
+                    if touching >= (1 if on_floor else 2):
                         best = (z, x)
                         break
                 if best is None:
@@ -830,7 +851,7 @@ def build_display(root_coll, acrylic, pack_mat, layout):
     led.shape = "RECTANGLE"
     led.size = 2 * IN_X - 2 * ins
     led.size_y = 2 * IN_Z - 2 * ins
-    led.energy = LED_POWER_W
+    led.energy = LED_POWER_PER_M2 * led.size * led.size_y
     led.use_temperature = True
     led.temperature = LED_TEMPERATURE_K
     led.color = (1, 1, 1)
@@ -916,25 +937,26 @@ def build_cameras(coll):
     zc = MOUNT_CENTER_Z * MM
     yc = -HD  # display centre (world)
     front_y = -BOX_D * MM
+    k = BOX_W / 350.0  # framing scales with the box width
     cams = {}
     # A. front elevation — long lens, square to the face
-    cams["front"] = make_camera(coll, "CAM_A_Front", (0, front_y - 1.10, zc),
+    cams["front"] = make_camera(coll, "CAM_A_Front", (0, front_y - 1.10 * k, zc),
                                 (0, yc, zc), 85)
     # B. 45 degrees, slightly above eye level of the box
-    d, el = 0.95, math.radians(14)
+    d, el = 0.95 * k, math.radians(14)
     cams["angle"] = make_camera(
         coll, "CAM_B_45deg",
         (-d * math.sin(math.radians(45)) * math.cos(el),
          yc - d * math.cos(math.radians(45)) * math.cos(el), zc + d * math.sin(el)),
         (0.004, yc, zc - 0.004), 70, fstop=8)
-    # C. detail — macro on the upper-right corner: acrylic edges and
+    # C. detail — macro on the lower-right corner: acrylic edges and
     # thickness, the print behind the front panel, light through the gaps
-    tgt = Vector((HW - 0.042, front_y + 0.010, zc + HH - 0.030))
+    tgt = Vector((HW - 0.045, front_y + 0.010, zc - HH + 0.040))
     # focus on the front panel corner; f/8 keeps the front packages sharp
     cams["detail"] = make_camera(coll, "CAM_C_Detail",
                                  tgt + Vector((0.13, -0.26, 0.085)), tgt, 100, fstop=8)
     # D. wall installation — standing viewer, slightly off-axis
-    cams["wall"] = make_camera(coll, "CAM_D_Wall", (-0.42, -1.30, 1.36),
+    cams["wall"] = make_camera(coll, "CAM_D_Wall", (-0.42 * k, -1.30 * k, 1.36),
                                (0.04, yc, zc - 0.03), 50, fstop=11)
     return cams
 
