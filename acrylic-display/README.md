@@ -39,7 +39,7 @@ python scripts/create_display.py [options]
 | `--relayout` | 配置キャッシュを無視して配置をやり直す |
 | `--no-render` | `.blend` の生成のみ |
 
-検証環境：Blender 5.2.3 LTS（bpy モジュール）、CPU 4 コアで最終レンダリング 4 枚 約 XX 分。
+検証環境：Blender 5.2.3 LTS（bpy モジュール）、CPU 4 コアで最終レンダリング 4 枚 約 33 分（正面 7・斜め 7・接写 14・設置 4 分）。
 
 ## モデルの構成（実寸・Metric / m 管理）
 
