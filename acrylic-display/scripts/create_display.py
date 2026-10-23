@@ -954,9 +954,9 @@ def build_cameras(coll):
     tgt = Vector((HW - 0.045, front_y + 0.010, zc - HH + 0.040))
     # focus on the front panel corner; f/8 keeps the front packages sharp
     cams["detail"] = make_camera(coll, "CAM_C_Detail",
-                                 tgt + Vector((0.13, -0.26, 0.085)), tgt, 100, fstop=8)
+                                 tgt + Vector((0.13, -0.26, 0.085)) * 1.35, tgt, 100, fstop=8)
     # D. wall installation — standing viewer, slightly off-axis
-    cams["wall"] = make_camera(coll, "CAM_D_Wall", (-0.42 * k, -1.30 * k, 1.36),
+    cams["wall"] = make_camera(coll, "CAM_D_Wall", (-0.42 * k ** 0.5, -1.30 * k ** 0.5, 1.36),
                                (0.04, yc, zc - 0.03), 50, fstop=11)
     return cams
 
