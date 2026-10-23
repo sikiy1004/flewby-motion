@@ -40,11 +40,11 @@ from mathutils.bvhtree import BVHTree
 MM = 0.001  # mm -> m
 
 # --- 02. Acrylic box (outer dimensions are fixed by the brief) --------------
-# v1 was 350 x 100 x 80 (about 8 packages); v2 is enlarged to hold
-# roughly 3-4x as many.
-BOX_W = 600.0           # outer width
-BOX_H = 150.0           # outer height
-BOX_D = 120.0           # outer depth (front face to wall)
+# v1: 350 x 100 x 80 (8 packages), v2: 600 x 150 x 120 (28 packages),
+# v3: 450 x 330 x 70 (current).
+BOX_W = 450.0           # outer width
+BOX_H = 330.0           # outer height
+BOX_D = 70.0            # outer depth (front face to wall)
 ACRYLIC_T = 3.0         # sheet thickness (provisional)
 ACRYLIC_EDGE_BEVEL = 0.3  # polished edge radius
 
@@ -68,8 +68,8 @@ REF_FRONT_QUAD = [(167, 42), (577, 80), (577, 821), (170, 866)]
 REF_SIDE_QUAD = [(81, 57), (167, 42), (170, 866), (83, 852)]
 
 # --- 04. Random arrangement -------------------------------------------------
-SEED = 9
-MAX_PACKS = 40          # upper bound; the fill usually stops earlier
+SEED = 3
+MAX_PACKS = 80          # upper bound; the fill usually stops earlier
 CLEARANCE = 1.0         # min gap to every acrylic wall (mm)
 PACK_FRICTION = 0.65
 PACK_RESTITUTION = 0.05
@@ -94,9 +94,11 @@ ROW_WEIGHTS = {
                "flat": 0.10, "tumbled": 0.20},
     "front": {"front_upright": 0.25, "front_on_side": 0.40, "side_view": 0.10,
               "flat": 0.10, "tumbled": 0.15},
-    "fill": {"flat": 0.35, "front_on_side": 0.35, "tumbled": 0.30},
+    "fill": {"flat": 0.20, "front_on_side": 0.35, "front_upright": 0.15,
+             "side_view": 0.05, "tumbled": 0.25},
 }
-FILL_PASSES = 5
+FILL_PASSES = 4
+LAYOUT_ROUNDS = 6       # place -> settle rounds (toppled packages free room)
 
 # --- 05. Lighting -----------------------------------------------------------
 LED_TEMPERATURE_K = 5000.0
@@ -491,9 +493,9 @@ SIM_SCALE = 10.0  # Bullet is unstable at mm scale; simulate 10x larger
 def layout_key():
     keys = dict(SEED=SEED, BOX=(BOX_W, BOX_H, BOX_D, ACRYLIC_T, BACK_PLATE_T,
                 LED_MODULE_T), PACK=(PACK_W, PACK_H, PACK_D), MAX=MAX_PACKS,
-                CLEARANCE=CLEARANCE, ROWS=(ROW_PITCH, ROW_WEIGHTS, FILL_PASSES),
+                CLEARANCE=CLEARANCE, ROWS=(ROW_PITCH, ROW_WEIGHTS, FILL_PASSES, LAYOUT_ROUNDS),
                 GAP=PLACE_GAP, FAILS=ROW_FAILS, TILT=TILT_NEEDS_SUPPORT,
-                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=17)
+                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=19)
     return hashlib.sha1(json.dumps(keys, sort_keys=True).encode()).hexdigest()
 
 
@@ -585,15 +587,18 @@ def layout_rows(b):
     return rows + [(None, ROW_WEIGHTS["fill"])] * FILL_PASSES  # any depth
 
 
-def place_by_hand(rng, b):
+def place_by_hand(rng, b, rows, existing=()):
     """Bottom-left fill: rows from back to front; each package gets a random
     pose and is put at the left-most spot where it rests on the floor (or,
-    failing that, the lowest spot on top of others)."""
-    placed, trees = [], []
+    failing that, the lowest spot on top of others). `existing` are the
+    poses of packages already in the chamber."""
+    placed = []
+    trees = [pack_tree(m, PLACE_GAP * MM * 0.5) for m in existing]
     gap = PLACE_GAP * MM
-    for rel_y, weights in layout_rows(b):
+    room = MAX_PACKS - len(existing)
+    for rel_y, weights in rows:
         misses = 0
-        while misses < ROW_FAILS and len(placed) < MAX_PACKS:
+        while misses < ROW_FAILS and len(placed) < room:
             left_to_right = rng.random() < 0.5
             fam, rot, tilt = random_orientation(rng, weights)
             if rot is None:
@@ -666,8 +671,6 @@ def simulate_layout():
     scene = bpy.context.scene
     S = SIM_SCALE
     b = chamber_bounds()
-    placed = place_by_hand(rng, b)
-    print(f"  [layout] {len(placed)} packages placed by hand, settling...")
 
     coll = new_collection("_physics_tmp")
     bpy.ops.rigidbody.world_add()
@@ -716,31 +719,48 @@ def simulate_layout():
 
     pack_me = box_mesh("_pack", (PACK_W * MM * S, PACK_D * MM * S, PACK_H * MM * S))
     packs = []
-    scene.frame_set(1)
-    for fam, m in placed:
-        o = link(bpy.data.objects.new("_pack", pack_me), coll)
-        o.matrix_world = Matrix.Translation(m.translation * S) @ m.to_3x3().to_4x4()
-        add_rb(o, "ACTIVE")
-        packs.append((o, fam))
 
     def real(o):
         m = o.matrix_world
         return Matrix.Translation(m.translation / S) @ m.to_3x3().normalized().to_4x4()
 
-    settled, prev = False, None
-    for f in range(2, 2401):
-        scene.frame_set(f)
-        if f % 20:
-            continue
-        cur = [o.matrix_world.copy() for o, _ in packs]
-        if prev is not None and f >= 200:
-            if all((c.translation - a.translation).length / S < 0.03 * MM and
-                   (c.to_3x3() @ a.to_3x3().transposed()).to_quaternion().angle
-                   < math.radians(0.1) for a, c in zip(prev, cur)):
-                settled = True
-                break
-        prev = cur
-    print(f"  [layout] settled={settled} after {f} frames")
+    def settle():
+        settled, prev = False, None
+        for f in range(2, 2401):
+            scene.frame_set(f)
+            if f % 20:
+                continue
+            cur = [o.matrix_world.copy() for o, _ in packs]
+            if prev is not None and f >= 200:
+                if all((c.translation - a.translation).length / S < 0.03 * MM and
+                       (c.to_3x3() @ a.to_3x3().transposed()).to_quaternion().angle
+                       < math.radians(0.1) for a, c in zip(prev, cur)):
+                    settled = True
+                    break
+            prev = cur
+        return settled, f
+
+    # Rounds: place by hand, settle; packages that toppled leave room for
+    # the next round, which only runs the fill passes.
+    rows = layout_rows(b)
+    for rnd in range(LAYOUT_ROUNDS):
+        poses = [o.matrix_world.copy() for o, _ in packs]
+        new = place_by_hand(rng, b, rows if rnd == 0 else rows[-FILL_PASSES:],
+                            [real(o) for o, _ in packs])
+        if not new:
+            break
+        scene.frame_set(1)
+        for (o, _), m in zip(packs, poses):  # settled poses become the start
+            o.matrix_world = m
+        for fam, m in new:
+            o = link(bpy.data.objects.new("_pack", pack_me), coll)
+            o.matrix_world = Matrix.Translation(m.translation * S) @ m.to_3x3().to_4x4()
+            add_rb(o, "ACTIVE")
+            packs.append((o, fam))
+        rbw.point_cache.frame_end = 3000  # touch -> invalidate the cache
+        settled, f = settle()
+        print(f"  [layout] round {rnd + 1}: +{len(new)} -> {len(packs)} packages, "
+              f"settled={settled} after {f} frames")
 
     tol = max(CLEARANCE - 0.2, 0) * MM
     result = []
@@ -937,7 +957,8 @@ def build_cameras(coll):
     zc = MOUNT_CENTER_Z * MM
     yc = -HD  # display centre (world)
     front_y = -BOX_D * MM
-    k = BOX_W / 350.0  # framing scales with the box width
+    # framing scales with the box size (width, or height for a 16:9 frame)
+    k = max(BOX_W, BOX_H * 1.9) / 350.0
     cams = {}
     # A. front elevation — long lens, square to the face
     cams["front"] = make_camera(coll, "CAM_A_Front", (0, front_y - 1.10 * k, zc),
