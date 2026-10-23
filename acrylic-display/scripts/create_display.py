@@ -55,20 +55,46 @@ BACK_PLATE_COLOR = (0.80, 0.80, 0.80)  # white opal acrylic, linear RGB
 LED_MODULE_T = 8.0      # edge-lit LED panel incl. light guide plate
 LED_FACE_INSET = 2.0    # emitting area inset from the chamber walls
 
-# --- 03. Afzal Orange package (provisional, not measured yet) ---------------
-PACK_W = 55.0
-PACK_H = 85.0
-PACK_D = 22.0
+# --- 03. Packages ------------------------------------------------------------
+# Three kinds of empty package, mixed in equal numbers. size = (width,
+# height, depth) in mm with the print upright. Each face of the texture is
+# either a quad in the reference photo (pixels, origin top-left; corners
+# top-left, top-right, bottom-right, bottom-left as printed), the name of
+# another face to copy, or ("fill", face, y0, y1, x0, x1): a plain paper
+# colour sampled from that region (fractions) of another face.
+PACK_TYPES = [
+    dict(key="afzal_orange", label="Afzal Orange 50 g",
+         size=(55.0, 85.0, 22.0),          # provisional, not measured
+         ref="afzal_reference.png",
+         faces={"front": [(167, 42), (577, 80), (577, 821), (170, 866)],
+                "left": [(81, 57), (167, 42), (170, 866), (83, 852)],
+                "back": "front", "right": "left",
+                "top": ("fill", "front", 0.04, 0.09, 0.3, 0.9),
+                "bottom": ("fill", "left", 0.55, 0.65, 0.0, 1.0)}),
+    dict(key="darkside_cola", label="Darkside Cola 100 g",
+         size=(90.0, 107.0, 20.0),         # measured
+         ref="darkside_cola_reference.png",
+         faces={"front": [(915, 477), (1395, 1007), (520, 1530), (120, 915)],
+                "right": [(1395, 1007), (1395, 1094), (540, 1610), (520, 1530)],
+                "back": "front", "left": "right",
+                # top/bottom are too foreshortened in the photo: plain fill
+                "top": ("fill", "right", 0.02, 0.08, 0.2, 0.8),
+                "bottom": ("fill", "right", 0.02, 0.08, 0.2, 0.8)}),
+    dict(key="alfakher_two_apples", label="Al Fakher Two Apples",
+         size=(55.0, 88.0, 22.0),          # cigarette-pack size (88x55x22)
+         ref="alfakher_two_apples_reference.png",
+         faces={"front": [(887, 592), (1285, 907), (607, 1450), (240, 1065)],
+                "right": [(1285, 907), (1282, 997), (635, 1547), (607, 1450)],
+                "back": "front", "left": "right",
+                "top": ("fill", "right", 0.02, 0.08, 0.2, 0.8),
+                "bottom": ("fill", "right", 0.02, 0.08, 0.2, 0.8)}),
+]
+PACK_SIZES = {t["key"]: t["size"] for t in PACK_TYPES}
 PACK_EDGE_BEVEL = 0.6
 TEX_PX_PER_MM = 12      # atlas resolution
 
-# Corners of the faces in assets/afzal_reference.png (pixels, origin top-left)
-# order: top-left, top-right, bottom-right, bottom-left (as printed)
-REF_FRONT_QUAD = [(167, 42), (577, 80), (577, 821), (170, 866)]
-REF_SIDE_QUAD = [(81, 57), (167, 42), (170, 866), (83, 852)]
-
 # --- 04. Random arrangement -------------------------------------------------
-SEED = 3
+SEED = 2
 MAX_PACKS = 80          # upper bound; the fill usually stops earlier
 CLEARANCE = 1.0         # min gap to every acrylic wall (mm)
 PACK_FRICTION = 0.65
@@ -100,6 +126,13 @@ ROW_WEIGHTS = {
 FILL_PASSES = 4
 LAYOUT_ROUNDS = 6       # place -> settle rounds (toppled packages free room)
 
+# --- Logo: black cut vinyl on the front panel --------------------------------
+LOGO_IMAGE = "flewby_logo.png"   # in assets/; skipped if the file is missing
+LOGO_WIDTH = 200.0      # mm, height follows the artwork's aspect
+LOGO_OFFSET = (0.0, 0.0)  # mm from the centre of the front panel (x right, z up)
+LOGO_COLOR = (0.012, 0.012, 0.012)  # black cast vinyl, linear RGB
+LOGO_ROUGHNESS = 0.35   # semi-gloss vinyl
+
 # --- 05. Lighting -----------------------------------------------------------
 LED_TEMPERATURE_K = 5000.0
 LED_POWER_PER_M2 = 65.0  # area-light watts per m² of LED panel (tuned)
@@ -125,8 +158,7 @@ ROOT = os.path.dirname(HERE)
 ASSETS = os.path.join(ROOT, "assets")
 OUTPUT = os.path.join(ROOT, "output")
 BLEND_DIR = os.path.join(ROOT, "blend")
-REF_IMAGE = os.path.join(ASSETS, "afzal_reference.png")
-ATLAS_IMAGE = os.path.join(ASSETS, "textures", "afzal_orange_atlas.png")
+TEXTURES = os.path.join(ASSETS, "textures")
 LAYOUT_CACHE = os.path.join(ASSETS, "layout_cache.json")
 BLEND_FILE = os.path.join(BLEND_DIR, "flew_by_acrylic_display.blend")
 
@@ -319,9 +351,9 @@ def mat_wall():
     return mat
 
 
-def mat_package(atlas):
+def mat_package(name, atlas):
     """Printed paperboard: satin-matte varnish over the print."""
-    mat = bpy.data.materials.new("Afzal_Orange_Package")
+    mat = bpy.data.materials.new(name)
     nt, bsdf, out = principled(mat)
     tex = nt.nodes.new("ShaderNodeTexImage")
     tex.image = atlas
@@ -383,10 +415,10 @@ def paper_fill(h, w, color, rng):
     return np.clip(base * grad * grain, 0, 1)
 
 
-def atlas_layout():
+def atlas_layout(size):
     """Pixel rectangles (x, y, w, h; top-down) of each face in the atlas."""
     s = TEX_PX_PER_MM
-    fw, fh, fd = round(PACK_W * s), round(PACK_H * s), round(PACK_D * s)
+    fw, fh, fd = (round(v * s) for v in size)
     pad = 8
     rects = {
         "front": (0, 0, fw, fh),
@@ -401,19 +433,20 @@ def atlas_layout():
     return rects, W, H
 
 
-def build_atlas():
-    """Rectify the reference photo into a 6-face texture atlas (numpy only,
-    so it also runs inside the stock Blender Python)."""
-    ref = bpy.data.images.load(REF_IMAGE)
+def build_atlas(pt):
+    """Rectify the reference photo of a package type into a 6-face texture
+    atlas (numpy only, so it also runs inside the stock Blender Python)."""
+    ref = bpy.data.images.load(os.path.join(ASSETS, pt["ref"]))
     w, h = ref.size
     px = np.empty(w * h * 4, np.float32)
     ref.pixels.foreach_get(px)
     img = px.reshape(h, w, 4)[::-1, :, :3].astype(float)  # top-down
     bpy.data.images.remove(ref)
 
-    rects, AW, AH = atlas_layout()
+    rects, AW, AH = atlas_layout(pt["size"])
     atlas = np.zeros((AH, AW, 3))
     rng = np.random.default_rng(SEED)
+    tiles = {}
 
     def put(name, tile):
         x, y, tw, th = rects[name]
@@ -421,38 +454,43 @@ def build_atlas():
         # bleed edge pixels into the padding to avoid seams with mipmaps
         atlas[y:y + th, x + tw:x + tw + 8] = tile[:, -1:]
         atlas[y + th:y + th + 8, x:x + tw] = tile[-1:, :]
+        tiles[name] = tile
 
-    _, _, fw, fh = rects["front"]
-    _, _, fd, _ = rects["left"]
-    front = warp_quad(img, REF_FRONT_QUAD, fw, fh)
-    side = warp_quad(img, REF_SIDE_QUAD, fd, fh)
-    put("front", front)
-    # The back panel is not visible in the reference; it carries the same
-    # artwork (replace with a dedicated texture once photographed).
-    put("back", front)
-    put("left", side)
-    put("right", side)
-    top_col = np.median(front[int(fh * 0.04):int(fh * 0.09),
-                              int(fw * 0.3):int(fw * 0.9)].reshape(-1, 3), 0)
-    bot_col = np.median(side[int(fh * 0.55):int(fh * 0.65)].reshape(-1, 3), 0)
-    put("top", paper_fill(rects["top"][3], rects["top"][2], top_col, rng))
-    put("bottom", paper_fill(rects["bottom"][3], rects["bottom"][2], bot_col, rng))
+    # photographed faces first, then copies and plain fills. Faces that are
+    # not in the photo (e.g. the back) reuse the closest visible artwork.
+    specs = pt["faces"]
+    order = sorted(specs, key=lambda f: (not isinstance(specs[f], list),
+                                         isinstance(specs[f], tuple)))
+    for name in order:
+        spec = specs[name]
+        _, _, tw, th = rects[name]
+        if isinstance(spec, list):
+            put(name, warp_quad(img, spec, tw, th))
+        elif isinstance(spec, str):
+            put(name, tiles[spec])  # same-sized face (back/front, left/right)
+        else:
+            _, src, y0, y1, x0, x1 = spec
+            t = tiles[src]
+            th0, tw0 = t.shape[:2]
+            col = np.median(t[int(th0 * y0):int(th0 * y1),
+                              int(tw0 * x0):int(tw0 * x1)].reshape(-1, 3), 0)
+            put(name, paper_fill(th, tw, col, rng))
 
-    os.makedirs(os.path.dirname(ATLAS_IMAGE), exist_ok=True)
-    out = bpy.data.images.new("afzal_orange_atlas", AW, AH, alpha=False)
+    os.makedirs(TEXTURES, exist_ok=True)
+    out = bpy.data.images.new(pt["key"] + "_atlas", AW, AH, alpha=False)
     rgba = np.concatenate([atlas, np.ones((AH, AW, 1))], axis=2)[::-1]
     out.pixels.foreach_set(rgba.astype(np.float32).ravel())
-    out.filepath_raw = ATLAS_IMAGE
+    out.filepath_raw = os.path.join(TEXTURES, pt["key"] + "_atlas.png")
     out.file_format = "PNG"
     out.save()
     out.colorspace_settings.name = "sRGB"
     return out
 
 
-def package_mesh():
-    """55x85x22 box, print facing -Y, UV-mapped onto the atlas."""
-    rects, AW, AH = atlas_layout()
-    w, h, d = PACK_W / 2 * MM, PACK_H / 2 * MM, PACK_D / 2 * MM
+def package_mesh(pt):
+    """Package box, print facing -Y, UV-mapped onto its atlas."""
+    rects, AW, AH = atlas_layout(pt["size"])
+    w, h, d = (v / 2 * MM for v in pt["size"])
     faces = {  # BL, BR, TR, TL as seen from outside, printed upright
         "front": [(-w, -d, -h), (w, -d, -h), (w, -d, h), (-w, -d, h)],
         "back": [(w, d, -h), (-w, d, -h), (-w, d, h), (w, d, h)],
@@ -477,7 +515,7 @@ def package_mesh():
         for loop, (u, v) in zip(f.loops, [(u0, v0), (u1, v0), (u1, v1), (u0, v1)]):
             loop[uv].uv = (u, v)
     bm.normal_update()
-    me = bpy.data.meshes.new("Afzal_Orange_Package")
+    me = bpy.data.meshes.new(pt["key"])
     bm.to_mesh(me)
     bm.free()
     return me
@@ -492,10 +530,10 @@ SIM_SCALE = 10.0  # Bullet is unstable at mm scale; simulate 10x larger
 
 def layout_key():
     keys = dict(SEED=SEED, BOX=(BOX_W, BOX_H, BOX_D, ACRYLIC_T, BACK_PLATE_T,
-                LED_MODULE_T), PACK=(PACK_W, PACK_H, PACK_D), MAX=MAX_PACKS,
+                LED_MODULE_T), PACK=PACK_SIZES, MAX=MAX_PACKS,
                 CLEARANCE=CLEARANCE, ROWS=(ROW_PITCH, ROW_WEIGHTS, FILL_PASSES, LAYOUT_ROUNDS),
                 GAP=PLACE_GAP, FAILS=ROW_FAILS, TILT=TILT_NEEDS_SUPPORT,
-                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=19)
+                PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=21)
     return hashlib.sha1(json.dumps(keys, sort_keys=True).encode()).hexdigest()
 
 
@@ -505,11 +543,11 @@ def chamber_bounds():
                 z0=-IN_Z, z1=IN_Z - c)
 
 
-def random_orientation(rng, weights):
+def random_orientation(rng, weights, size):
     """Pick an orientation family and jitter it; returns (family, rotation,
-    in-plane tilt in degrees). The chamber is shallower (~64 mm) than a
-    package is tall (85 mm), so the long axis can only run along the width
-    or the height; rotations that cannot fit are re-drawn."""
+    in-plane tilt in degrees). Rotations that do not fit the chamber depth
+    and height are re-drawn (in a shallow chamber the long axis can only run
+    along the width or the height)."""
     b = chamber_bounds()
     room_y, room_z = b["y1"] - b["y0"], b["z1"] - b["z0"] - 1 * MM
     fam = rng.choices(list(weights), weights=list(weights.values()))[0]
@@ -536,7 +574,7 @@ def random_orientation(rng, weights):
         else:
             m = Euler((rng.uniform(0, 2 * math.pi), rng.uniform(0, 2 * math.pi),
                        rng.uniform(0, 2 * math.pi)), "XYZ").to_matrix()
-        cs = pack_corners(m.to_4x4())
+        cs = pack_corners(m.to_4x4(), size)
         ey = max(c.y for c in cs) - min(c.y for c in cs)
         ez = max(c.z for c in cs) - min(c.z for c in cs)
         if ey < room_y and ez < room_z:
@@ -544,16 +582,15 @@ def random_orientation(rng, weights):
     return None, None, 0.0
 
 
-def pack_corners(mat4):
-    w, h, d = PACK_W / 2 * MM, PACK_H / 2 * MM, PACK_D / 2 * MM
+def pack_corners(mat4, size):
+    w, h, d = (v / 2 * MM for v in size)
     return [mat4 @ Vector((sx * w, sy * d, sz * h))
             for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1)]
 
 
-def pack_tree(mat4, inflate=0.0):
+def pack_tree(mat4, size, inflate=0.0):
     """BVH of a package's hull (real metres), optionally inflated."""
-    w, h, d = (PACK_W / 2 * MM + inflate, PACK_H / 2 * MM + inflate,
-               PACK_D / 2 * MM + inflate)
+    w, h, d = (v / 2 * MM + inflate for v in size)
     verts = [mat4 @ Vector((sx * w, sy * d, sz * h))
              for sx in (-1, 1) for sy in (-1, 1) for sz in (-1, 1)]
     # cube faces over the corner order (x, y, z) -> index 4x + 2y + z
@@ -562,13 +599,13 @@ def pack_tree(mat4, inflate=0.0):
     return BVHTree.FromPolygons(verts, faces)
 
 
-def lowest_free_z(rot, x, y, ext, trees, z_floor, z_max, step=1.0 * MM):
+def lowest_free_z(rot, size, x, y, ext, trees, z_floor, z_max, step=1.0 * MM):
     """Lowest centre height at (x, y) where the package does not touch any
     placed package (sweeps upward from the floor, like placing it by hand)."""
     z = z_floor + ext[2] + 0.5 * MM
     while z <= z_max:
         m = Matrix.Translation(Vector((x, y, z))) @ rot.to_4x4()
-        t = pack_tree(m, 0.6 * MM)
+        t = pack_tree(m, size, 0.6 * MM)
         if not any(t.overlap(o) for o in trees):
             return z
         z += step
@@ -590,21 +627,28 @@ def layout_rows(b):
 def place_by_hand(rng, b, rows, existing=()):
     """Bottom-left fill: rows from back to front; each package gets a random
     pose and is put at the left-most spot where it rests on the floor (or,
-    failing that, the lowest spot on top of others). `existing` are the
-    poses of packages already in the chamber."""
+    failing that, the lowest spot on top of others). The package type is
+    always the one used least so far, so the kinds stay in equal numbers.
+    `existing` are the (type, pose) of packages already in the chamber."""
     placed = []
-    trees = [pack_tree(m, PLACE_GAP * MM * 0.5) for m in existing]
+    trees = [pack_tree(m, PACK_SIZES[k], PLACE_GAP * MM * 0.5) for k, m in existing]
+    counts = {k: 0 for k in PACK_SIZES}
+    for k, _ in existing:
+        counts[k] += 1
     gap = PLACE_GAP * MM
     room = MAX_PACKS - len(existing)
     for rel_y, weights in rows:
         misses = 0
         while misses < ROW_FAILS and len(placed) < room:
             left_to_right = rng.random() < 0.5
-            fam, rot, tilt = random_orientation(rng, weights)
+            least = min(counts.values())
+            kind = rng.choice(sorted(k for k, n in counts.items() if n == least))
+            size = PACK_SIZES[kind]
+            fam, rot, tilt = random_orientation(rng, weights, size)
             if rot is None:
                 misses += 1
                 continue
-            cs = pack_corners(rot.to_4x4())
+            cs = pack_corners(rot.to_4x4(), size)
             ext = [max(abs(c[i]) for c in cs) for i in range(3)]
             ylo, yhi = b["y0"] + ext[1] + gap, b["y1"] - ext[1] - gap
             if ylo > yhi:
@@ -626,12 +670,14 @@ def place_by_hand(rng, b, rows, existing=()):
                 # a tilted package only stays tilted when it is propped:
                 # floor + a neighbour, or (on top of the pile) two neighbours
                 for x in xs[::2]:
-                    z = lowest_free_z(rot, x, y, ext, trees, b["z0"], zcap, 1.0 * MM)
+                    z = lowest_free_z(rot, size, x, y, ext, trees, b["z0"], zcap,
+                                      1.0 * MM)
                     if z is None:
                         continue
                     m = Matrix.Translation(Vector((x, y, z))) @ rot.to_4x4()
-                    on_floor = min(c.z for c in pack_corners(m)) < b["z0"] + gap + 1.0 * MM
-                    t = pack_tree(m, gap + 1.5 * MM)
+                    on_floor = (min(c.z for c in pack_corners(m, size))
+                                < b["z0"] + gap + 1.0 * MM)
+                    t = pack_tree(m, size, gap + 1.5 * MM)
                     touching = sum(1 for o in trees if t.overlap(o))
                     if touching >= (1 if on_floor else 2):
                         best = (z, x)
@@ -642,13 +688,14 @@ def place_by_hand(rng, b, rows, existing=()):
             for x in ([] if best else xs):  # first floor-level spot
                 z = b["z0"] + ext[2] + gap
                 m = Matrix.Translation(Vector((x, y, z))) @ rot.to_4x4()
-                t = pack_tree(m, gap)
+                t = pack_tree(m, size, gap)
                 if not any(t.overlap(o) for o in trees):
                     best = (z, x)
                     break
             if best is None:  # otherwise the lowest stacked spot
                 for x in xs[::3]:
-                    z = lowest_free_z(rot, x, y, ext, trees, b["z0"], zcap, 1.5 * MM)
+                    z = lowest_free_z(rot, size, x, y, ext, trees, b["z0"], zcap,
+                                      1.5 * MM)
                     if z is not None and (best is None or z < best[0]):
                         best = (z, x)
             if best is None:
@@ -656,8 +703,9 @@ def place_by_hand(rng, b, rows, existing=()):
                 continue
             z, x = best
             m = Matrix.Translation(Vector((x, y, z))) @ rot.to_4x4()
-            placed.append((fam, m))
-            trees.append(pack_tree(m, gap * 0.5))
+            placed.append((kind, fam, m))
+            trees.append(pack_tree(m, size, gap * 0.5))
+            counts[kind] += 1
             misses = 0
     return placed
 
@@ -717,8 +765,9 @@ def simulate_layout():
         o.location = [c * S for c in ctr]
         add_rb(o, "PASSIVE")
 
-    pack_me = box_mesh("_pack", (PACK_W * MM * S, PACK_D * MM * S, PACK_H * MM * S))
-    packs = []
+    pack_me = {k: box_mesh("_pack_" + k, (w * MM * S, d * MM * S, h * MM * S))
+               for k, (w, h, d) in PACK_SIZES.items()}
+    packs = []  # (object, type, family)
 
     def real(o):
         m = o.matrix_world
@@ -730,7 +779,7 @@ def simulate_layout():
             scene.frame_set(f)
             if f % 20:
                 continue
-            cur = [o.matrix_world.copy() for o, _ in packs]
+            cur = [o.matrix_world.copy() for o, *_ in packs]
             if prev is not None and f >= 200:
                 if all((c.translation - a.translation).length / S < 0.03 * MM and
                        (c.to_3x3() @ a.to_3x3().transposed()).to_quaternion().angle
@@ -744,33 +793,56 @@ def simulate_layout():
     # the next round, which only runs the fill passes.
     rows = layout_rows(b)
     for rnd in range(LAYOUT_ROUNDS):
-        poses = [o.matrix_world.copy() for o, _ in packs]
+        poses = [o.matrix_world.copy() for o, *_ in packs]
         new = place_by_hand(rng, b, rows if rnd == 0 else rows[-FILL_PASSES:],
-                            [real(o) for o, _ in packs])
+                            [(k, real(o)) for o, k, _ in packs])
         if not new:
             break
         scene.frame_set(1)
-        for (o, _), m in zip(packs, poses):  # settled poses become the start
+        for (o, *_), m in zip(packs, poses):  # settled poses become the start
             o.matrix_world = m
-        for fam, m in new:
-            o = link(bpy.data.objects.new("_pack", pack_me), coll)
+        for kind, fam, m in new:
+            o = link(bpy.data.objects.new("_pack", pack_me[kind]), coll)
             o.matrix_world = Matrix.Translation(m.translation * S) @ m.to_3x3().to_4x4()
             add_rb(o, "ACTIVE")
-            packs.append((o, fam))
+            packs.append((o, kind, fam))
         rbw.point_cache.frame_end = 3000  # touch -> invalidate the cache
         settled, f = settle()
         print(f"  [layout] round {rnd + 1}: +{len(new)} -> {len(packs)} packages, "
               f"settled={settled} after {f} frames")
 
+    # equal numbers of each kind: drop the most recently placed extras (they
+    # sit on top of the pile) and let the rest settle again
+    counts = {k: sum(p[1] == k for p in packs) for k in PACK_SIZES}
+    target = min(counts.values())
+    extra = []
+    for p in reversed(packs):
+        if counts[p[1]] > target:
+            counts[p[1]] -= 1
+            extra.append(p)
+    if extra:
+        poses = [o.matrix_world.copy() for o, *_ in packs]
+        scene.frame_set(1)
+        for (o, *_), m in zip(packs, poses):
+            o.matrix_world = m
+        for p in extra:
+            packs.remove(p)
+            bpy.data.objects.remove(p[0])
+        rbw.point_cache.frame_end = 3000
+        settled, f = settle()
+        print(f"  [layout] removed {len(extra)} to balance the kinds, "
+              f"settled={settled} after {f} frames")
+
     tol = max(CLEARANCE - 0.2, 0) * MM
     result = []
-    for o, fam in packs:
+    for o, kind, fam in packs:
         m = real(o)
-        cs = pack_corners(m)
+        cs = pack_corners(m, PACK_SIZES[kind])
         if (all(b["x0"] - tol <= c.x <= b["x1"] + tol for c in cs) and
                 all(b["y0"] - tol <= c.y <= b["y1"] + tol for c in cs) and
                 all(b["z0"] - 0.3 * MM <= c.z <= b["z1"] + tol for c in cs)):
-            result.append({"family": fam, "matrix": [list(r) for r in m]})
+            result.append({"type": kind, "family": fam,
+                           "matrix": [list(r) for r in m]})
         else:
             print(f"  [layout] dropped a {fam} package that left the chamber")
     scene.frame_set(1)
@@ -801,14 +873,15 @@ def check_layout(layout):
     """Verify the arrangement: no package pair overlaps (hulls shrunk by
     0.2 mm so resting contact does not count) and every package keeps
     clear of the acrylic and the LED face."""
-    mats = [Matrix(p["matrix"]) for p in layout]
-    trees = [pack_tree(m, -0.2 * MM) for m in mats]
+    packs = [(PACK_SIZES[p["type"]], Matrix(p["matrix"])) for p in layout]
+    trees = [pack_tree(m, size, -0.2 * MM) for size, m in packs]
     hits = sum(1 for i in range(len(trees)) for j in range(i + 1, len(trees))
                if trees[i].overlap(trees[j]))
     gap = min(min(c.x + IN_X, IN_X - c.x, c.y - FRONT_IN_Y, LED_FACE_Y - c.y,
-                  IN_Z - c.z) for m in mats for c in pack_corners(m))
-    print(f"  [check] {len(mats)} packages, interpenetrating pairs: {hits}, "
-          f"min clearance to acrylic/LED: {gap / MM:.2f} mm")
+                  IN_Z - c.z) for size, m in packs for c in pack_corners(m, size))
+    counts = {k: sum(p["type"] == k for p in layout) for k in PACK_SIZES}
+    print(f"  [check] {len(packs)} packages {counts}, interpenetrating pairs: "
+          f"{hits}, min clearance to acrylic/LED: {gap / MM:.2f} mm")
     return hits, gap
 
 
@@ -816,7 +889,7 @@ def check_layout(layout):
 # 02. Acrylic box + back structure, 05. LED
 # ----------------------------------------------------------------------------
 
-def build_display(root_coll, acrylic, pack_mat, layout):
+def build_display(root_coll, acrylic, pack_mats, layout):
     display = bpy.data.objects.new("FlewBy_Display", None)
     display.empty_display_type = "CUBE"
     display.empty_display_size = HW
@@ -884,12 +957,14 @@ def build_display(root_coll, acrylic, pack_mat, layout):
     lo.visible_glossy = True
 
     # packages
-    pc = new_collection("Afzal_Packages", root_coll)
-    me = package_mesh()
-    me.materials.append(pack_mat)
+    pc = new_collection("Packages", root_coll)
+    meshes = {}
+    for pt in PACK_TYPES:
+        meshes[pt["key"]] = me = package_mesh(pt)
+        me.materials.append(pack_mats[pt["key"]])
     objs = []
     for i, p in enumerate(layout):
-        o = link(bpy.data.objects.new(f"Afzal_Orange_{i + 1:02d}", me), pc)
+        o = link(bpy.data.objects.new(f"{p['type']}_{i + 1:02d}", meshes[p["type"]]), pc)
         o.parent = display
         o.matrix_parent_inverse = Matrix.Identity(4)
         o.matrix_basis = Matrix([p["matrix"][r] for r in range(4)])
@@ -898,7 +973,76 @@ def build_display(root_coll, acrylic, pack_mat, layout):
     for o in objs:
         add_bevel(o, PACK_EDGE_BEVEL * MM, 2)
     bpy.context.view_layer.update()
-    return display, objs
+    return display
+
+
+def build_logo(display, coll):
+    """flew by logo as black cut vinyl stuck on the front panel. The artwork
+    may be light-on-transparent, dark-on-white or light-on-dark; it is turned
+    into a mask, cropped to the artwork and mapped onto a 0.08 mm sheet."""
+    path = os.path.join(ASSETS, LOGO_IMAGE)
+    if not os.path.exists(path):
+        print(f"  [logo] {path} not found, no logo on the front panel")
+        return None
+    img = bpy.data.images.load(path)
+    w, h = img.size
+    px = np.empty(w * h * 4, np.float32)
+    img.pixels.foreach_get(px)
+    bpy.data.images.remove(img)
+    px = px.reshape(h, w, 4)[::-1]  # top-down
+    lum = px[..., :3] @ np.array([0.2126, 0.7152, 0.0722], np.float32)
+    alpha = px[..., 3]
+    if alpha.min() < 0.5:
+        mask = alpha
+    else:
+        mask = 1 - lum if lum.mean() > 0.5 else lum
+    rows, cols = np.nonzero(mask > 0.1)
+    pad = 4
+    y0, y1 = max(rows.min() - pad, 0), min(rows.max() + pad + 1, h)
+    x0, x1 = max(cols.min() - pad, 0), min(cols.max() + pad + 1, w)
+    mask = mask[y0:y1, x0:x1]
+    mh, mw = mask.shape
+    out = bpy.data.images.new("flewby_logo_mask", mw, mh, alpha=False)
+    rgba = np.dstack([mask, mask, mask, np.ones_like(mask)])[::-1]
+    out.pixels.foreach_set(rgba.astype(np.float32).ravel())
+    out.filepath_raw = os.path.join(TEXTURES, "flewby_logo_mask.png")
+    out.file_format = "PNG"
+    out.save()
+    out.colorspace_settings.name = "Non-Color"
+    out.pack()
+
+    lw = LOGO_WIDTH * MM
+    lh = lw * mh / mw
+    cx, cz = LOGO_OFFSET[0] * MM, LOGO_OFFSET[1] * MM
+    y = -HD - 0.08 * MM  # on the outside of the front panel
+    me = bpy.data.meshes.new("FlewBy_Logo_Vinyl")
+    me.from_pydata([(cx - lw / 2, y, cz - lh / 2), (cx + lw / 2, y, cz - lh / 2),
+                    (cx + lw / 2, y, cz + lh / 2), (cx - lw / 2, y, cz + lh / 2)],
+                   [], [(0, 1, 2, 3)])
+    uv = me.uv_layers.new(name="UVMap")
+    for loop, co in zip(me.loops, [(0, 0), (1, 0), (1, 1), (0, 1)]):
+        uv.data[loop.index].uv = co
+
+    mat = bpy.data.materials.new("Vinyl_Black_Cut")
+    nt, bsdf, mout = principled(mat)
+    bsdf.inputs["Base Color"].default_value = (*LOGO_COLOR, 1)
+    bsdf.inputs["Roughness"].default_value = LOGO_ROUGHNESS
+    tex = nt.nodes.new("ShaderNodeTexImage")
+    tex.image = out
+    tex.interpolation = "Cubic"
+    tex.extension = "CLIP"
+    transparent = nt.nodes.new("ShaderNodeBsdfTransparent")
+    mix = nt.nodes.new("ShaderNodeMixShader")
+    nt.links.new(tex.outputs["Color"], mix.inputs[0])
+    nt.links.new(transparent.outputs[0], mix.inputs[1])
+    nt.links.new(bsdf.outputs[0], mix.inputs[2])
+    nt.links.new(mix.outputs[0], mout.inputs["Surface"])
+    me.materials.append(mat)
+
+    o = link(bpy.data.objects.new("FlewBy_Logo_Vinyl", me), coll)
+    o.parent = display
+    print(f"  [logo] {LOGO_WIDTH:.0f} x {lh / MM:.0f} mm black vinyl on the front panel")
+    return o
 
 
 def build_wall(coll):
@@ -1034,16 +1178,17 @@ def main():
     print(f"  Blender {bpy.app.version_string}")
     scene = reset_scene()
 
-    print("STEP 3: package texture atlas")
-    atlas = build_atlas()
+    print("STEP 3: package texture atlases")
+    atlases = {pt["key"]: build_atlas(pt) for pt in PACK_TYPES}
     print("STEP 4: random arrangement")
     layout = get_layout(opts["relayout"])
 
     print("STEP 2/5: acrylic box, back LED, wall")
     root = new_collection("FlewBy")
     acrylic = mat_acrylic()
-    pack_mat = mat_package(atlas)
-    display, packs = build_display(root, acrylic, pack_mat, layout)
+    pack_mats = {k: mat_package(k, a) for k, a in atlases.items()}
+    display = build_display(root, acrylic, pack_mats, layout)
+    build_logo(display, root)
     check_layout(layout)
     env = new_collection("Environment")
     build_wall(env)
@@ -1053,7 +1198,8 @@ def main():
     scene.camera = cams["front"]
 
     os.makedirs(BLEND_DIR, exist_ok=True)
-    atlas.pack()
+    for a in atlases.values():
+        a.pack()
     bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILE, compress=True)
     print(f"  saved {BLEND_FILE}")
 
