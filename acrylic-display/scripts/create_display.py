@@ -128,7 +128,7 @@ LAYOUT_ROUNDS = 6       # place -> settle rounds (toppled packages free room)
 
 # --- Logo: black cut vinyl on the front panel --------------------------------
 LOGO_IMAGE = "flewby_logo.png"   # in assets/; skipped if the file is missing
-LOGO_WIDTH = 200.0      # mm, height follows the artwork's aspect
+LOGO_WIDTH = 300.0      # mm, height follows the artwork's aspect
 LOGO_OFFSET = (0.0, 0.0)  # mm from the centre of the front panel (x right, z up)
 LOGO_COLOR = (0.012, 0.012, 0.012)  # black cast vinyl, linear RGB
 LOGO_ROUGHNESS = 0.35   # semi-gloss vinyl
@@ -144,6 +144,21 @@ EXPOSURE = 0.0
 MOUNT_CENTER_Z = 1450.0  # height of the display centre above the floor
 WALL_COLOR = (0.27, 0.27, 0.265)   # linear RGB, mid-gray matte
 WALL_SIZE = (6000.0, 3200.0)
+
+# --- Installation on the shop pillar (photo composite) ----------------------
+# The display is rendered with a camera solved from the photo (pillar face
+# corners + its known width) and composited into the photo; the papers on
+# the pillar are removed first. Pixel coordinates in assets/pillar_reference.jpg.
+PILLAR_PHOTO = "pillar_reference.jpg"
+PILLAR_WIDTH = 690.0    # mm, measured
+# pillar face corners TL, TR, BR, BL; BR lies below the frame and is
+# extrapolated from the right edge and the skirting line
+PILLAR_QUAD = [(490, 265), (1012, 208), (997, 2038), (505, 1910)]
+# the counter front face continues the pillar plane to the right
+PILLAR_PLANE_EXTRA = [(1000, 1292), (1500, 1318), (1500, 2000), (1000, 2000)]
+PILLAR_KEEP = [(838, 1332, 892, 1428)]  # x0, y0, x1, y1 kept as is (socket)
+PILLAR_MOUNT_Z = None   # mm, centre of the display above the floor; None =
+                        # middle of the pillar
 
 # --- 08. Rendering ----------------------------------------------------------
 RES_X, RES_Y = 1920, 1080
@@ -167,6 +182,7 @@ VIEWS = {
     "angle": "02_angle_view.png",
     "detail": "03_detail_view.png",
     "wall": "04_wall_installation.png",
+    "pillar": "05_pillar_installation.png",
 }
 
 # Derived chamber dimensions (display-local frame, metres).
@@ -1177,6 +1193,203 @@ def setup_render(scene, preview, samples):
 
 # ----------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------
+# Installation on the shop pillar: camera match + photo composite
+# ----------------------------------------------------------------------------
+
+def load_rgba(path):
+    """Image as a top-down float array (sRGB values for 8-bit images,
+    scene-linear for EXR)."""
+    img = bpy.data.images.load(path)
+    w, h = img.size
+    px = np.empty(w * h * 4, np.float32)
+    img.pixels.foreach_get(px)
+    bpy.data.images.remove(img)
+    return px.reshape(h, w, 4)[::-1].copy()
+
+
+def save_rgb(path, rgb):
+    h, w = rgb.shape[:2]
+    out = bpy.data.images.new("_composite", w, h, alpha=False)
+    rgba = np.dstack([np.clip(rgb, 0, 1), np.ones((h, w))])[::-1]
+    out.pixels.foreach_set(rgba.astype(np.float32).ravel())
+    out.filepath_raw = path
+    out.file_format = "PNG"
+    out.save()
+    bpy.data.images.remove(out)
+
+
+def srgb_to_lin(c):
+    return np.where(c <= 0.04045, c / 12.92, ((c + 0.055) / 1.055) ** 2.4)
+
+
+def lin_to_srgb(c):
+    c = np.clip(c, 0, None)
+    # soft shoulder so the LED panel rolls off instead of clipping hard
+    c = np.where(c > 0.8, 0.8 + 0.2 * np.tanh((c - 0.8) / 0.2), c)
+    return np.where(c <= 0.0031308, c * 12.92, 1.055 * c ** (1 / 2.4) - 0.055)
+
+
+def polygon_mask(shape, poly):
+    """Pixels inside a convex polygon (clockwise in image coordinates)."""
+    h, w = shape
+    ys, xs = np.mgrid[0:h, 0:w] + 0.5
+    inside = np.ones((h, w), bool)
+    for (x0, y0), (x1, y1) in zip(poly, poly[1:] + poly[:1]):
+        inside &= (x1 - x0) * (ys - y0) - (y1 - y0) * (xs - x0) >= 0
+    return inside
+
+
+def dilate(mask, r):
+    out = mask.copy()
+    for _ in range(r):
+        m = out.copy()
+        m[1:] |= out[:-1]
+        m[:-1] |= out[1:]
+        m[:, 1:] |= out[:, :-1]
+        m[:, :-1] |= out[:, 1:]
+        out = m
+    return out
+
+
+def blur(a, r):
+    """Box blur along both image axes (repeated for a smooth falloff)."""
+    for _ in range(2):
+        for axis in (0, 1):
+            c = np.cumsum(np.pad(a, [(r + 1, r) if i == axis else (0, 0)
+                                     for i in range(a.ndim)], mode="edge"), axis)
+            a = (np.take(c, range(2 * r + 1, c.shape[axis]), axis)
+                 - np.take(c, range(0, c.shape[axis] - 2 * r - 1), axis)) / (2 * r + 1)
+    return a
+
+
+def clean_plate(rgb):
+    """Remove the papers from the pillar: fit the smooth paint shading of the
+    pillar face, mask everything that departs from it (papers, print, tape
+    shadows) and fill with the fit plus matching grain."""
+    h, w = rgb.shape[:2]
+    face = polygon_mask((h, w), PILLAR_QUAD)
+    keep = np.zeros((h, w), bool)
+    for x0, y0, x1, y1 in PILLAR_KEEP:
+        keep[y0:y1, x0:x1] = True
+    ys, xs = np.mgrid[0:h, 0:w]
+    u, v = xs / w - 0.5, ys / h - 0.5
+    basis = np.stack([np.ones_like(u), u, v, u * u, u * v, v * v,
+                      u ** 3, u * u * v, u * v * v, v ** 3], -1)
+
+    def fit(sample):
+        A = basis[sample]
+        coef, *_ = np.linalg.lstsq(A, rgb[sample], rcond=None)
+        return basis @ coef
+
+    lum = rgb @ np.array([0.2126, 0.7152, 0.0722])
+    sample = face & ~keep & (lum < np.median(lum[face]) + 0.05)
+    for _ in range(3):  # refit on the pixels that look like bare paint
+        smooth = fit(sample)
+        resid = np.abs(rgb - smooth).max(-1)
+        sample = face & ~keep & (resid < 0.035)
+    paper = dilate(face & ~keep & (resid > 0.03), 10) & face & ~keep
+    grain_sd = (rgb - smooth)[sample].std(0)
+    grain = np.random.default_rng(SEED).normal(0, 1, (h, w, 1)) * grain_sd * 0.8
+    fill = smooth + blur(grain, 1)
+    a = blur(paper.astype(float), 2)[..., None]
+    out = rgb * (1 - a) + fill * a
+    print(f"  [pillar] removed papers: {paper.sum() / face.sum() * 100:.0f}% of the face")
+    return out, face
+
+
+def solve_pillar_camera(w, h):
+    """Camera intrinsics and pose from the pillar face (a rectangle of known
+    width): homography -> focal length from orthogonality -> pose. Returns
+    focal length (px), world->camera rotation (OpenCV axes), translation
+    (mm, world origin = foot of the pillar centre) and the pillar height."""
+    tl, tr, br, bl = PILLAR_QUAD
+    Hs = homography([(0, 0), (1, 0), (1, 1), (0, 1)], [bl, br, tr, tl])
+    Hc = np.array([[1, 0, -w / 2], [0, 1, -h / 2], [0, 0, 1]]) @ Hs
+    m1, m2 = Hc[:, 0], Hc[:, 1]
+    f = math.sqrt(-(m1[0] * m2[0] + m1[1] * m2[1]) / (m1[2] * m2[2]))
+    n1, n2, n3 = (np.diag([1 / f, 1 / f, 1]) @ Hc).T
+    W = PILLAR_WIDTH
+    height = W * np.linalg.norm(n2) / np.linalg.norm(n1)
+    t = n3 * W / np.linalg.norm(n1)
+    r1, r2 = n1 / np.linalg.norm(n1), n2 / np.linalg.norm(n2)
+    rot = np.stack([r1, np.cross(r2, r1), r2], 1)  # world x, y (into wall), z
+    t = t + r1 * W / 2
+    return f, rot, t, height
+
+
+def render_pillar(scene, display, wall, path):
+    photo = load_rgba(os.path.join(ASSETS, PILLAR_PHOTO))[..., :3]
+    h, w = photo.shape[:2]
+    f, rot, t, height = solve_pillar_camera(w, h)
+    mount_z = PILLAR_MOUNT_Z if PILLAR_MOUNT_Z is not None else height / 2
+    print(f"  [pillar] focal {f:.0f} px, pillar height {height:.0f} mm, "
+          f"display centre {mount_z:.0f} mm above the floor")
+
+    cam_data = bpy.data.cameras.new("CAM_E_Pillar")
+    cam_data.sensor_fit = "HORIZONTAL"
+    cam_data.sensor_width = 36
+    cam_data.lens = f * 36 / w
+    cam_data.clip_start = 0.05
+    cam = link(bpy.data.objects.new("CAM_E_Pillar", cam_data), scene.collection)
+    m = Matrix((rot.T @ np.diag([1, -1, -1])).tolist()).to_4x4()
+    m.translation = Vector((-rot.T @ t).tolist()) * MM
+    cam.matrix_world = m
+
+    saved = (display.location.z, scene.render.resolution_x, scene.render.resolution_y,
+             scene.render.resolution_percentage, scene.render.film_transparent,
+             scene.render.image_settings.file_format, scene.render.image_settings.color_mode,
+             scene.render.image_settings.color_depth)
+    display.location.z = mount_z * MM
+    scene.camera = cam
+    scene.render.resolution_x, scene.render.resolution_y = w, h
+    scene.render.resolution_percentage = 100
+    ims = scene.render.image_settings
+    ims.file_format, ims.color_mode, ims.color_depth = "OPEN_EXR", "RGBA", "32"
+    tmp = os.path.join(OUTPUT, "preview", "_pillar")
+    os.makedirs(tmp, exist_ok=True)
+    parts = [display] + list(display.children_recursive)
+
+    def render(name, show_display, holdout):
+        for o in parts:
+            o.hide_render = not show_display
+        wall.is_holdout = holdout
+        scene.render.film_transparent = holdout
+        scene.render.filepath = os.path.join(tmp, name + ".exr")
+        print(f"  [pillar] render pass '{name}'")
+        bpy.ops.render.render(write_still=True)
+        return load_rgba(scene.render.filepath)
+
+    with_disp = render("with", True, False)
+    without = render("without", False, False)
+    only = render("display", True, True)
+    for o in parts:
+        o.hide_render = False
+    wall.is_holdout = False
+
+    clean, face = clean_plate(photo)
+    plane = face | polygon_mask((h, w), PILLAR_PLANE_EXTRA)
+    lin = srgb_to_lin(clean)
+    # light spill and shadow of the display on the pillar (differential)
+    eps = 1e-4
+    ratio = np.clip((with_disp[..., :3] + eps) / (without[..., :3] + eps), 0.3, 6.0)
+    ratio = np.where(plane[..., None], ratio, 1.0)
+    background = lin * ratio
+    # match the rendered display to the photo's exposure and white balance
+    # using the bare pillar paint as the reference grey
+    ref = face & (only[..., 3] < 0.01)
+    gain = np.median(lin[ref], 0) / np.maximum(np.median(without[..., :3][ref], 0), 1e-6)
+    alpha = only[..., 3:4]
+    out = only[..., :3] * gain + background * (1 - alpha)
+    save_rgb(path, lin_to_srgb(out))
+    print(f"  [pillar] gain {np.round(gain, 3)} -> {path}")
+
+    (display.location.z, scene.render.resolution_x, scene.render.resolution_y,
+     scene.render.resolution_percentage, scene.render.film_transparent,
+     ims.file_format, ims.color_mode, ims.color_depth) = saved
+    return cam
+
+
 def main():
     opts = parse_args()
     print("== FLEW BY acrylic display ==")
@@ -1196,7 +1409,7 @@ def main():
     build_logo(display, root)
     check_layout(layout)
     env = new_collection("Environment")
-    build_wall(env)
+    wall = build_wall(env)
     build_world(scene)
     cams = build_cameras(new_collection("Cameras"))
     setup_render(scene, opts["preview"], opts["samples"])
@@ -1213,6 +1426,10 @@ def main():
     out_dir = os.path.join(OUTPUT, "preview") if opts["preview"] else OUTPUT
     os.makedirs(out_dir, exist_ok=True)
     for v in opts["views"]:
+        if v == "pillar":
+            print("STEP 9: rendering pillar installation (photo composite)")
+            render_pillar(scene, display, wall, os.path.join(out_dir, VIEWS[v]))
+            continue
         scene.camera = cams[v]
         scene.render.filepath = os.path.join(out_dir, VIEWS[v])
         print(f"STEP 9: rendering {v} -> {scene.render.filepath}")
