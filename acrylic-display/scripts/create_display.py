@@ -11,10 +11,11 @@ Run with either the Blender binary or the `bpy` Python module:
 
 Options:
     --preview           low-resolution, low-sample test renders (output/preview/)
-    --views a,b,...     subset of: front, angle, detail, wall   (default: all)
+    --views a,b,...     subset of: front, angle, detail, wall, pillar (default: all)
     --samples N         override Cycles samples
-    --relayout          ignore the cached arrangement and re-run the physics drop
+    --relayout          ignore the cached arrangement and re-run the layout
     --no-render         build and save the .blend only
+    --logo black|white  colour of the cut-vinyl logo (white -> output/logo_white/)
 
 All dimensions are in millimetres in the PARAMETERS section and converted to
 metres (Blender Metric, scale 1.0) when the geometry is built.
@@ -133,7 +134,11 @@ LAYOUT_ROUNDS = 12      # place -> settle rounds (toppled packages free room)
 LOGO_IMAGE = "flewby_logo.png"   # in assets/; skipped if the file is missing
 LOGO_WIDTH = 300.0      # mm, height follows the artwork's aspect
 LOGO_OFFSET = (0.0, 0.0)  # mm from the centre of the front panel (x right, z up)
-LOGO_COLOR = (0.012, 0.012, 0.012)  # black cast vinyl, linear RGB
+# cut-vinyl colours (linear RGB); choose with --logo black|white
+LOGO_COLORS = {"black": (0.012, 0.012, 0.012), "white": (0.80, 0.80, 0.78)}
+# share of light passing through the vinyl: white film glows a little where
+# the LED shines on it from behind, black film is opaque
+LOGO_TRANSLUCENCY = {"black": 0.0, "white": 0.3}
 LOGO_ROUGHNESS = 0.35   # semi-gloss vinyl
 
 # --- 05. Lighting -----------------------------------------------------------
@@ -204,7 +209,7 @@ def parse_args():
     argv = sys.argv
     argv = argv[argv.index("--") + 1:] if "--" in argv else argv[1:]
     opts = {"preview": False, "views": list(VIEWS), "samples": None,
-            "relayout": False, "render": True}
+            "relayout": False, "render": True, "logo": "black"}
     i = 0
     while i < len(argv):
         a = argv[i]
@@ -220,6 +225,9 @@ def parse_args():
             opts["relayout"] = True
         elif a == "--no-render":
             opts["render"] = False
+        elif a == "--logo":
+            i += 1
+            opts["logo"] = argv[i]
         i += 1
     return opts
 
@@ -1000,8 +1008,8 @@ def build_display(root_coll, acrylic, pack_mats, layout):
     return display
 
 
-def build_logo(display, coll):
-    """flew by logo as black cut vinyl stuck on the front panel. The artwork
+def build_logo(display, coll, color="black"):
+    """flew by logo as cut vinyl (black or white) stuck on the front panel. The artwork
     may be light-on-transparent, dark-on-white or light-on-dark; it is turned
     into a mask, cropped to the artwork and mapped onto a 0.08 mm sheet."""
     path = os.path.join(ASSETS, LOGO_IMAGE)
@@ -1047,9 +1055,9 @@ def build_logo(display, coll):
     for loop, co in zip(me.loops, [(0, 0), (1, 0), (1, 1), (0, 1)]):
         uv.data[loop.index].uv = co
 
-    mat = bpy.data.materials.new("Vinyl_Black_Cut")
+    mat = bpy.data.materials.new(f"Vinyl_{color.capitalize()}_Cut")
     nt, bsdf, mout = principled(mat)
-    bsdf.inputs["Base Color"].default_value = (*LOGO_COLOR, 1)
+    bsdf.inputs["Base Color"].default_value = (*LOGO_COLORS[color], 1)
     bsdf.inputs["Roughness"].default_value = LOGO_ROUGHNESS
     tex = nt.nodes.new("ShaderNodeTexImage")
     tex.image = out
@@ -1060,17 +1068,26 @@ def build_logo(display, coll):
     ramp.color_ramp.elements[0].position = 0.35
     ramp.color_ramp.elements[1].position = 0.6
     nt.links.new(tex.outputs["Color"], ramp.inputs["Fac"])
+    film = bsdf.outputs[0]
+    if LOGO_TRANSLUCENCY[color] > 0:
+        trans = nt.nodes.new("ShaderNodeBsdfTranslucent")
+        trans.inputs["Color"].default_value = (*LOGO_COLORS[color], 1)
+        tmix = nt.nodes.new("ShaderNodeMixShader")
+        tmix.inputs[0].default_value = LOGO_TRANSLUCENCY[color]
+        nt.links.new(bsdf.outputs[0], tmix.inputs[1])
+        nt.links.new(trans.outputs[0], tmix.inputs[2])
+        film = tmix.outputs[0]
     transparent = nt.nodes.new("ShaderNodeBsdfTransparent")
     mix = nt.nodes.new("ShaderNodeMixShader")
     nt.links.new(ramp.outputs["Color"], mix.inputs[0])
     nt.links.new(transparent.outputs[0], mix.inputs[1])
-    nt.links.new(bsdf.outputs[0], mix.inputs[2])
+    nt.links.new(film, mix.inputs[2])
     nt.links.new(mix.outputs[0], mout.inputs["Surface"])
     me.materials.append(mat)
 
     o = link(bpy.data.objects.new("FlewBy_Logo_Vinyl", me), coll)
     o.parent = display
-    print(f"  [logo] {LOGO_WIDTH:.0f} x {lh / MM:.0f} mm black vinyl on the front panel")
+    print(f"  [logo] {LOGO_WIDTH:.0f} x {lh / MM:.0f} mm {color} vinyl on the front panel")
     return o
 
 
@@ -1414,7 +1431,7 @@ def main():
     acrylic = mat_acrylic()
     pack_mats = {k: mat_package(k, a) for k, a in atlases.items()}
     display = build_display(root, acrylic, pack_mats, layout)
-    build_logo(display, root)
+    build_logo(display, root, opts["logo"])
     check_layout(layout)
     env = new_collection("Environment")
     wall = build_wall(env)
@@ -1426,12 +1443,18 @@ def main():
     os.makedirs(BLEND_DIR, exist_ok=True)
     for a in atlases.values():
         a.pack()
-    bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILE, compress=True)
-    print(f"  saved {BLEND_FILE}")
+    # the black logo is the main version; other colours are variants with
+    # their own .blend and output folder
+    variant = "" if opts["logo"] == "black" else f"logo_{opts['logo']}"
+    blend_file = BLEND_FILE.replace(".blend", f"_{variant}.blend") if variant else BLEND_FILE
+    bpy.ops.wm.save_as_mainfile(filepath=blend_file, compress=True)
+    print(f"  saved {blend_file}")
 
     if not opts["render"]:
         return
     out_dir = os.path.join(OUTPUT, "preview") if opts["preview"] else OUTPUT
+    if variant:
+        out_dir = os.path.join(out_dir, variant)
     os.makedirs(out_dir, exist_ok=True)
     for v in opts["views"]:
         if v == "pillar":
@@ -1443,7 +1466,7 @@ def main():
         print(f"STEP 9: rendering {v} -> {scene.render.filepath}")
         bpy.ops.render.render(write_still=True)
     scene.camera = cams["front"]
-    bpy.ops.wm.save_as_mainfile(filepath=BLEND_FILE, compress=True)
+    bpy.ops.wm.save_as_mainfile(filepath=blend_file, compress=True)
 
 
 if __name__ == "__main__":
