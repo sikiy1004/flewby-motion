@@ -1143,9 +1143,9 @@ def build_cameras(coll):
         (-d * math.sin(math.radians(45)) * math.cos(el),
          yc - d * math.cos(math.radians(45)) * math.cos(el), zc + d * math.sin(el)),
         (0.004, yc, zc - 0.004), 70, fstop=8)
-    # C. detail — macro on the lower-right corner: acrylic edges and
+    # C. detail — macro on the upper-right corner: acrylic edges and
     # thickness, the print behind the front panel, light through the gaps
-    tgt = Vector((HW - 0.045, front_y + 0.010, zc - HH + 0.040))
+    tgt = Vector((HW - 0.045, front_y + 0.010, zc + HH - 0.040))
     # focus on the front panel corner; f/8 keeps the front packages sharp
     cams["detail"] = make_camera(coll, "CAM_C_Detail",
                                  tgt + Vector((0.13, -0.26, 0.085)) * 1.35, tgt, 100, fstop=8)
