@@ -101,7 +101,10 @@ PACK_FRICTION = 0.65
 PACK_RESTITUTION = 0.05
 PLACE_GAP = 0.6         # gap between packages when placing, before settling (mm)
 TILT_NEEDS_SUPPORT = 6  # deg; steeper packages must be propped by a neighbour
-ROW_FAILS = 40          # consecutive misses before moving to the next row
+ROW_FAILS = 80          # consecutive misses before moving to the next row
+KIND_IMBALANCE = 2      # max difference in count between the package kinds
+                        # (0 = exactly equal; >0 lets the small kinds fill
+                        # gaps the large Darkside box cannot)
 # Packages are placed by hand, back row first, then settled with physics.
 # Orientation families:
 #   front_upright  print facing the viewer, standing
@@ -123,8 +126,8 @@ ROW_WEIGHTS = {
     "fill": {"flat": 0.20, "front_on_side": 0.35, "front_upright": 0.15,
              "side_view": 0.05, "tumbled": 0.25},
 }
-FILL_PASSES = 4
-LAYOUT_ROUNDS = 6       # place -> settle rounds (toppled packages free room)
+FILL_PASSES = 6
+LAYOUT_ROUNDS = 12      # place -> settle rounds (toppled packages free room)
 
 # --- Logo: black cut vinyl on the front panel --------------------------------
 LOGO_IMAGE = "flewby_logo.png"   # in assets/; skipped if the file is missing
@@ -157,8 +160,8 @@ PILLAR_QUAD = [(490, 265), (1012, 208), (997, 2038), (505, 1910)]
 # the counter front face continues the pillar plane to the right
 PILLAR_PLANE_EXTRA = [(1000, 1292), (1500, 1318), (1500, 2000), (1000, 2000)]
 PILLAR_KEEP = [(838, 1332, 892, 1428)]  # x0, y0, x1, y1 kept as is (socket)
-PILLAR_MOUNT_Z = None   # mm, centre of the display above the floor; None =
-                        # middle of the pillar
+PILLAR_MOUNT_Z = 1400.0  # mm, centre of the display above the floor; None =
+                         # middle of the pillar
 
 # --- 08. Rendering ----------------------------------------------------------
 RES_X, RES_Y = 1920, 1080
@@ -548,6 +551,7 @@ def layout_key():
     keys = dict(SEED=SEED, BOX=(BOX_W, BOX_H, BOX_D, ACRYLIC_T, BACK_PLATE_T,
                 LED_MODULE_T), PACK=PACK_SIZES, MAX=MAX_PACKS,
                 CLEARANCE=CLEARANCE, ROWS=(ROW_PITCH, ROW_WEIGHTS, FILL_PASSES, LAYOUT_ROUNDS),
+                KIND=KIND_IMBALANCE,
                 GAP=PLACE_GAP, FAILS=ROW_FAILS, TILT=TILT_NEEDS_SUPPORT,
                 PHYS=(PACK_FRICTION, PACK_RESTITUTION), v=21)
     return hashlib.sha1(json.dumps(keys, sort_keys=True).encode()).hexdigest()
@@ -657,8 +661,12 @@ def place_by_hand(rng, b, rows, existing=()):
         misses = 0
         while misses < ROW_FAILS and len(placed) < room:
             left_to_right = rng.random() < 0.5
+            # the least used kind first; when it keeps missing, the other
+            # kinds may get ahead by up to KIND_IMBALANCE
             least = min(counts.values())
-            kind = rng.choice(sorted(k for k, n in counts.items() if n == least))
+            pool = sorted(k for k, n in counts.items()
+                          if n == least or (misses >= 8 and n < least + KIND_IMBALANCE))
+            kind = rng.choice(pool)
             size = PACK_SIZES[kind]
             fam, rot, tilt = random_orientation(rng, weights, size)
             if rot is None:
@@ -827,10 +835,10 @@ def simulate_layout():
         print(f"  [layout] round {rnd + 1}: +{len(new)} -> {len(packs)} packages, "
               f"settled={settled} after {f} frames")
 
-    # equal numbers of each kind: drop the most recently placed extras (they
-    # sit on top of the pile) and let the rest settle again
+    # balanced numbers of each kind: drop the most recently placed extras
+    # (they sit on top of the pile) and let the rest settle again
     counts = {k: sum(p[1] == k for p in packs) for k in PACK_SIZES}
-    target = min(counts.values())
+    target = min(counts.values()) + KIND_IMBALANCE
     extra = []
     for p in reversed(packs):
         if counts[p[1]] > target:
