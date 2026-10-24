@@ -94,7 +94,7 @@ PACK_EDGE_BEVEL = 0.6
 TEX_PX_PER_MM = 12      # atlas resolution
 
 # --- 04. Random arrangement -------------------------------------------------
-SEED = 7
+SEED = 2
 MAX_PACKS = 80          # upper bound; the fill usually stops earlier
 CLEARANCE = 1.0         # min gap to every acrylic wall (mm)
 PACK_FRICTION = 0.65
