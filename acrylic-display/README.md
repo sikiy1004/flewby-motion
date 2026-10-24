@@ -34,6 +34,7 @@ v3 はご指定の寸法です。収納室は約 442 × 323 × 54 mm と「高�
 | `output/02_angle_view.png` | B. 斜め 45°：アクリルの厚み・奥行き・内部の立体感 |
 | `output/03_detail_view.png` | C. 接写：アクリルのエッジ、印刷面、隙間から漏れる光 |
 | `output/04_wall_installation.png` | D. グレー壁面への設置イメージ |
+| `output/logo_white/01〜05_*.png` | 同じ内容でロゴを白のカッティングシートにしたパターン（`--logo white`、`blend/flew_by_acrylic_display_logo_white.blend`） |
 | `output/05_pillar_installation.png` | E. 店舗の柱（幅 690 mm）の中央に設置したイメージ（写真合成、熨斗は除去） |
 | `assets/pillar_reference.jpg` | 設置する柱の写真（支給画像） |
 | `blend/flew_by_acrylic_display.blend` | 編集可能な Blender ファイル（テクスチャ同梱） |
@@ -120,6 +121,8 @@ v1 で約 33 分、v2 で約 32 分、v3 で約 33 分、v4 で約 40 分（柱�
 
 - `assets/flewby_logo.png` を前面パネルの外側に、厚み 0.08 mm の黒いマットめのビニールとして貼ります
   （`LOGO_WIDTH = 300` mm → 300 × 197 mm、`LOGO_OFFSET` で位置調整）。
+- 色は黒（既定）と白の 2 パターン（`--logo white`）。白はわずかに光を通すシートとして、
+  背面の LED が当たる部分がほんのり明るくなります。暗めの店内では明るいグレーに見えます。
 - 画像は「透明背景に白」「白背景に黒」「黒背景に白」のどれでもよく、自動でマスクに変換し、
   図柄の範囲で切り抜きます。ファイルがない場合はロゴなしで描画します。
 
