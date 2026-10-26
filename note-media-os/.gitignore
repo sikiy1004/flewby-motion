@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+# Playwright MCP: 自動化専用ブラウザのプロファイル（note のログイン Cookie を含む）と生の出力
+.browser-profile/
+research/browser/output/
+research/browser/*.storage.json
+# 他人の記事の本文全文（分析用のローカル保存。リポジトリには入れない）
+research/note-pages/raw/

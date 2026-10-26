@@ -12,6 +12,7 @@ noteで知的な有料記事（基本500円）を継続的に制作・販売す�
 6. **重要な仕様は勝手に決めない。** ジャンル選定（`genres/selected/top5.md`）、ブランド（`brand/`）、価格方針、有料ツールの追加は、オーナーの承認を得てから変更する。
 7. **秘密情報をリポジトリに書かない。** APIキー・パスワード・note のログイン情報・Cookie を扱わない。
 8. サイトの利用規約とアクセス制限を守る。スクレイピングや制限回避をしない。
+9. **ブラウザ自動化は閲覧だけ。** Playwright MCP では、購入・スキ・フォロー・コメント・投稿をしない。パスワードを入力しない。Cookie やストレージの値を読まない。Arc に接続しない。詳細は `docs/browser-automation.md` と `/note-browse`。
 
 ## 作業の前に読むもの
 
@@ -38,6 +39,7 @@ noteで知的な有料記事（基本500円）を継続的に制作・販売す�
 | `/fact-check <slug>` | 事実関係と出典の検証 |
 | `/analytics` | 販売実績の分析 |
 | `/next-article` | 次に作る記事の提案 |
+| `/note-browse test\|article\|search\|login` | Playwright MCP で note の公開ページを閲覧・記録 |
 | `/approve-article <slug>` | **オーナー専用**：公開の承認 |
 | `/mark-published <slug> <URL>` | **オーナー専用**：公開済みの記録 |
 
@@ -57,6 +59,10 @@ ideas.csv (backlog)
 ```
 
 `needs_human`：品質基準を満たさない、または文献が不足している。人間の判断を待つ。
+
+## ブラウザ自動化（Playwright MCP）
+
+`.mcp.json` で `playwright` サーバーを登録している（自動化専用の Chromium と、専用プロファイル `.browser-profile/`）。note の実ページを見るときは `/note-browse` の手順に従う。取得した記事情報は `research/note-pages/`、エラーは `research/browser/errors.csv` に記録する。
 
 ## データの置き場所
 

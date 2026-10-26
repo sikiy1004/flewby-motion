@@ -11,11 +11,26 @@
       "Bash(python3 scripts/article_state.py score:*)",
       "Bash(python3 scripts/article_state.py minutes:*)",
       "Bash(date:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(python3 scripts/note_pages.py:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_wait_for"
     ],
     "ask": [
       "Bash(python3 scripts/article_state.py approve:*)",
       "Bash(python3 scripts/article_state.py published:*)"
+    ],
+    "deny": [
+      "mcp__playwright__browser_cookie_get",
+      "mcp__playwright__browser_cookie_list",
+      "mcp__playwright__browser_storage_state",
+      "mcp__playwright__browser_localstorage_get",
+      "mcp__playwright__browser_localstorage_list",
+      "mcp__playwright__browser_sessionstorage_get",
+      "mcp__playwright__browser_sessionstorage_list",
+      "mcp__playwright__browser_run_code_unsafe"
     ]
   }
 }

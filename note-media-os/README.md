@@ -35,6 +35,7 @@ Claude Code は、このフォルダの `CLAUDE.md`、`.claude/skills/`（コマ
 | 売上を入力・分析する | `/analytics 2026-11 i-g05-01 views=420 purchases=9` → `/analytics` |
 | 記事を見直す | `/review-article <slug>`、`/fact-check <slug>` |
 | 市場を調べ直す | `/market-research` → `/genre-analysis`（3か月ごとが目安） |
+| note の実ページを見る | `/note-browse search 哲学`、`/note-browse article <URL>`（導入は `docs/browser-automation.md`） |
 | 企画を補充する | `/article-ideas G05 10` |
 
 ## ワークフロー（STEP 1〜12）
@@ -77,6 +78,8 @@ note-media-os/
 │   ├── ready_to_publish/      承認待ちの投稿用ファイル
 │   └── published/<slug>/      公開済み
 ├── analytics/{sales,reports}/ sales.csv に実績を手入力
+├── docs/browser-automation.md  Playwright MCP の導入・運用
+├── .mcp.json                  Playwright MCP の登録（プロジェクト単位）
 ├── prompts/                   各工程の手順書（人間が編集してよい）
 ├── agents/README.md           サブエージェントの説明
 ├── scripts/                   採点・状態管理・品質チェック・出力・分析（Python標準ライブラリ）
