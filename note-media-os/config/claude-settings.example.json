@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 scripts/ideas.py:*)",
+      "Bash(python3 scripts/check_article.py:*)",
+      "Bash(python3 scripts/export_note.py:*)",
+      "Bash(python3 scripts/analytics.py:*)",
+      "Bash(python3 scripts/article_state.py list:*)",
+      "Bash(python3 scripts/article_state.py register:*)",
+      "Bash(python3 scripts/article_state.py status:*)",
+      "Bash(python3 scripts/article_state.py score:*)",
+      "Bash(python3 scripts/article_state.py minutes:*)",
+      "Bash(date:*)",
+      "WebSearch"
+    ],
+    "ask": [
+      "Bash(python3 scripts/article_state.py approve:*)",
+      "Bash(python3 scripts/article_state.py published:*)"
+    ]
+  }
+}
