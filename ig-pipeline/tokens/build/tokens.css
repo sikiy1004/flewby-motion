@@ -1,0 +1,129 @@
+/* AUTO-GENERATED from tokens/tokens.json — do not edit. Run `npm run tokens`. */
+
+@font-face{font-family:"TK Cormorant Garamond";src:url("../../assets/fonts/fallback/CormorantGaramond-300.ttf") format("truetype");font-weight:300;font-style:normal;font-display:block}
+@font-face{font-family:"TK Cormorant Garamond";src:url("../../assets/fonts/fallback/CormorantGaramond-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"TK Cormorant Garamond";src:url("../../assets/fonts/fallback/CormorantGaramond-500.ttf") format("truetype");font-weight:500;font-style:normal;font-display:block}
+@font-face{font-family:"TK Cormorant Garamond";src:url("../../assets/fonts/fallback/CormorantGaramond-400-italic.ttf") format("truetype");font-weight:400;font-style:italic;font-display:block}
+@font-face{font-family:"TK Zen Old Mincho";src:url("../../assets/fonts/fallback/ZenOldMincho-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"TK Zen Old Mincho";src:url("../../assets/fonts/fallback/ZenOldMincho-700.ttf") format("truetype");font-weight:700;font-style:normal;font-display:block}
+@font-face{font-family:"TK Noto Sans JP";src:url("../../assets/fonts/fallback/NotoSansJP-700.ttf") format("truetype");font-weight:700;font-style:normal;font-display:block}
+@font-face{font-family:"TK Noto Sans JP";src:url("../../assets/fonts/fallback/NotoSansJP-900.ttf") format("truetype");font-weight:900;font-style:normal;font-display:block}
+@font-face{font-family:"TK Inter";src:url("../../assets/fonts/fallback/Inter-400.ttf") format("truetype");font-weight:400;font-style:normal;font-display:block}
+@font-face{font-family:"TK Inter";src:url("../../assets/fonts/fallback/Inter-500.ttf") format("truetype");font-weight:500;font-style:normal;font-display:block}
+@font-face{font-family:"TK Inter";src:url("../../assets/fonts/fallback/Inter-600.ttf") format("truetype");font-weight:600;font-style:normal;font-display:block}
+
+:root{
+  --c-paper-cream: #F5F0E6;
+  --c-paper-cream-deep: #ECE5D7;
+  --c-paper-cream-shade: #E2D9C7;
+  --c-ink-black: #151413;
+  --c-ink-soft: #3D3A35;
+  --c-ink-muted: #7A746A;
+  --c-ink-hairline: #CFC6B5;
+  --c-pigment-cobalt: #1B3DD1;
+  --c-pigment-violet: #6A3BD6;
+  --c-pigment-orange: #F59A2E;
+  --c-pigment-vermilion: #EE4422;
+  --c-pigment-pink: #F3A6C6;
+  --c-pigment-teal: #13A08A;
+  --c-pigment-yellow: #F3C43A;
+  --c-pigment-black: #151413;
+  --c-pigment-white: #FBF8F1;
+  --sp-unit: 8px;
+  --sp-xs: 8px;
+  --sp-s: 16px;
+  --sp-m: 24px;
+  --sp-l: 40px;
+  --sp-xl: 64px;
+  --sp-xxl: 96px;
+  --sp-xxxl: 144px;
+  --margin-x: 72px;
+  --margin-top: 64px;
+  --margin-bottom: 72px;
+  --rule-weight: 1.5px;
+  --rule-length: 72px;
+  --dot-size: 14px;
+  --dot-gap: 7px;
+  --product-max-h: 520px;
+  --font-serif-display: "Cormorant Garamond", "TK Cormorant Garamond", serif;
+  --font-mincho: "Ten Mincho", "貂明朝", "TK Zen Old Mincho", serif;
+  --font-gothic-heavy: "Source Han Sans JP", "源ノ角ゴシック JP", "Source Han Sans", "TK Noto Sans JP", sans-serif;
+  --font-label: "TK Inter", sans-serif;
+  --fs-display-word: 132px;
+  --lh-display-word: 0.9;
+  --tr-display-word: -0.01em;
+  --fw-display-word: 400;
+  --fs-display-word-l: 168px;
+  --lh-display-word-l: 0.9;
+  --tr-display-word-l: -0.015em;
+  --fw-display-word-l: 400;
+  --fs-tagline: 26px;
+  --lh-tagline: 1.3;
+  --tr-tagline: 0;
+  --fw-tagline: 400;
+  --fs-jp-lead: 24px;
+  --lh-jp-lead: 1.75;
+  --tr-jp-lead: 0.06em;
+  --fw-jp-lead: 400;
+  --fs-jp-body: 21px;
+  --lh-jp-body: 1.8;
+  --tr-jp-body: 0.04em;
+  --fw-jp-body: 400;
+  --fs-jp-caption: 17px;
+  --lh-jp-caption: 1.7;
+  --tr-jp-caption: 0.04em;
+  --fw-jp-caption: 400;
+  --fs-price: 44px;
+  --lh-price: 1;
+  --tr-price: 0;
+  --fw-price: 400;
+  --fs-label: 14px;
+  --lh-label: 1.25;
+  --tr-label: 0.12em;
+  --fw-label: 600;
+  --fs-label-small: 12px;
+  --lh-label-small: 1.3;
+  --tr-label-small: 0.1em;
+  --fw-label-small: 500;
+  --fs-pr: 13px;
+  --lh-pr: 1;
+  --tr-pr: 0.14em;
+  --fw-pr: 600;
+  --fs-headline-heavy: 150px;
+  --lh-headline-heavy: 1.08;
+  --tr-headline-heavy: -0.04em;
+  --fw-headline-heavy: 900;
+  --fs-sub-heavy: 34px;
+  --lh-sub-heavy: 1.4;
+  --tr-sub-heavy: 0.02em;
+  --fw-sub-heavy: 700;
+}
+
+html[data-font-mode="fallback"]{
+  --font-serif-display: "TK Cormorant Garamond", serif;
+  --font-mincho: "TK Zen Old Mincho", serif;
+  --font-gothic-heavy: "TK Noto Sans JP", sans-serif;
+  --font-label: "TK Inter", sans-serif;
+}
+
+.t-display-word{font-family:var(--font-serif-display);font-size:var(--fs-display-word);line-height:var(--lh-display-word);letter-spacing:var(--tr-display-word);font-weight:var(--fw-display-word);text-transform:uppercase;}
+.t-display-word-l{font-family:var(--font-serif-display);font-size:var(--fs-display-word-l);line-height:var(--lh-display-word-l);letter-spacing:var(--tr-display-word-l);font-weight:var(--fw-display-word-l);text-transform:uppercase;}
+.t-tagline{font-family:var(--font-serif-display);font-size:var(--fs-tagline);line-height:var(--lh-tagline);letter-spacing:var(--tr-tagline);font-weight:var(--fw-tagline);}
+.t-jp-lead{font-family:var(--font-mincho);font-size:var(--fs-jp-lead);line-height:var(--lh-jp-lead);letter-spacing:var(--tr-jp-lead);font-weight:var(--fw-jp-lead);}
+.t-jp-body{font-family:var(--font-mincho);font-size:var(--fs-jp-body);line-height:var(--lh-jp-body);letter-spacing:var(--tr-jp-body);font-weight:var(--fw-jp-body);}
+.t-jp-caption{font-family:var(--font-mincho);font-size:var(--fs-jp-caption);line-height:var(--lh-jp-caption);letter-spacing:var(--tr-jp-caption);font-weight:var(--fw-jp-caption);}
+.t-price{font-family:var(--font-serif-display);font-size:var(--fs-price);line-height:var(--lh-price);letter-spacing:var(--tr-price);font-weight:var(--fw-price);}
+.t-label{font-family:var(--font-label);font-size:var(--fs-label);line-height:var(--lh-label);letter-spacing:var(--tr-label);font-weight:var(--fw-label);text-transform:uppercase;}
+.t-label-small{font-family:var(--font-label);font-size:var(--fs-label-small);line-height:var(--lh-label-small);letter-spacing:var(--tr-label-small);font-weight:var(--fw-label-small);text-transform:uppercase;}
+.t-pr{font-family:var(--font-label);font-size:var(--fs-pr);line-height:var(--lh-pr);letter-spacing:var(--tr-pr);font-weight:var(--fw-pr);text-transform:uppercase;}
+.t-headline-heavy{font-family:var(--font-gothic-heavy);font-size:var(--fs-headline-heavy);line-height:var(--lh-headline-heavy);letter-spacing:var(--tr-headline-heavy);font-weight:var(--fw-headline-heavy);}
+.t-sub-heavy{font-family:var(--font-gothic-heavy);font-size:var(--fs-sub-heavy);line-height:var(--lh-sub-heavy);letter-spacing:var(--tr-sub-heavy);font-weight:var(--fw-sub-heavy);}
+.bg-cobalt{background:var(--c-pigment-cobalt)}
+.bg-violet{background:var(--c-pigment-violet)}
+.bg-orange{background:var(--c-pigment-orange)}
+.bg-vermilion{background:var(--c-pigment-vermilion)}
+.bg-pink{background:var(--c-pigment-pink)}
+.bg-teal{background:var(--c-pigment-teal)}
+.bg-yellow{background:var(--c-pigment-yellow)}
+.bg-black{background:var(--c-pigment-black)}
+.bg-white{background:var(--c-pigment-white)}

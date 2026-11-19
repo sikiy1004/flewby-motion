@@ -1,0 +1,79 @@
+{
+  "colors": {
+    "paper.cream": "0xF5F0E6",
+    "paper.creamDeep": "0xECE5D7",
+    "paper.creamShade": "0xE2D9C7",
+    "ink.black": "0x151413",
+    "ink.soft": "0x3D3A35",
+    "ink.muted": "0x7A746A",
+    "ink.hairline": "0xCFC6B5",
+    "pigment.cobalt": "0x1B3DD1",
+    "pigment.violet": "0x6A3BD6",
+    "pigment.orange": "0xF59A2E",
+    "pigment.vermilion": "0xEE4422",
+    "pigment.pink": "0xF3A6C6",
+    "pigment.teal": "0x13A08A",
+    "pigment.yellow": "0xF3C43A",
+    "pigment.black": "0x151413",
+    "pigment.white": "0xFBF8F1"
+  },
+  "fonts": {
+    "serifDisplay": {
+      "300": "assets/fonts/fallback/CormorantGaramond-300.ttf",
+      "400": "assets/fonts/fallback/CormorantGaramond-400.ttf",
+      "500": "assets/fonts/fallback/CormorantGaramond-500.ttf",
+      "400i": "assets/fonts/fallback/CormorantGaramond-400-italic.ttf"
+    },
+    "mincho": {
+      "400": "assets/fonts/fallback/ZenOldMincho-400.ttf",
+      "700": "assets/fonts/fallback/ZenOldMincho-700.ttf"
+    },
+    "gothicHeavy": {
+      "700": "assets/fonts/fallback/NotoSansJP-700.ttf",
+      "900": "assets/fonts/fallback/NotoSansJP-900.ttf"
+    },
+    "label": {
+      "400": "assets/fonts/fallback/Inter-400.ttf",
+      "500": "assets/fonts/fallback/Inter-500.ttf",
+      "600": "assets/fonts/fallback/Inter-600.ttf"
+    }
+  },
+  "canvas": {
+    "carousel": {
+      "width": 1080,
+      "height": 1350
+    },
+    "reel": {
+      "width": 1080,
+      "height": 1920,
+      "safe": {
+        "top": 220,
+        "bottom": 380,
+        "x": 72
+      }
+    },
+    "assetScale": 2
+  },
+  "motion": {
+    "fps": 30,
+    "ease": {
+      "soft": [
+        0.25,
+        0.1,
+        0.25,
+        1
+      ],
+      "editorial": [
+        0.7,
+        0,
+        0.2,
+        1
+      ]
+    },
+    "duration": {
+      "in": 0.6,
+      "hold": 2.4,
+      "out": 0.4
+    }
+  }
+}

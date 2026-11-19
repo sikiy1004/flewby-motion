@@ -1,0 +1,19 @@
+{
+  "_doc": "Impasto paint stroke sprites. colors = tokens.color.pigment names: [main, marble(optional), highlight(optional)]. length/thickness are in 1x px (rendered at 2x). angle in degrees. Change seed for a new variation.",
+  "strokes": [
+    { "name": "s01", "seed": 101, "colors": ["cobalt", "white"],         "length": 560, "thickness": 230, "angle": -8,  "marble": 0.25 },
+    { "name": "s02", "seed": 102, "colors": ["vermilion"],               "length": 520, "thickness": 200, "angle": 4,   "marble": 0 },
+    { "name": "s03", "seed": 103, "colors": ["pink", "vermilion"],       "length": 600, "thickness": 240, "angle": -14, "marble": 0.4 },
+    { "name": "s04", "seed": 104, "colors": ["teal", "white"],           "length": 480, "thickness": 260, "angle": 76,  "marble": 0.3 },
+    { "name": "s05", "seed": 105, "colors": ["black"],                   "length": 300, "thickness": 140, "angle": 62,  "marble": 0 },
+    { "name": "s06", "seed": 106, "colors": ["orange", "vermilion"],     "length": 540, "thickness": 210, "angle": 2,   "marble": 0.35 },
+    { "name": "s07", "seed": 107, "colors": ["cobalt", "pink"],          "length": 520, "thickness": 250, "angle": 84,  "marble": 0.45 },
+    { "name": "s08", "seed": 108, "colors": ["teal", "pink", "white"],   "length": 560, "thickness": 230, "angle": -6,  "marble": 0.4 },
+    { "name": "s09", "seed": 109, "colors": ["vermilion", "orange", "white"], "length": 500, "thickness": 220, "angle": -18, "marble": 0.35 },
+    { "name": "s10", "seed": 110, "colors": ["black", "white"],          "length": 420, "thickness": 230, "angle": 10,  "marble": 0.5 },
+    { "name": "s11", "seed": 111, "colors": ["orange"],                  "length": 440, "thickness": 190, "angle": -4,  "marble": 0 },
+    { "name": "s12", "seed": 112, "colors": ["pink", "teal"],            "length": 520, "thickness": 210, "angle": 8,   "marble": 0.3 },
+    { "name": "s13", "seed": 113, "colors": ["cobalt"],                  "length": 380, "thickness": 200, "angle": 70,  "marble": 0 },
+    { "name": "s14", "seed": 114, "colors": ["black"],                   "length": 260, "thickness": 120, "angle": -40, "marble": 0 }
+  ]
+}

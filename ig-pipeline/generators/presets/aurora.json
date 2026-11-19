@@ -1,0 +1,80 @@
+{
+  "_doc": "Aurora background presets. colors refer to tokens.color.pigment names. Change seed to get a new variation of the same shape; keep it to reproduce exactly.",
+  "size": "carousel",
+  "presets": [
+    {
+      "name": "dawn",
+      "seed": 11,
+      "shape": "wave",
+      "stops": [
+        "cobalt",
+        "cobalt",
+        "violet",
+        "vermilion",
+        "orange"
+      ]
+    },
+    {
+      "name": "shift",
+      "seed": 23,
+      "shape": "scurve",
+      "stops": [
+        "violet",
+        "violet",
+        "vermilion",
+        "vermilion",
+        "orange",
+        "pink"
+      ]
+    },
+    {
+      "name": "radiance",
+      "seed": 37,
+      "shape": "orb",
+      "stops": [
+        "black",
+        "teal",
+        "teal",
+        "yellow"
+      ]
+    },
+    {
+      "name": "ember",
+      "seed": 41,
+      "shape": "scurve2",
+      "stops": [
+        "orange",
+        "orange",
+        "vermilion",
+        "black",
+        "vermilion"
+      ]
+    },
+    {
+      "name": "tide",
+      "seed": 53,
+      "shape": "swirl",
+      "stops": [
+        "cobalt",
+        "teal",
+        "yellow",
+        "cobalt",
+        "cobalt"
+      ],
+      "warp": 1.6
+    },
+    {
+      "name": "mist",
+      "seed": 67,
+      "shape": "smoke",
+      "stops": [
+        "black",
+        "black",
+        "black",
+        "orange",
+        "yellow"
+      ],
+      "warp": 2.0
+    }
+  ]
+}

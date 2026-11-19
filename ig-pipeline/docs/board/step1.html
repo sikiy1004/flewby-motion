@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Step 1 — Tokens & Assets</title>
+<link rel="stylesheet" href="../../tokens/build/tokens.css">
+<script src="../../tokens/build/tokens.js"></script>
+<style>
+  body{margin:0;background:var(--c-paper-cream);color:var(--c-ink-black);padding:72px;width:1456px}
+  h2{margin:72px 0 24px;padding-top:16px;border-top:var(--rule-weight) solid var(--c-ink-black);display:flex;justify-content:space-between}
+  .row{display:flex;flex-wrap:wrap;gap:16px}
+  .sw{width:168px}
+  .sw i{display:block;height:120px;border:1px solid var(--c-ink-hairline)}
+  .sw b,.sw span{display:block;margin-top:8px}
+  .type .item{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:baseline;padding:18px 0;border-bottom:1px solid var(--c-ink-hairline)}
+  .meta{color:var(--c-ink-muted)}
+  .aur{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+  .aur figure{margin:0;position:relative;aspect-ratio:4/5;background-size:cover}
+  .aur figcaption{position:absolute;left:28px;bottom:26px;right:28px;display:flex;justify-content:space-between;align-items:flex-end}
+  .dots{display:flex;gap:var(--dot-gap)} .dots i{width:var(--dot-size);height:var(--dot-size);border-radius:50%}
+  .paint{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:center}
+  .paint img{width:100%;height:200px;object-fit:contain}
+  .note{color:var(--c-ink-soft);max-width:1000px}
+</style>
+</head>
+<body>
+<div class="t-label" data-font-role="label">BEAUTY_TECH ARCHIVE — PIPELINE / STEP 01</div>
+<div class="t-display-word-l" data-font-role="serifDisplay" style="margin-top:24px">Tokens &amp; Assets</div>
+<p class="t-jp-lead note" data-font-role="mincho">配色・フォント・文字サイズ・余白はすべて tokens/tokens.json から生成。背景アセットはシード固定で再生成できます。</p>
+
+<h2><span class="t-label">01 / Color</span><span class="t-label-small meta" id="fm"></span></h2>
+<div id="colors"></div>
+
+<h2><span class="t-label">02 / Type roles</span><span class="t-label-small meta">size at 1080px canvas</span></h2>
+<div class="type" id="type"></div>
+
+<h2><span class="t-label">03 / Aurora presets (A案)</span><span class="t-label-small meta">generators/aurora.py · 2160×2700</span></h2>
+<div class="aur" id="aur"></div>
+
+<h2><span class="t-label">04 / Impasto strokes (B案)</span><span class="t-label-small meta">generators/paint.py · RGBA 2x</span></h2>
+<div class="paint" id="paint"></div>
+
+<script>
+const T = window.TOKENS;
+document.getElementById("fm").textContent = "font mode: " + (document.documentElement.dataset.fontMode || "adobe");
+const kebab = s => s.replace(/([a-z0-9])([A-Z])/g,"$1-$2").toLowerCase();
+let h = "";
+for (const [g, cs] of Object.entries(T.color)) {
+  h += `<div class="t-label-small meta" style="margin:24px 0 10px">${g}</div><div class="row">`;
+  for (const [n, hex] of Object.entries(cs)) h += `<div class="sw"><i style="background:${hex}"></i><b class="t-label-small">${n}</b><span class="t-label-small meta">${hex}</span></div>`;
+  h += "</div>";
+}
+document.getElementById("colors").innerHTML = h;
+
+const samples = {
+  displayWord:"GLOW", displayWordL:"FLOW", tagline:"Softness has its own strength.",
+  jpLead:"毎日の手入れを、静かに一段上げる。", jpBody:"温冷とEMSを一台で。朝の5分で、肌のめぐりを整えます。",
+  jpCaption:"価格は2026年11月時点の参考価格です。", price:"¥24,800", label:"Collection 02 / 07", labelSmall:"Spec — Weight 128g",
+  pr:"PR", headlineHeavy:"美顔器、結局これ。", subHeavy:"3年使い比べた結論"
+};
+h = "";
+for (const [n, t] of Object.entries(T.type)) {
+  h += `<div class="item"><div class="t-label-small meta">${n}<br>${t.family} · ${t.size}px / ${t.weight}</div><div class="t-${kebab(n)}" data-font-role="${t.family}">${samples[n]||n}</div></div>`;
+}
+document.getElementById("type").innerHTML = h;
+
+h = "";
+for (const [n, p] of Object.entries(T.palette.aurora)) {
+  h += `<figure style="background-image:url(../../assets/aurora/${n}.jpg)"><figcaption><span><span class="t-tagline" style="font-size:34px;display:block">${n.toUpperCase()}</span><span class="t-label-small meta">${p.colors.join(" · ")}</span></span><span class="dots">${p.dots.map(d=>`<i class="bg-${d}"></i>`).join("")}</span></figcaption></figure>`;
+}
+document.getElementById("aur").innerHTML = h;
+h = "";
+for (let i = 1; i <= 14; i++) h += `<img src="../../assets/paint/s${String(i).padStart(2,"0")}.png">`;
+document.getElementById("paint").innerHTML = h;
+</script>
+</body>
+</html>

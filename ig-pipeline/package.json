@@ -1,0 +1,17 @@
+{
+  "name": "ig-pipeline",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Instagram beauty-gadget post design pipeline (tokens → HTML/CSS templates → PNG)",
+  "scripts": {
+    "tokens": "node scripts/build-tokens.mjs",
+    "assets": "npm run assets:aurora && npm run assets:paint",
+    "assets:aurora": ".venv/bin/python generators/aurora.py",
+    "assets:paint": ".venv/bin/python generators/paint.py",
+    "board": "npm run tokens && node pipeline/shot.mjs docs/board/step1.html docs/previews/step1-board.png --width 1600 --full"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
