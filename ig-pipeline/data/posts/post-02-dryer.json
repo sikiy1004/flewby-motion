@@ -1,0 +1,12 @@
+{
+  "id": "post-02-dryer",
+  "collection": { "number": 2, "issue": 8 },
+  "cover": {
+    "word": "Flow",
+    "kicker": "Hair Dryer Review",
+    "lead": "320gの軽さで、\n乾かす時間が静かになる。",
+    "aurora": "shift",
+    "hero": "hair-dryer"
+  },
+  "products": ["hair-dryer"]
+}

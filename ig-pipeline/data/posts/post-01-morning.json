@@ -1,0 +1,12 @@
+{
+  "id": "post-01-morning",
+  "collection": { "number": 2, "issue": 7 },
+  "cover": {
+    "word": "Ritual",
+    "kicker": "Morning Beauty Tech — 3 Items",
+    "lead": "朝の5分を整える、\n美容家電3つの選び方。",
+    "aurora": "dawn",
+    "hero": "facial-ems"
+  },
+  "products": ["facial-ems", "hair-dryer", "face-brush"]
+}

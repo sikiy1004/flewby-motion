@@ -1,0 +1,20 @@
+{# A案 カルーセル表紙 1080×1350 #}
+{% extends "layouts/base.njk" %}
+{% set showPr = true %}
+{% block body %}
+<div class="bg" style="background-image:url('assets/aurora/{{ cover.aurora }}.jpg')"></div>
+<div class="bg-fade"></div>
+{% include "partials/masthead.njk" %}
+
+<figure class="cover-product" style="--product-h: {{ hero.displayHeight }}px">
+  <span class="floor"></span>
+  <img src="{{ hero.cutout }}" alt="">
+</figure>
+
+<section class="cover-text">
+  {% if cover.kicker %}<div class="t-label-small cover-text__kicker" data-font-role="label">{{ cover.kicker }}</div>{% endif %}
+  <h1 class="t-display-word cover-text__word" data-font-role="serifDisplay">{{ cover.word }}</h1>
+  <p class="t-jp-lead cover-text__lead" data-font-role="mincho">{{ cover.lead | nl2br }}</p>
+</section>
+{% include "partials/dots.njk" %}
+{% endblock %}

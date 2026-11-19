@@ -232,8 +232,9 @@ def generate(preset: dict, seed: int | None = None, canvas_key: str = "carousel"
     out = lin_to_srgb(out)
 
     # global paper grain
-    n = rng.normal(0, 1, (OH // 2, OW // 2)).astype(np.float32)
-    n = np.repeat(np.repeat(n, 2, 0), 2, 1)
+    cl = tex["paper"].get("cluster", 2)
+    n = rng.normal(0, 1, (OH // cl, OW // cl)).astype(np.float32)
+    n = np.repeat(np.repeat(n, cl, 0), cl, 1)
     out = out + n[..., None] * tex["paper"]["amount"]
     return Image.fromarray((np.clip(out, 0, 1) * 255 + 0.5).astype(np.uint8), "RGB")
 

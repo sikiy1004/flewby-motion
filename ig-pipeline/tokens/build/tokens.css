@@ -45,6 +45,9 @@
   --dot-size: 14px;
   --dot-gap: 7px;
   --product-max-h: 520px;
+  --product-max-w: 600px;
+  --masthead-fade-h: 300px;
+  --masthead-fade-o: 0.7;
   --font-serif-display: "Cormorant Garamond", "TK Cormorant Garamond", serif;
   --font-mincho: "Ten Mincho", "貂明朝", "TK Zen Old Mincho", serif;
   --font-gothic-heavy: "Source Han Sans JP", "源ノ角ゴシック JP", "Source Han Sans", "TK Noto Sans JP", sans-serif;

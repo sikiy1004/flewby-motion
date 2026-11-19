@@ -33,7 +33,8 @@ for (const [group, colors] of Object.entries(T.color))
 for (const [k, v] of Object.entries(T.space)) css += `  --sp-${k}: ${v}px;\n`;
 css += `  --margin-x: ${T.layout.margin.x}px;\n  --margin-top: ${T.layout.margin.top}px;\n  --margin-bottom: ${T.layout.margin.bottom}px;\n`;
 css += `  --rule-weight: ${T.layout.rule.weight}px;\n  --rule-length: ${T.layout.rule.length}px;\n`;
-css += `  --dot-size: ${T.layout.dots.size}px;\n  --dot-gap: ${T.layout.dots.gap}px;\n  --product-max-h: ${T.layout.productMaxHeight}px;\n`;
+css += `  --dot-size: ${T.layout.dots.size}px;\n  --dot-gap: ${T.layout.dots.gap}px;\n  --product-max-h: ${T.layout.productMaxHeight}px;\n  --product-max-w: ${T.layout.productMaxWidth}px;\n`;
+css += `  --masthead-fade-h: ${T.layout.mastheadFade.height}px;\n  --masthead-fade-o: ${T.layout.mastheadFade.opacity};\n`;
 for (const [name, fam] of Object.entries(T.font.family))
   css += `  --font-${kebab(name)}: ${stack([...fam.adobe, fam.fallback])}, ${generic[name]};\n`;
 for (const [name, t] of Object.entries(T.type)) {

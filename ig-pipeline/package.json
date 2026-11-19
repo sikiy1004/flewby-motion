@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Instagram beauty-gadget post design pipeline (tokens → HTML/CSS templates → PNG)",
+  "description": "Instagram beauty-gadget post design pipeline (tokens \u2192 HTML/CSS templates \u2192 PNG)",
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
     "assets": "npm run assets:aurora && npm run assets:paint",
     "assets:aurora": ".venv/bin/python generators/aurora.py",
     "assets:paint": ".venv/bin/python generators/paint.py",
-    "board": "npm run tokens && node pipeline/shot.mjs docs/board/step1.html docs/previews/step1-board.png --width 1600 --full"
+    "board": "npm run tokens && node pipeline/shot.mjs docs/board/step1.html docs/previews/step1-board.png --width 1600 --full",
+    "build": "node pipeline/build.mjs",
+    "assets:mock": ".venv/bin/python generators/mock_products.py"
   },
   "devDependencies": {
     "playwright": "1.63.0"
+  },
+  "dependencies": {
+    "nunjucks": "^3.2.4"
   }
 }

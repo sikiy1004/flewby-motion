@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<base href="{{ root }}/">
+<link rel="stylesheet" href="tokens/build/tokens.css">
+<link rel="stylesheet" href="templates/styles/base.css">
+{% block head %}{% endblock %}
+</head>
+<body>
+<main class="canvas canvas--{{ canvas.name }} {{ bodyClass }}" style="width:{{ canvas.width }}px;height:{{ canvas.height }}px">
+{% block body %}{% endblock %}
+</main>
+</body>
+</html>

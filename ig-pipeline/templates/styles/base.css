@@ -1,0 +1,28 @@
+/* Shared layout primitives. Values come from tokens.css — avoid raw numbers here. */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#888}
+body{-webkit-font-smoothing:antialiased;font-kerning:normal;font-feature-settings:"palt" 1, "kern" 1;text-rendering:geometricPrecision}
+.canvas{position:relative;overflow:hidden;background:var(--c-paper-cream);color:var(--c-ink-black)}
+.bg{position:absolute;inset:0;background-size:cover;background-position:center}
+/* keeps the masthead legible when an aurora reaches the top edge */
+.bg-fade{position:absolute;left:0;right:0;top:0;height:var(--masthead-fade-h);background:linear-gradient(to bottom,var(--c-paper-cream) 0%,transparent 100%);opacity:var(--masthead-fade-o)}
+
+/* masthead */
+.masthead{position:absolute;top:var(--margin-top);left:var(--margin-x);right:var(--margin-x);display:flex;justify-content:space-between;align-items:flex-start}
+.masthead__sub{display:flex;align-items:center;gap:var(--sp-s);margin-top:4px}
+.masthead__right{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.rule{display:block;width:var(--rule-length);height:var(--rule-weight);background:var(--c-ink-black)}
+.pr-tag{display:inline-block;padding:4px 7px 3px;border:var(--rule-weight) solid var(--c-ink-black);line-height:1}
+
+/* accent dots (bottom-right) */
+.dots{position:absolute;right:var(--margin-x);bottom:var(--margin-bottom);display:flex;gap:var(--dot-gap)}
+.dots i{display:block;width:var(--dot-size);height:var(--dot-size);border-radius:50%}
+
+/* ---- A: cover ---- */
+.cover-product{position:absolute;left:50%;bottom:390px;transform:translateX(-50%);width:var(--product-max-w);height:var(--product-h);display:flex;justify-content:center;align-items:flex-end}
+.cover-product img{max-height:100%;max-width:100%;position:relative;filter:drop-shadow(0 18px 24px rgba(40,30,20,.16))}
+.cover-product .floor{position:absolute;left:12%;right:12%;bottom:-14px;height:28px;border-radius:50%;background:radial-gradient(closest-side,rgba(40,30,20,.22),rgba(40,30,20,0));filter:blur(6px)}
+.cover-text{position:absolute;left:var(--margin-x);right:calc(var(--margin-x) + 120px);bottom:var(--margin-bottom)}
+.cover-text__kicker{color:var(--c-ink-soft);margin-bottom:var(--sp-s)}
+.cover-text__word{margin-left:-0.04em}
+.cover-text__lead{margin-top:var(--sp-m);color:var(--c-ink-soft)}

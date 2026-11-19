@@ -289,7 +289,12 @@ export const tokens = {
       "size": 14,
       "gap": 7
     },
-    "productMaxHeight": 520
+    "productMaxHeight": 520,
+    "productMaxWidth": 600,
+    "mastheadFade": {
+      "height": 300,
+      "opacity": 0.7
+    }
   },
   "canvas": {
     "carousel": {
@@ -313,7 +318,8 @@ export const tokens = {
       "auroraEdge": 0.55
     },
     "paper": {
-      "amount": 0.018
+      "amount": 0.014,
+      "cluster": 1
     }
   },
   "motion": {

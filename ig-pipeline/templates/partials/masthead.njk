@@ -1,0 +1,11 @@
+{# Editorial masthead: archive / collection at top-left, issue number over a rule at top-right, PR tag. #}
+<header class="masthead">
+  <div class="masthead__left">
+    <div class="t-label" data-font-role="label">{{ brand.collection }}</div>
+    <div class="t-label masthead__sub" data-font-role="label">Collection {{ post.collection.number | pad2 }}{% if showPr %}<span class="pr-tag t-pr">{{ brand.prLabel }}</span>{% endif %}</div>
+  </div>
+  <div class="masthead__right">
+    <div class="t-label" data-font-role="label">{{ (pageNo or post.collection.issue) | pad2 }}</div>
+    <i class="rule"></i>
+  </div>
+</header>

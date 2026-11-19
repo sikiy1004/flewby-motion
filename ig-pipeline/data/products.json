@@ -1,0 +1,41 @@
+[
+  {
+    "id": "facial-ems",
+    "category": "美顔器",
+    "categoryEn": "EMS Facial Device",
+    "brand": "LUMEA",
+    "name": "Warm Lift Pro",
+    "nameJa": "ウォームリフト プロ",
+    "price": 29800,
+    "image": "assets/products/raw/facial-ems.jpg",
+    "specs": { "モード": "温熱 / EMS / LED", "重さ": "128g", "充電": "USB-C・約90分", "防水": "IPX5" },
+    "points": ["温熱とEMSを1台で", "顔に沿う楕円プレート", "1回3分のオートモード"],
+    "links": { "rakuten": "", "amazon": "" }
+  },
+  {
+    "id": "hair-dryer",
+    "category": "ヘアドライヤー",
+    "categoryEn": "Hair Dryer",
+    "brand": "AERIS",
+    "name": "Silk Flow 1600",
+    "nameJa": "シルクフロー 1600",
+    "price": 24800,
+    "image": "assets/products/raw/hair-dryer.jpg",
+    "specs": { "風量": "2.0㎥/分", "重さ": "320g", "温度": "4段階＋スカルプ", "イオン": "マイナスイオン" },
+    "points": ["320gの軽さ", "大風量で速乾", "低温スカルプモード"],
+    "links": { "rakuten": "", "amazon": "" }
+  },
+  {
+    "id": "face-brush",
+    "category": "電動洗顔ブラシ",
+    "categoryEn": "Sonic Cleansing Brush",
+    "brand": "MOREA",
+    "name": "Pure Sonic",
+    "nameJa": "ピュアソニック",
+    "price": 12800,
+    "image": "assets/products/raw/face-brush.jpg",
+    "specs": { "振動": "8,000回/分", "素材": "医療用シリコン", "充電": "USB-C・約2時間", "防水": "IPX7" },
+    "points": ["やわらかシリコン", "毎分8,000回の音波振動", "お風呂で使える完全防水"],
+    "links": { "rakuten": "", "amazon": "" }
+  }
+]

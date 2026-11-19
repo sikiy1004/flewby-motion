@@ -1,0 +1,12 @@
+{
+  "id": "post-03-brush",
+  "collection": { "number": 2, "issue": 9 },
+  "cover": {
+    "word": "Clear",
+    "kicker": "Sonic Cleansing Brush",
+    "lead": "毎分8,000回の振動で、\n洗顔をやさしく底上げ。",
+    "aurora": "tide",
+    "hero": "face-brush"
+  },
+  "products": ["face-brush"]
+}
