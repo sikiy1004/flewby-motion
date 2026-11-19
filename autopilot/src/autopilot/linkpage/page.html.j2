@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>{{ account }}｜紹介アイテム</title>
+<style>
+:root { --bg:#F5EEE4; --surface:#FFFDF9; --ink:#3A2E26; --sub:#8C7B6E; --accent:#C07F55; --soft:#F1E3D2; --line:#E4D6C6; }
+@media (prefers-color-scheme: dark) { :root { --bg:#1B2131; --surface:#252D43; --ink:#F4EFE7; --sub:#A8B0C3; --accent:#E2B567; --soft:#313B57; --line:#36415F; } }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; line-height: 1.6; }
+main { max-width: 560px; margin: 0 auto; padding: 24px 16px 64px; }
+.pr { font-size: 12px; color: var(--sub); background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 16px; }
+h1 { font-size: 22px; margin: 8px 0 2px; }
+.concept { color: var(--sub); font-size: 14px; margin-bottom: 16px; }
+.search { position: sticky; top: 0; background: var(--bg); padding: 8px 0 12px; z-index: 2; }
+.search input { width: 100%; font-size: 17px; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.card { background: var(--surface); border-radius: 16px; padding: 16px; margin-bottom: 14px; border: 1px solid var(--line); }
+.card .no { font-weight: 800; color: var(--accent); font-size: 14px; }
+.card h2 { font-size: 17px; margin: 2px 0 2px; }
+.card .meta { font-size: 12px; color: var(--sub); margin-bottom: 10px; }
+.item { padding: 10px 0; border-top: 1px dashed var(--line); }
+.item .n { font-weight: 700; font-size: 15px; }
+.item .p { font-size: 13px; color: var(--sub); }
+.btns { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+.btns a { flex: 1; min-width: 120px; text-align: center; text-decoration: none; font-weight: 700; font-size: 14px; padding: 10px; border-radius: 10px; background: var(--accent); color: #fff; }
+.btns a.alt { background: var(--soft); color: var(--ink); }
+.pinned { border: 2px solid var(--accent); }
+footer { font-size: 12px; color: var(--sub); margin-top: 24px; }
+.hidden { display: none; }
+</style></head>
+<body><main>
+<div class="pr">【PR】このページはアフィリエイト広告（楽天アフィリエイト・Amazonアソシエイト等）を利用しています。リンク先での購入により運営者が収益を得ることがあります。価格・在庫は投稿時点の情報で変動します。</div>
+<h1>{{ account }}</h1>
+<p class="concept">{{ concept }}</p>
+<div class="search"><input id="q" type="search" inputmode="numeric" placeholder="投稿の番号で探す（例: 42）" aria-label="投稿番号で検索"></div>
+
+{% for o in pinned %}
+<div class="card pinned"><div class="no">PICK UP</div><h2>{{ o.title }}</h2>{% if o.note %}<div class="meta">{{ o.note }}</div>{% endif %}
+<div class="btns"><a href="{{ o.url }}" rel="sponsored noopener" target="_blank">詳しく見る</a></div></div>
+{% endfor %}
+
+{% for e in entries %}
+<div class="card entry" data-no="{{ e.no }}">
+  <div class="no">No.{{ '%03d' % e.no }}</div>
+  <h2>{{ e.title }}</h2>
+  <div class="meta">{{ e.genre }}｜{{ e.date }}時点の情報</div>
+  {% for p in e.products %}
+  <div class="item"><div class="n">{{ p.name }}</div><div class="p">{{ '{:,}'.format(p.price) }}円（投稿時点）</div>
+    <div class="btns">
+      {% if p.rakuten %}<a href="{{ p.rakuten }}" rel="sponsored noopener" target="_blank">楽天市場で見る</a>{% endif %}
+      {% if p.amazon %}<a class="alt" href="{{ p.amazon }}" rel="sponsored noopener" target="_blank">Amazonで探す</a>{% endif %}
+    </div></div>
+  {% endfor %}
+  {% for o in e.offers %}
+  <div class="item"><div class="n">あわせてチェック：{{ o.title }}</div><div class="btns"><a class="alt" href="{{ o.url }}" rel="sponsored noopener" target="_blank">公式サイトを見る</a></div></div>
+  {% endfor %}
+</div>
+{% endfor %}
+<footer>更新: {{ updated }}</footer>
+</main>
+<script>
+const q = document.getElementById('q');
+function apply() {
+  const v = (q.value || '').replace(/[^0-9]/g, '');
+  document.querySelectorAll('.entry').forEach(el => {
+    el.classList.toggle('hidden', !!v && String(parseInt(el.dataset.no, 10)) !== String(parseInt(v, 10)));
+  });
+}
+q.addEventListener('input', apply);
+const h = (location.hash || '').replace('#', ''); if (h) { q.value = h; apply(); }
+</script>
+</body></html>

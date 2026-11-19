@@ -1,0 +1,257 @@
+{
+ "_note": "オフライン動作確認用の架空データです（ブランド名・価格・レビュー数はすべて架空）。本番では楽天APIのデータに置き換わります。",
+ "items": [
+  {
+   "item_code": "smp-dr-01",
+   "genre_key": "hair_dryer",
+   "name": "【楽天1位】AIRFLE 大風量ドライヤー Pro 速乾 マイナスイオン 軽量 温冷 送料無料",
+   "short_name": "AIRFLE 大風量ドライヤー Pro",
+   "shop": "サンプルショップ",
+   "caption": "大風量 速乾 マイナスイオン 軽量 温冷切替 低温モード",
+   "url": "https://example.com/item/smp-dr-01",
+   "now": {
+    "price": 19800,
+    "rank": 1,
+    "review_count": 4210,
+    "review_avg": 4.62
+   },
+   "past": {
+    "price": 21800,
+    "rank": 2,
+    "review_count": 3980,
+    "review_avg": 4.61
+   }
+  },
+  {
+   "item_code": "smp-dr-02",
+   "genre_key": "hair_dryer",
+   "name": "LUMINA ヘアドライヤー Silky 低温 スカルプ 折りたたみ ポイント10倍",
+   "short_name": "LUMINA ドライヤー Silky",
+   "shop": "サンプルショップ",
+   "caption": "低温モード スカルプ 折りたたみ 静音",
+   "url": "https://example.com/item/smp-dr-02",
+   "now": {
+    "price": 12980,
+    "rank": 2,
+    "review_count": 2875,
+    "review_avg": 4.48
+   },
+   "past": {
+    "price": 12980,
+    "rank": 3,
+    "review_count": 2700,
+    "review_avg": 4.47
+   }
+  },
+  {
+   "item_code": "smp-dr-03",
+   "genre_key": "hair_dryer",
+   "name": "Kaze Lab 速乾ドライヤー Light 軽量 マイナスイオン",
+   "short_name": "Kaze Lab 速乾ドライヤー Light",
+   "shop": "サンプルショップ",
+   "caption": "速乾 軽量 マイナスイオン",
+   "url": "https://example.com/item/smp-dr-03",
+   "now": {
+    "price": 7980,
+    "rank": 3,
+    "review_count": 1520,
+    "review_avg": 4.31
+   },
+   "past": {
+    "price": 8980,
+    "rank": 9,
+    "review_count": 1400,
+    "review_avg": 4.3
+   }
+  },
+  {
+   "item_code": "smp-dr-04",
+   "genre_key": "hair_dryer",
+   "name": "Nuage ドライヤー Premium 大風量 温冷 スカルプ 静音",
+   "short_name": "Nuage ドライヤー Premium",
+   "shop": "サンプルショップ",
+   "caption": "大風量 温冷 スカルプ 静音",
+   "url": "https://example.com/item/smp-dr-04",
+   "now": {
+    "price": 34800,
+    "rank": 4,
+    "review_count": 980,
+    "review_avg": 4.71
+   },
+   "past": {
+    "price": 34800,
+    "rank": 4,
+    "review_count": 920,
+    "review_avg": 4.7
+   }
+  },
+  {
+   "item_code": "smp-dr-05",
+   "genre_key": "hair_dryer",
+   "name": "MINIMO コンパクトドライヤー 折りたたみ 軽量",
+   "short_name": "MINIMO コンパクトドライヤー",
+   "shop": "サンプルショップ",
+   "caption": "折りたたみ 軽量",
+   "url": "https://example.com/item/smp-dr-05",
+   "now": {
+    "price": 4980,
+    "rank": 5,
+    "review_count": 3310,
+    "review_avg": 4.12
+   },
+   "past": {
+    "price": 4980,
+    "rank": 5,
+    "review_count": 3200,
+    "review_avg": 4.11
+   }
+  },
+  {
+   "item_code": "smp-dr-06",
+   "genre_key": "hair_dryer",
+   "name": "Breeze ion ドライヤー マイナスイオン 低温",
+   "short_name": "Breeze ion ドライヤー",
+   "shop": "サンプルショップ",
+   "caption": "マイナスイオン 低温",
+   "url": "https://example.com/item/smp-dr-06",
+   "now": {
+    "price": 9800,
+    "rank": 6,
+    "review_count": 760,
+    "review_avg": 4.25
+   },
+   "past": {
+    "price": 10800,
+    "rank": 7,
+    "review_count": 700,
+    "review_avg": 4.24
+   }
+  },
+  {
+   "item_code": "smp-fd-01",
+   "genre_key": "facial_device",
+   "name": "Hadalux 多機能美顔器 EMS RF LED 温冷 防水",
+   "short_name": "Hadalux 多機能美顔器",
+   "shop": "サンプルショップ",
+   "caption": "EMS RF LED 温冷 防水",
+   "url": "https://example.com/item/smp-fd-01",
+   "now": {
+    "price": 29800,
+    "rank": 1,
+    "review_count": 1880,
+    "review_avg": 4.55
+   },
+   "past": {
+    "price": 29800,
+    "rank": 1,
+    "review_count": 1800,
+    "review_avg": 4.55
+   }
+  },
+  {
+   "item_code": "smp-fd-02",
+   "genre_key": "facial_device",
+   "name": "Pureskin イオン導入美顔器 温冷 コードレス",
+   "short_name": "Pureskin イオン導入美顔器",
+   "shop": "サンプルショップ",
+   "caption": "イオン導入 温冷 コードレス",
+   "url": "https://example.com/item/smp-fd-02",
+   "now": {
+    "price": 9980,
+    "rank": 2,
+    "review_count": 2650,
+    "review_avg": 4.33
+   },
+   "past": {
+    "price": 11980,
+    "rank": 6,
+    "review_count": 2500,
+    "review_avg": 4.32
+   }
+  },
+  {
+   "item_code": "smp-fd-03",
+   "genre_key": "facial_device",
+   "name": "Glow LEDマスク型 美顔器 LED コードレス",
+   "short_name": "Glow LEDマスク型美顔器",
+   "shop": "サンプルショップ",
+   "caption": "LED コードレス",
+   "url": "https://example.com/item/smp-fd-03",
+   "now": {
+    "price": 39800,
+    "rank": 3,
+    "review_count": 540,
+    "review_avg": 4.41
+   },
+   "past": {
+    "price": 39800,
+    "rank": 3,
+    "review_count": 500,
+    "review_avg": 4.4
+   }
+  },
+  {
+   "item_code": "smp-fd-04",
+   "genre_key": "facial_device",
+   "name": "Tonelift EMS美顔器 リフト 防水",
+   "short_name": "Tonelift EMS美顔器",
+   "shop": "サンプルショップ",
+   "caption": "EMS リフト 防水",
+   "url": "https://example.com/item/smp-fd-04",
+   "now": {
+    "price": 15800,
+    "rank": 4,
+    "review_count": 1210,
+    "review_avg": 4.28
+   },
+   "past": {
+    "price": 15800,
+    "rank": 5,
+    "review_count": 1150,
+    "review_avg": 4.27
+   }
+  },
+  {
+   "item_code": "smp-fd-05",
+   "genre_key": "facial_device",
+   "name": "Aqua RF美顔器 RF 温冷 防水",
+   "short_name": "Aqua RF美顔器",
+   "shop": "サンプルショップ",
+   "caption": "RF 温冷 防水",
+   "url": "https://example.com/item/smp-fd-05",
+   "now": {
+    "price": 22800,
+    "rank": 5,
+    "review_count": 830,
+    "review_avg": 4.47
+   },
+   "past": {
+    "price": 24800,
+    "rank": 4,
+    "review_count": 800,
+    "review_avg": 4.46
+   }
+  },
+  {
+   "item_code": "smp-fd-06",
+   "genre_key": "facial_device",
+   "name": "Petit ion 美顔器 イオン導入 コードレス",
+   "short_name": "Petit ion 美顔器",
+   "shop": "サンプルショップ",
+   "caption": "イオン導入 コードレス",
+   "url": "https://example.com/item/smp-fd-06",
+   "now": {
+    "price": 5980,
+    "rank": 6,
+    "review_count": 1990,
+    "review_avg": 4.05
+   },
+   "past": {
+    "price": 5980,
+    "rank": 8,
+    "review_count": 1900,
+    "review_avg": 4.03
+   }
+  }
+ ]
+}

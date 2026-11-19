@@ -1,0 +1,74 @@
+# ============================================================
+#  autopilot 基本設定（秘密情報は .env / GitHub Secrets に置く）
+# ============================================================
+
+account:
+  name: "美容家電ガチ比較ノート"          # 画像・リンク集ページに出るアカウント名
+  handle: "@your_account"                  # 画像のフッターに表示（未設定なら非表示にしてOK）
+  concept: "買う前に3秒で比較。美容家電の“ガチ比較”ノート"
+  timezone: "Asia/Tokyo"
+
+# ---- 投稿量（立ち上げ期の推奨値。伸びてきたら増やす） ----
+volume:
+  buffer_days: 2              # 何日分を先に作っておくか
+  carousel_per_day: 1
+  reel_per_day: 1
+  story_per_day: 1            # 前日のカルーセルを告知
+
+# ---- 投稿スロット（JST）。GitHub Actions の cron と合わせる ----
+slots:
+  - { name: story,    time: "07:30", platform: instagram, kind: story }
+  - { name: carousel, time: "12:15", platform: instagram, kind: carousel }
+  - { name: tiktok,   time: "19:00", platform: tiktok,    kind: reel }
+  - { name: reel,     time: "21:00", platform: instagram, kind: reel }
+slot_tolerance_minutes: 90    # cron の遅延を許容する幅
+
+platforms:
+  instagram: true
+  tiktok: false               # TikTok の Direct Post 審査通過後に true
+
+# ---- コンテンツ ----
+content:
+  formats: [ranking, price_band, spotlight, guide]
+  hook_types: [number, loss, compare, question]
+  themes: [milk, sakura, mint, night]
+  products_per_post: 5
+  min_price: 3000             # 安い付属品・消耗品を除外
+  product_cooldown_days: 21
+  similarity_threshold: 0.85  # 過去キャプションとの類似度がこれ以上なら作り直し
+  use_product_images: false   # 商品画像の利用は各規約を確認してから true に
+  hashtags_max: 5
+
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  transition_seconds: 0.3
+  speed_scale: 1.15
+  require_voice: true         # 本番で音声合成が失敗したら投稿しない（--sample 時は無音で続行）
+  bgm_volume: 0.18
+  max_seconds: 45
+
+tts:
+  engine_order: [voicevox, edge]
+  voicevox_speaker: "冥鳴ひまり"    # 落ち着いた女性の声
+  voicevox_style: "ノーマル"
+  edge_voice: "ja-JP-NanamiNeural"
+
+llm:
+  order: [gemini, groq, openrouter, ollama, template]
+  temperature: 0.8
+  max_attempts_per_provider: 2
+
+media_host:
+  backend: github_pages       # github_pages | static_dir | local
+  keep_days_after_publish: 7
+
+tiktok:
+  privacy_level: PUBLIC_TO_EVERYONE   # 審査前は API が SELF_ONLY しか許さない（自動で切替）
+  aigc_label: true
+  disclose_branded: true      # ブランドコンテンツ（広告）表示をオン
+  disable_comment: false
+
+notify:
+  weekly_report_weekday: 0    # 0 = 月曜

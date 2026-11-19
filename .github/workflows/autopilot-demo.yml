@@ -1,0 +1,34 @@
+# 手動実行：サンプルデータでカルーセルと動画を作り、成果物としてダウンロードできるようにする（投稿はしない）
+name: autopilot-demo
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      voicevox:
+        image: voicevox/voicevox_engine:cpu-0.26.2
+        ports: ["50021:50021"]
+    env:
+      VOICEVOX_URL: http://localhost:50021
+      STATE_BRANCH: autopilot-demo-unused
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/autopilot-setup
+      - name: Wait for VOICEVOX
+        run: for i in $(seq 1 60); do curl -sf localhost:50021/version && exit 0; sleep 3; done; exit 1
+      - name: Tests
+        run: pip install -q pytest && cd autopilot && pytest -q
+      - name: Demo
+        run: cd autopilot && autopilot demo --out output/demo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: autopilot-demo
+          path: |
+            autopilot/output/demo/post_*/*.jpg
+            autopilot/output/demo/post_*/*.mp4
+            autopilot/output/demo/post_*/*.txt
+            autopilot/output/demo/public/index.html

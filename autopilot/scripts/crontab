@@ -1,0 +1,8 @@
+# ローカル / VPS 用スケジュール（コンテナの TZ=Asia/Tokyo）
+SHELL=/bin/bash
+7 3 * * *   root cd /app && autopilot generate        >> /app/data/cron.log 2>&1
+30 7 * * *  root cd /app && autopilot publish --slot story    >> /app/data/cron.log 2>&1
+15 12 * * * root cd /app && autopilot publish --slot carousel >> /app/data/cron.log 2>&1
+0 19 * * *  root cd /app && autopilot publish --slot tiktok   >> /app/data/cron.log 2>&1
+0 21 * * *  root cd /app && autopilot publish --slot reel     >> /app/data/cron.log 2>&1
+37 23 * * * root cd /app && autopilot maintain        >> /app/data/cron.log 2>&1

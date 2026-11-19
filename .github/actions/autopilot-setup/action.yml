@@ -1,0 +1,36 @@
+name: autopilot setup
+description: Python・FFmpeg・Playwright を用意し、状態 DB を復元する
+inputs:
+  playwright:
+    description: Chromium を入れるか
+    default: "true"
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: pip
+        cache-dependency-path: autopilot/pyproject.toml
+    - name: Install FFmpeg
+      shell: bash
+      run: |
+        if ! ffmpeg -hide_banner -filters 2>/dev/null | grep -q " ass "; then
+          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+        fi
+    - name: Install autopilot
+      shell: bash
+      run: pip install -q -e "autopilot[edge]"
+    - name: Cache Playwright browsers
+      if: inputs.playwright == 'true'
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ hashFiles('autopilot/pyproject.toml') }}
+    - name: Install Chromium
+      if: inputs.playwright == 'true'
+      shell: bash
+      run: python -m playwright install --with-deps chromium
+    - name: Restore state
+      shell: bash
+      run: autopilot/scripts/state.sh pull

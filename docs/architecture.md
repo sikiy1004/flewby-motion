@@ -1,6 +1,6 @@
 # SNSアフィリエイト全自動化 — システムアーキテクチャ（Phase 2）
 
-作成日: 2026-11-19 / ステータス: **ドラフト（ユーザー承認待ち）**
+作成日: 2026-11-19 / ステータス: **承認済み・実装済み**（実装は [`autopilot/`](../autopilot/README.md)）
 前提となる戦略: [`docs/strategy.md`](./strategy.md)（ジャンル＝美容家電・セルフケアガジェット比較）
 
 ---
@@ -55,7 +55,7 @@
 | トレンド | PR TIMES RSS、Google トレンド（急上昇）RSS、ガジェット系ニュースRSS | 無料RSS | — |
 | LLM | **Gemini API 無料枠**（Flash系） | 無料枠（レート制限あり・無料枠の入力は学習利用され得る＝公開前提の投稿文なので許容） | Groq無料枠 → OpenRouter無料モデル → Ollama（ローカル）→ 決定論テンプレ（LLMゼロでも投稿は止まらない） |
 | 画像生成 | **Jinja2 + HTML/CSS + Playwright（Chromium）** | OSS。リポジトリ既存の Noto Sans JP / Inter フォントを再利用 | Pillow 簡易レンダラー |
-| 音声合成 | **VOICEVOX Engine（Docker, CPU版）** | 無料・商用可（キャラクターごとの規約に従いクレジット表記を自動付与） | Edge-TTS（※非公式利用のため規約上グレー。あくまで非常用） |
+| 音声合成 | **VOICEVOX Engine（Docker, CPU版 `cpu-0.26.2`。既定の声は冥鳴ひまり）** | 無料・商用可（キャラクターごとの規約に従いクレジット表記を自動付与） | Edge-TTS（※非公式利用のため規約上グレー。あくまで非常用） |
 | 素材 | Pexels API / Pixabay API | 無料（Pexels: 200req/時） | 単色グラデ＋図形のモーション背景（素材なしでも成立） |
 | 動画編集 | **FFmpeg**（zoompan / xfade / libass 字幕 / sidechain ダッキング / loudnorm） | OSS。MoviePyより高速・省メモリでCI向き | — |
 | BGM | `assets/bgm/` に置いた商用可・クレジット不要の音源 | 素材を置かない場合はFFmpegで生成する環境音パッドを使用 | — |

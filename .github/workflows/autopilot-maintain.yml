@@ -1,0 +1,48 @@
+# 毎日 23:37 JST：インサイト取得・学習・トークン更新・古いメディア削除・週次レポート
+name: autopilot-maintain
+on:
+  schedule:
+    - cron: "37 14 * * *"  # 23:37 JST
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: autopilot-state
+  cancel-in-progress: false
+jobs:
+  maintain:
+    if: vars.AUTOPILOT_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AUTOPILOT_SECRET_KEY: ${{ secrets.AUTOPILOT_SECRET_KEY }}
+      RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+      RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+      RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+      AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_GRAPH_HOST: ${{ vars.IG_GRAPH_HOST }}
+      TIKTOK_ENABLED: ${{ vars.TIKTOK_ENABLED }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+      MEDIA_REPO: ${{ vars.MEDIA_REPO }}
+      MEDIA_BASE_URL: ${{ vars.MEDIA_BASE_URL }}
+      MEDIA_REPO_TOKEN: ${{ secrets.MEDIA_REPO_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      AUTOPILOT_DRY_RUN: ${{ vars.AUTOPILOT_DRY_RUN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/autopilot-setup
+        with:
+          playwright: "false"
+      - name: Maintain
+        run: autopilot maintain
+      - name: Save state
+        if: always()
+        run: autopilot/scripts/state.sh push

@@ -1,0 +1,61 @@
+# 投稿スロット（JST）: 07:30 ストーリー / 12:15 カルーセル / 19:00 TikTok / 21:00 リール
+name: autopilot-publish
+on:
+  schedule:
+    - cron: "30 22 * * *"  # 07:30 JST
+    - cron: "15 3 * * *"   # 12:15 JST
+    - cron: "2 10 * * *"   # 19:02 JST
+    - cron: "3 12 * * *"   # 21:03 JST
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "story / carousel / reel / tiktok（空なら現在時刻から自動判定）"
+        required: false
+        default: ""
+permissions:
+  contents: write
+concurrency:
+  group: autopilot-state
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: vars.AUTOPILOT_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      AUTOPILOT_SECRET_KEY: ${{ secrets.AUTOPILOT_SECRET_KEY }}
+      RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+      RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+      RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+      AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_GRAPH_HOST: ${{ vars.IG_GRAPH_HOST }}
+      TIKTOK_ENABLED: ${{ vars.TIKTOK_ENABLED }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+      MEDIA_REPO: ${{ vars.MEDIA_REPO }}
+      MEDIA_BASE_URL: ${{ vars.MEDIA_BASE_URL }}
+      MEDIA_REPO_TOKEN: ${{ secrets.MEDIA_REPO_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      AUTOPILOT_DRY_RUN: ${{ vars.AUTOPILOT_DRY_RUN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/autopilot-setup
+        with:
+          playwright: "false"
+      - name: Publish
+        run: |
+          if [ -n "${{ github.event.inputs.slot }}" ]; then
+            autopilot publish --slot "${{ github.event.inputs.slot }}" --force
+          else
+            autopilot publish --slot auto
+          fi
+      - name: Save state
+        if: always()
+        run: autopilot/scripts/state.sh push

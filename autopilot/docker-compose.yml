@@ -1,0 +1,18 @@
+# ローカル PC / VPS で常駐させる場合:  docker compose up -d
+# （GitHub Actions で動かす場合は不要）
+services:
+  voicevox:
+    image: voicevox/voicevox_engine:cpu-0.26.2
+    restart: unless-stopped
+    ports: ["127.0.0.1:50021:50021"]
+  autopilot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      VOICEVOX_URL: http://voicevox:50021
+    volumes:
+      - ./data:/app/data
+      - ./output:/app/output
+      - ./config:/app/config
+    depends_on: [voicevox]

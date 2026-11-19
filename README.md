@@ -1,3 +1,5 @@
+> **SNSアフィリエイト全自動化システム（autopilot）** はこのリポジトリの [`autopilot/`](autopilot/README.md) にあります。戦略は [`docs/strategy.md`](docs/strategy.md)、設計は [`docs/architecture.md`](docs/architecture.md)。以下は同じリポジトリにある別プロジェクト（Remotion 解説動画）の説明です。
+
 # 外部顧問・従業員面談 設計メモ — 解説動画（Remotion）
 
 Swiss International Typographic Style をベースにした、約 165 秒の日本語解説動画です。

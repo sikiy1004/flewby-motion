@@ -1,0 +1,60 @@
+# 毎日 03:07 JST：収集 → 企画 → 台本 → カルーセル/動画生成 → 公開URL化（2日分のバッファを補充）
+name: autopilot-generate
+on:
+  schedule:
+    - cron: "7 18 * * *"   # UTC（= 03:07 JST）
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: autopilot-state
+  cancel-in-progress: false
+jobs:
+  generate:
+    if: vars.AUTOPILOT_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    services:
+      voicevox:
+        image: voicevox/voicevox_engine:cpu-0.26.2
+        ports: ["50021:50021"]
+    env:
+      AUTOPILOT_SECRET_KEY: ${{ secrets.AUTOPILOT_SECRET_KEY }}
+      RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+      RAKUTEN_AFFILIATE_ID: ${{ secrets.RAKUTEN_AFFILIATE_ID }}
+      RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
+      AMAZON_ASSOCIATE_TAG: ${{ secrets.AMAZON_ASSOCIATE_TAG }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+      IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      IG_GRAPH_HOST: ${{ vars.IG_GRAPH_HOST }}
+      TIKTOK_ENABLED: ${{ vars.TIKTOK_ENABLED }}
+      TIKTOK_CLIENT_KEY: ${{ secrets.TIKTOK_CLIENT_KEY }}
+      TIKTOK_CLIENT_SECRET: ${{ secrets.TIKTOK_CLIENT_SECRET }}
+      TIKTOK_REFRESH_TOKEN: ${{ secrets.TIKTOK_REFRESH_TOKEN }}
+      MEDIA_REPO: ${{ vars.MEDIA_REPO }}
+      MEDIA_BASE_URL: ${{ vars.MEDIA_BASE_URL }}
+      MEDIA_REPO_TOKEN: ${{ secrets.MEDIA_REPO_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      AUTOPILOT_DRY_RUN: ${{ vars.AUTOPILOT_DRY_RUN }}
+      VOICEVOX_URL: http://localhost:50021
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/autopilot-setup
+      - name: Wait for VOICEVOX
+        run: for i in $(seq 1 60); do curl -sf localhost:50021/version && exit 0; sleep 3; done; exit 1
+      - name: Generate
+        run: autopilot generate
+      - name: Save state
+        if: always()
+        run: autopilot/scripts/state.sh push
+      - name: Upload outputs (debug)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: autopilot-output
+          path: autopilot/output/
+          retention-days: 3

@@ -1,0 +1,11 @@
+# 季節イベント（毎年おおよその時期）。期間中は「季節フック」として投稿冒頭の文言に使う。
+# セールの開催を断定する表現は使わない（「〜の前に比較」など、事実に依存しない言い回しのみ）。
+events:
+  - { name: 新生活, start: "03-01", end: "04-10", phrase: "新生活の準備に", genres: [hair_dryer, hair_iron, toothbrush, body_scale] }
+  - { name: 夏前, start: "05-01", end: "06-30", phrase: "夏が来る前に", genres: [epilator, body_scale] }
+  - { name: 夏のボーナス, start: "06-25", end: "07-20", phrase: "ボーナスで買うなら", genres: [hair_dryer, facial_device, epilator] }
+  - { name: 冬のボーナス, start: "12-05", end: "12-25", phrase: "ボーナスで買うなら", genres: [hair_dryer, facial_device, epilator] }
+  - { name: ブラックフライデー, start: "11-15", end: "11-30", phrase: "ブラックフライデーの前に", genres: [hair_dryer, hair_iron, facial_device, toothbrush] }
+  - { name: クリスマス, start: "12-01", end: "12-24", phrase: "クリスマスギフトにも", genres: [hair_dryer, hair_iron, facial_device, toothbrush] }
+  - { name: 年末年始, start: "12-26", end: "01-10", phrase: "新年のご褒美に", genres: [facial_device, hair_dryer, body_scale] }
+  - { name: 乾燥の季節, start: "10-15", end: "02-28", phrase: "乾燥する季節の", genres: [hair_dryer, facial_device] }

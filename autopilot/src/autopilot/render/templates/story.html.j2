@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<style>
+{{ base_css }}
+section { width: 1080px; height: 1920px; position: relative; overflow: hidden;
+  background: radial-gradient(1200px 900px at 85% 10%, var(--bg2), transparent 70%), radial-gradient(900px 900px at 0% 95%, var(--soft), transparent 70%), var(--bg); }
+.top { position: absolute; left: 80px; right: 80px; top: 250px; display: flex; justify-content: space-between; align-items: center; }
+.top .no { font: 800 34px "InterX"; color: var(--sub); }
+.new { position: absolute; left: 80px; top: 420px; }
+.hook { position: absolute; left: 80px; right: 80px; top: 540px; font: 800 120px/1.2 "NotoJP"; word-break: keep-all; overflow-wrap: anywhere; }
+.hook em { font-style: normal; color: var(--accent); }
+.box { position: absolute; left: 80px; right: 80px; top: 1130px; background: var(--surface); border-radius: 40px; padding: 50px; font: 700 48px/1.55 "NotoJP"; }
+.box b { color: var(--accent); font-family: "InterX", "NotoJP"; }
+</style></head>
+<body class="theme-{{ theme }}">
+<section id="story">
+  <div class="top"><span class="pr">PR</span><span class="no">No.{{ '%03d' % post_no }}</span></div>
+  <div class="new"><span class="chip">新しい比較を投稿しました</span></div>
+  <div class="hook">{{ hook_html | safe }}</div>
+  <div class="box">{{ genre }}の比較はフィードで。<br>商品リンクはプロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
+</section>
+</body></html>

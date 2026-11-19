@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "autopilot"
+version = "1.0.0"
+description = "美容家電アフィリエイト向け Instagram / TikTok 全自動投稿パイプライン"
+requires-python = ">=3.10"
+dependencies = [
+  "requests>=2.31",
+  "PyYAML>=6.0",
+  "Jinja2>=3.1",
+  "pydantic>=2.5",
+  "playwright>=1.45",
+  "feedparser>=6.0",
+  "cryptography>=42",
+  "python-dotenv>=1.0",
+  "budoux>=0.6",
+]
+
+[project.optional-dependencies]
+edge = ["edge-tts>=6.1"]
+dev = ["pytest>=8"]
+
+[project.scripts]
+autopilot = "autopilot.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+autopilot = ["render/templates/*", "linkpage/*.j2", "llm/*.j2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

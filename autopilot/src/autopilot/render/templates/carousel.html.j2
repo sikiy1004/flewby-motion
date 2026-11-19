@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<style>
+{{ base_css }}
+.slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: var(--bg); }
+.slide .inner { position: absolute; inset: 64px 72px 120px 72px; display: flex; flex-direction: column; }
+.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+.topbar .no { font: 800 30px "InterX"; color: var(--sub); letter-spacing: .06em; }
+.footer { position: absolute; left: 72px; right: 72px; bottom: 48px; display: flex; justify-content: space-between; align-items: center;
+          font: 700 24px "NotoJP"; color: var(--sub); }
+.dots { display: flex; gap: 10px; }
+.dots i { width: 12px; height: 12px; border-radius: 6px; background: var(--line); display: block; }
+.dots i.on { width: 36px; background: var(--accent); }
+h2.title { font: 800 64px/1.25 "NotoJP"; letter-spacing: .01em; margin-bottom: 36px; }
+h2.title small { display: block; font: 700 30px "NotoJP"; color: var(--sub); margin-top: 10px; }
+
+/* cover */
+.cover .blob { position: absolute; border-radius: 50%; background: var(--bg2); }
+.cover .hook { font: 800 112px/1.2 "NotoJP"; letter-spacing: -.01em; margin-top: 50px; word-break: keep-all; overflow-wrap: anywhere; }
+.cover .hook em { font-style: normal; color: var(--accent); }
+.cover .subtitle { font: 700 38px/1.5 "NotoJP"; color: var(--sub); margin-top: 40px; }
+.cover .badge { margin-top: auto; display: flex; gap: 16px; align-items: center; }
+.cover .asof { font: 700 26px "NotoJP"; color: var(--sub); margin-top: 22px; }
+.cover .lineup { margin-top: auto; margin-bottom: 70px; background: var(--surface); border-radius: 28px; padding: 30px 36px; width: 760px; }
+.cover .lineup .lh { font: 800 24px "NotoJP"; color: var(--accent); letter-spacing: .08em; margin-bottom: 14px; }
+.cover .lineup .li { display: flex; align-items: center; gap: 18px; font: 700 30px "NotoJP"; padding: 7px 0; }
+.cover .lineup .rk { width: 46px; height: 46px; border-radius: 12px; font-size: 24px; }
+.cover .swipe { position: absolute; right: 72px; bottom: 140px; font: 800 30px "NotoJP"; color: var(--accent); }
+
+/* table */
+table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
+td { background: var(--surface); padding: 24px 18px; font: 700 30px "NotoJP"; vertical-align: middle; }
+td.num { white-space: nowrap; }
+td:first-child { border-radius: 18px 0 0 18px; padding-left: 26px; }
+td:last-child { border-radius: 0 18px 18px 0; padding-right: 26px; text-align: right; }
+th { font: 700 24px "NotoJP"; color: var(--sub); text-align: left; padding: 0 18px; }
+th:last-child { text-align: right; }
+.rk { display: inline-flex; width: 58px; height: 58px; border-radius: 16px; background: var(--soft); align-items: center; justify-content: center; font: 800 30px "InterX"; }
+.rk.top { background: var(--accent); color: var(--accent-ink); }
+.pname { font: 700 30px/1.3 "NotoJP"; }
+.best { display: inline-block; padding: 4px 12px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); }
+.note-src { font: 700 22px "NotoJP"; color: var(--sub); margin-top: auto; }
+
+/* product card */
+.card { background: var(--surface); border-radius: 36px; padding: 56px 56px 48px; flex: 1; display: flex; flex-direction: column; }
+.card .label { display: flex; align-items: center; gap: 18px; }
+.card .big-rank { font: 800 120px/1 "InterX"; color: var(--accent); }
+.card .big-rank span { font: 800 48px "NotoJP"; margin-left: 4px; }
+.card .pn { font: 800 60px/1.25 "NotoJP"; margin: 26px 0 30px; }
+.card .price { font: 800 92px/1 "InterX"; letter-spacing: -.02em; }
+.card .price span { font: 800 40px "NotoJP"; margin-left: 6px; }
+.card .price small { font: 700 24px "NotoJP"; color: var(--sub); margin-left: 14px; }
+.card .rating { display: flex; align-items: center; gap: 18px; margin: 30px 0 34px; font: 700 30px "NotoJP"; color: var(--sub); }
+.card .rating b { font: 800 40px "InterX"; color: var(--ink); }
+.bars { margin: 10px 0 30px; }
+.bar { display: grid; grid-template-columns: 150px 1fr 190px; align-items: center; gap: 18px; margin-bottom: 18px; font: 700 26px "NotoJP"; color: var(--sub); }
+.bar .track { height: 22px; border-radius: 11px; background: var(--soft); position: relative; overflow: hidden; }
+.bar .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 11px; background: var(--accent); display: block; }
+.bar .v { text-align: right; color: var(--ink); font: 800 28px "InterX", "NotoJP"; white-space: nowrap; }
+.bars .cap { font: 700 22px "NotoJP"; color: var(--sub); margin-bottom: 18px; }
+.card .for { margin-top: auto; background: var(--soft); border-radius: 22px; padding: 28px 32px; font: 700 34px/1.5 "NotoJP"; }
+.card .for::before { content: "こんな人に"; display: block; font: 800 24px "NotoJP"; color: var(--accent); margin-bottom: 8px; letter-spacing: .08em; }
+.card .img { position: absolute; right: 120px; top: 230px; width: 260px; height: 260px; object-fit: contain; border-radius: 24px; background: #fff; }
+
+/* tips */
+.tip .pt { font: 800 34px "InterX"; color: var(--accent); letter-spacing: .12em; }
+.tip .tt { font: 800 84px/1.25 "NotoJP"; margin: 24px 0 40px; }
+.tip .tb { font: 700 44px/1.7 "NotoJP"; color: var(--ink); }
+.tip .bignum { position: absolute; right: -20px; bottom: 60px; font: 800 560px/1 "InterX"; color: var(--bg2); z-index: 0; }
+.tip .inner > * { position: relative; z-index: 1; }
+
+/* picks */
+.pick { background: var(--surface); border-radius: 26px; padding: 34px 40px; margin-bottom: 24px; }
+.pick .pl { font: 800 28px "NotoJP"; color: var(--accent); }
+.pick .pv { font: 800 46px/1.3 "NotoJP"; margin: 8px 0 6px; }
+.pick .pr2 { font: 700 28px "NotoJP"; color: var(--sub); }
+.summary-line { font: 700 36px/1.6 "NotoJP"; margin-top: auto; }
+
+/* cta */
+.cta .big { font: 800 84px/1.3 "NotoJP"; margin-top: 80px; }
+.cta .big em { font-style: normal; color: var(--accent); }
+.cta .box { margin-top: 70px; background: var(--surface); border-radius: 30px; padding: 44px 48px; font: 700 40px/1.6 "NotoJP"; }
+.cta .box b { color: var(--accent); font-family: "InterX", "NotoJP"; }
+.cta .follow { margin-top: 36px; font: 700 34px "NotoJP"; color: var(--sub); }
+.disclaimer { font: 700 22px/1.5 "NotoJP"; color: var(--sub); margin-top: auto; }
+</style></head>
+<body class="theme-{{ theme }}">
+{% macro top(i) -%}
+<div class="topbar"><span class="pr">PR</span><span class="no">No.{{ '%03d' % post_no }}</span></div>
+{%- endmacro %}
+{% macro foot(i) -%}
+<div class="footer"><span>{{ account }}</span><span class="dots">{% for k in range(total) %}<i class="{{ 'on' if k == i else '' }}"></i>{% endfor %}</span></div>
+{%- endmacro %}
+{% macro stars(v) -%}
+<span class="stars">★★★★★<span class="fill" style="width: {{ (v / 5 * 100) | round(1) }}%">★★★★★</span></span>
+{%- endmacro %}
+
+{% for s in slides %}
+{% set i = loop.index0 %}
+<section class="slide {{ s.type }}" id="slide-{{ i }}" data-pr="1">
+{% if s.type == 'cover' %}
+  <div class="blob" style="width:760px;height:760px;right:-260px;top:-200px"></div>
+  <div class="blob" style="width:420px;height:420px;left:-160px;bottom:-120px;opacity:.6"></div>
+  <div class="inner">
+    {{ top(i) }}
+    <div><span class="chip">{{ genre }}</span> <span class="chip ghost">{{ format_label }}</span></div>
+    <div class="hook" style="font-size: {{ s.hook_size }}px">{{ s.hook_html | safe }}</div>
+    <div class="subtitle">{{ s.subtitle | jp }}</div>
+    <div class="asof">{{ date_label }}時点・楽天市場の公開データをもとに作成</div>
+    <div class="lineup">
+      <div class="lh">{{ s.lineup_title }}</div>
+      {% for p in s.lineup %}<div class="li"><span class="rk {{ 'top' if loop.first else '' }}">{{ loop.index }}</span><span>{{ p.name }}</span></div>{% endfor %}
+    </div>
+  </div>
+  <div class="swipe">スワイプ →</div>
+{% elif s.type == 'table' %}
+  <div class="inner">
+    {{ top(i) }}
+    <h2 class="title">{{ s.title }}<small>{{ s.caption }}</small></h2>
+    <table>
+      <tr><th></th><th>商品</th><th>価格</th><th>評価</th><th>レビュー数</th></tr>
+      {% for p in s.products %}
+      <tr>
+        <td><span class="rk {{ 'top' if loop.first and s.ranked else '' }}">{{ p.label_short }}</span></td>
+        <td><div class="pname">{{ p.name }}</div></td>
+        <td class="num">{% if p.id == s.best_price %}<span class="best">{{ '{:,}'.format(p.price) }}円</span>{% else %}{{ '{:,}'.format(p.price) }}円{% endif %}</td>
+        <td class="num">{% if p.id == s.best_avg %}<span class="best">★{{ '%.2f' % p.review_avg }}</span>{% else %}★{{ '%.2f' % p.review_avg }}{% endif %}</td>
+        <td class="num">{% if p.id == s.best_count %}<span class="best">{{ '{:,}'.format(p.review_count) }}</span>{% else %}{{ '{:,}'.format(p.review_count) }}{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <div class="note-src">色付き＝比較した中で「いちばん手頃／評価が高い／レビューが多い」。{{ date_label }}時点・楽天市場調べ</div>
+  </div>
+{% elif s.type == 'product' %}
+  {% set p = s.product %}
+  <div class="inner">
+    {{ top(i) }}
+    <div class="card">
+      <div class="label"><span class="big-rank">{{ s.label_main }}<span>{{ s.label_suffix }}</span></span>{% if s.label_chip %}<span class="chip ghost">{{ s.label_chip }}</span>{% endif %}</div>
+      {% if p.image_url %}<img class="img" src="{{ p.image_url }}">{% endif %}
+      <div class="pn">{{ p.name | jp }}</div>
+      <div class="price num">{{ '{:,}'.format(p.price) }}<span>円</span><small>{{ date_label }}時点</small></div>
+      <div class="rating">{{ stars(p.review_avg) }}<b>{{ '%.2f' % p.review_avg }}</b>レビュー {{ '{:,}'.format(p.review_count) }}件</div>
+      <div>{% for f in p.features %}<span class="tag">{{ f }}</span>{% endfor %}</div>
+      <div class="bars">
+        <div class="cap">比較した{{ s.n }}台の中での位置</div>
+        <div class="bar"><span>価格</span><span class="track"><i style="width: {{ (p.price / s.max_price * 100) | round(1) }}%"></i></span><span class="v">{{ '{:,}'.format(p.price) }}円</span></div>
+        <div class="bar"><span>評価</span><span class="track"><i style="width: {{ (p.review_avg / 5 * 100) | round(1) }}%"></i></span><span class="v">★{{ '%.2f' % p.review_avg }}</span></div>
+        <div class="bar"><span>レビュー数</span><span class="track"><i style="width: {{ (p.review_count / s.max_count * 100) | round(1) }}%"></i></span><span class="v">{{ '{:,}'.format(p.review_count) }}件</span></div>
+      </div>
+      <div class="for">{{ s.note | jp }}</div>
+    </div>
+  </div>
+{% elif s.type == 'tip' %}
+  <div class="bignum">{{ s.n }}</div>
+  <div class="inner">
+    {{ top(i) }}
+    <div class="pt">POINT {{ s.n }}</div>
+    <div class="tt">{{ s.title | jp }}</div>
+    <div class="tb">{{ s.body | jp }}</div>
+  </div>
+{% elif s.type == 'picks' %}
+  <div class="inner">
+    {{ top(i) }}
+    <h2 class="title">{{ s.title }}</h2>
+    {% for k in s.picks %}
+    <div class="pick"><div class="pl">{{ k.label }}</div><div class="pv">{{ k.name }}</div><div class="pr2">{{ k.reason }}</div></div>
+    {% endfor %}
+    <div class="summary-line">{{ s.summary | jp }}</div>
+  </div>
+{% elif s.type == 'cta' %}
+  <div class="inner">
+    {{ top(i) }}
+    <div class="big">{{ "あとで比べるときのために" | jp }}<br><em>保存</em>しておいてね</div>
+    <div class="box">紹介した商品のリンクは<br>プロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
+    <div class="follow">フォローすると新しい比較が届きます　{{ handle }}</div>
+    <div class="disclaimer">※本投稿はアフィリエイト広告を含みます。価格・ランキング・レビューは{{ date_label }}時点の楽天市場の情報で、変動します。効果・効能を保証するものではありません。</div>
+  </div>
+{% endif %}
+  {{ foot(i) }}
+</section>
+{% endfor %}
+</body></html>

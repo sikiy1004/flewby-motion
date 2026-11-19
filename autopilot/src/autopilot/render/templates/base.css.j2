@@ -1,0 +1,26 @@
+@font-face { font-family: "NotoJP"; font-weight: 400; src: url("{{ fonts }}/NotoSansJP_400Regular.ttf"); }
+@font-face { font-family: "NotoJP"; font-weight: 700; src: url("{{ fonts }}/NotoSansJP_700Bold.ttf"); }
+@font-face { font-family: "NotoJP"; font-weight: 800; src: url("{{ fonts }}/NotoSansJP_800ExtraBold.ttf"); }
+@font-face { font-family: "InterX"; font-weight: 700; src: url("{{ fonts }}/Inter_700Bold.ttf"); }
+@font-face { font-family: "InterX"; font-weight: 800; src: url("{{ fonts }}/Inter_800ExtraBold.ttf"); }
+
+.theme-milk   { --bg:#F5EEE4; --bg2:#EADCCB; --surface:#FFFDF9; --ink:#3A2E26; --sub:#8C7B6E; --accent:#C07F55; --accent-ink:#FFFFFF; --soft:#F1E3D2; --line:#E4D6C6; }
+.theme-sakura { --bg:#FBEEF0; --bg2:#F5D9DE; --surface:#FFFFFF; --ink:#3D2A31; --sub:#9A7480; --accent:#D9667A; --accent-ink:#FFFFFF; --soft:#FBE1E6; --line:#F0D3D9; }
+.theme-mint   { --bg:#E8F3EF; --bg2:#D2E8E0; --surface:#FFFFFF; --ink:#1E3A34; --sub:#5D7E76; --accent:#2B9580; --accent-ink:#FFFFFF; --soft:#D9EEE7; --line:#CBE3DA; }
+.theme-night  { --bg:#1B2131; --bg2:#262F47; --surface:#252D43; --ink:#F4EFE7; --sub:#A8B0C3; --accent:#E2B567; --accent-ink:#1B2131; --soft:#313B57; --line:#36415F; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: transparent; }
+body { font-family: "InterX", "NotoJP", sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.num { font-family: "InterX", "NotoJP", sans-serif; font-feature-settings: "tnum" 1; letter-spacing: -0.01em; }
+
+.pr { display: inline-flex; align-items: center; justify-content: center; height: 46px; padding: 0 20px;
+      border-radius: 10px; border: 3px solid var(--ink); font: 800 26px "InterX", sans-serif; letter-spacing: .08em; color: var(--ink); }
+.chip { display: inline-flex; align-items: center; height: 54px; padding: 0 26px; border-radius: 999px;
+        background: var(--accent); color: var(--accent-ink); font: 700 28px "NotoJP"; letter-spacing: .04em; }
+.chip.ghost { background: var(--soft); color: var(--ink); }
+.tag { display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border-radius: 12px;
+       background: var(--soft); color: var(--ink); font: 700 30px "NotoJP"; margin: 0 12px 12px 0; }
+
+.stars { position: relative; display: inline-block; font-size: 36px; line-height: 1; letter-spacing: 4px; color: var(--line); }
+.stars .fill { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; color: var(--accent); }

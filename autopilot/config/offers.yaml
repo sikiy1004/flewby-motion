@@ -1,0 +1,22 @@
+# ASP で「提携承認済み」の案件だけを登録してください。
+# ここに無い案件のリンクはシステムが生成しません（未提携リンクの誤掲載を防ぐため）。
+# genres を指定すると、そのジャンルの投稿のリンク集カードに「あわせてチェック」として表示されます。
+# pinned: true はリンク集ページ上部に固定表示。
+
+offers: []
+
+# 例（承認後にコメントを外して URL を差し替え）:
+# offers:
+#   - id: hikari_official
+#     title: "家庭用光美容器 メーカー公式ストア"
+#     asp: A8.net
+#     url: "https://px.a8.net/svt/ejp?a8mat=XXXXXXXX"
+#     note: "公式限定の保証・特典を確認"
+#     genres: [epilator]
+#     pinned: true
+#   - id: rental_beauty
+#     title: "美容家電をレンタルでお試し"
+#     asp: もしもアフィリエイト
+#     url: "https://af.moshimo.com/af/c/click?a_id=XXXX"
+#     genres: [hair_dryer, facial_device, epilator]
+#     pinned: false
