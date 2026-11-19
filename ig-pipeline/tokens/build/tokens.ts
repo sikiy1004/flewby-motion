@@ -191,6 +191,28 @@ export const tokens = {
       "tracking": "-0.015em",
       "case": "upper"
     },
+    "sectionWord": {
+      "family": "serifDisplay",
+      "size": 104,
+      "weight": 400,
+      "lineHeight": 0.9,
+      "tracking": "-0.01em",
+      "case": "upper"
+    },
+    "productName": {
+      "family": "serifDisplay",
+      "size": 56,
+      "weight": 400,
+      "lineHeight": 1,
+      "tracking": "-0.005em"
+    },
+    "productNameS": {
+      "family": "serifDisplay",
+      "size": 30,
+      "weight": 500,
+      "lineHeight": 1.1,
+      "tracking": "0"
+    },
     "tagline": {
       "family": "serifDisplay",
       "size": 26,
@@ -203,6 +225,13 @@ export const tokens = {
       "size": 24,
       "weight": 400,
       "lineHeight": 1.75,
+      "tracking": "0.06em"
+    },
+    "jpCta": {
+      "family": "mincho",
+      "size": 34,
+      "weight": 400,
+      "lineHeight": 1.6,
       "tracking": "0.06em"
     },
     "jpBody": {
@@ -222,6 +251,20 @@ export const tokens = {
     "price": {
       "family": "serifDisplay",
       "size": 44,
+      "weight": 400,
+      "lineHeight": 1,
+      "tracking": "0"
+    },
+    "priceL": {
+      "family": "serifDisplay",
+      "size": 60,
+      "weight": 400,
+      "lineHeight": 1,
+      "tracking": "-0.01em"
+    },
+    "index": {
+      "family": "serifDisplay",
+      "size": 28,
       "weight": 400,
       "lineHeight": 1,
       "tracking": "0"
@@ -348,7 +391,14 @@ export const tokens = {
     "collection": "BEAUTY_TECH ARCHIVE",
     "handle": "@your_account",
     "prLabel": "PR",
-    "prNotice": "本投稿はアフィリエイト広告（PR）を含みます"
+    "prNotice": "本投稿はアフィリエイト広告（PR）を含みます",
+    "cta": "商品リンクは\nプロフィールから。",
+    "stores": [
+      "楽天ROOM",
+      "Amazon"
+    ],
+    "savePrompt": "保存して、選ぶときに見返してください。",
+    "priceNote": "価格は{date}時点の参考価格（税込）です。最新情報は各ストアでご確認ください。"
   }
 } as const;
 export type Tokens = typeof tokens;

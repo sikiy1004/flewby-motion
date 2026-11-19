@@ -1,6 +1,9 @@
 {
   "id": "post-03-brush",
-  "collection": { "number": 2, "issue": 9 },
+  "collection": {
+    "number": 2,
+    "issue": 9
+  },
   "cover": {
     "word": "Clear",
     "kicker": "Sonic Cleansing Brush",
@@ -8,5 +11,11 @@
     "aurora": "tide",
     "hero": "face-brush"
   },
-  "products": ["face-brush"]
+  "products": [
+    "face-brush"
+  ],
+  "priceDate": "2026年11月",
+  "summary": {
+    "word": "Index"
+  }
 }

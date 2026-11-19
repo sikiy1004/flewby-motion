@@ -1,6 +1,9 @@
 {
   "id": "post-01-morning",
-  "collection": { "number": 2, "issue": 7 },
+  "collection": {
+    "number": 2,
+    "issue": 7
+  },
   "cover": {
     "word": "Ritual",
     "kicker": "Morning Beauty Tech — 3 Items",
@@ -8,5 +11,48 @@
     "aurora": "dawn",
     "hero": "facial-ems"
   },
-  "products": ["facial-ems", "hair-dryer", "face-brush"]
+  "products": [
+    "facial-ems",
+    "hair-dryer",
+    "face-brush"
+  ],
+  "priceDate": "2026年11月",
+  "compare": {
+    "word": "Compare",
+    "kicker": "Morning Beauty Tech — 3 Items",
+    "lead": "価格とスペックで、並べて比べる。",
+    "rows": [
+      {
+        "label": "カテゴリ",
+        "field": "category"
+      },
+      {
+        "label": "価格",
+        "field": "price"
+      },
+      {
+        "label": "重さ",
+        "spec": "重さ"
+      },
+      {
+        "label": "充電",
+        "spec": "充電"
+      },
+      {
+        "label": "防水",
+        "spec": "防水"
+      },
+      {
+        "label": "推しポイント",
+        "field": "points.0"
+      }
+    ]
+  },
+  "summary": {
+    "word": "Index"
+  },
+  "hashtags": [
+    "#朝美容",
+    "#時短美容"
+  ]
 }

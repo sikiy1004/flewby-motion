@@ -1,6 +1,9 @@
 {
   "id": "post-02-dryer",
-  "collection": { "number": 2, "issue": 8 },
+  "collection": {
+    "number": 2,
+    "issue": 8
+  },
   "cover": {
     "word": "Flow",
     "kicker": "Hair Dryer Review",
@@ -8,5 +11,11 @@
     "aurora": "shift",
     "hero": "hair-dryer"
   },
-  "products": ["hair-dryer"]
+  "products": [
+    "hair-dryer"
+  ],
+  "priceDate": "2026年11月",
+  "summary": {
+    "word": "Index"
+  }
 }

@@ -1,0 +1,42 @@
+{# A案 まとめ 1080×1350 — index, profile CTA, PR notice #}
+{% extends "layouts/base.njk" %}
+{% set showPr = true %}
+{% block body %}
+<div class="bg bg--top bg--mirror" style="background-image:url('assets/aurora/{{ cover.aurora }}.jpg')"></div>
+<div class="bg-fade"></div>
+{% include "partials/masthead.njk" %}
+
+<header class="section-head">
+  <div class="t-label-small cover-text__kicker" data-font-role="label">Summary</div>
+  <h1 class="t-section-word" data-font-role="serifDisplay">{{ summary.word or "Index" }}</h1>
+</header>
+
+<ol class="index">
+  {% for it in items %}
+  <li>
+    <span class="t-index" data-font-role="serifDisplay">{{ loop.index | pad2 }}</span>
+    <span class="index__name">
+      <span class="t-jp-caption muted" data-font-role="mincho">{{ it.category }}</span>
+      <span class="t-product-name-s" data-font-role="serifDisplay">{{ it.brand }} {{ it.name }}</span>
+    </span>
+    <span class="t-price" data-font-role="serifDisplay">{{ it.price | yen }}</span>
+  </li>
+  {% endfor %}
+</ol>
+
+<section class="cta">
+  <p class="t-jp-cta" data-font-role="mincho">{{ brand.cta | nl2br }}</p>
+  <div class="cta__row">
+    <span class="t-label" data-font-role="label">{{ brand.handle }}</span>
+    <span class="cta__arrow"></span>
+    {% for s in brand.stores %}<span class="store-tag t-jp-caption" data-font-role="mincho">{{ s }}</span>{% endfor %}
+  </div>
+  <p class="t-jp-caption muted-soft cta__save" data-font-role="mincho">{{ brand.savePrompt }}</p>
+</section>
+
+<footer class="pr-notice">
+  <span class="pr-tag t-pr" data-font-role="label">{{ brand.prLabel }}</span>
+  <p class="t-jp-caption" data-font-role="mincho">{{ brand.prNotice }}<br>{{ priceNote }}</p>
+</footer>
+{% include "partials/dots.njk" %}
+{% endblock %}

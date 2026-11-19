@@ -1,0 +1,17 @@
+{#- Instagram caption. PR disclosure goes first so it is visible before "…more". -#}
+【PR】{{ brand.prNotice }}
+
+{{ cover.word | upper }}｜{{ cover.lead | replace("\n", "") }}
+{% for it in items %}
+{{ loop.index | pad2 }}　{{ it.category }}｜{{ it.brand }} {{ it.name }}
+・{{ it.points | join(" / ") }}
+・参考価格 {{ it.price | yen }}
+
+{% endfor %}
+▶ 商品リンクはプロフィール（{{ brand.handle }}）の{{ brand.stores | join("／") }}から
+{{ brand.savePrompt }}
+
+※{{ priceNote }}
+※本投稿にはアフィリエイトリンクが含まれます。{{ brand.amazonDisclosure }}
+
+{{ hashtags | join(" ") }}

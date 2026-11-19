@@ -1,0 +1,40 @@
+{# A案 商品詳細 1080×1350 — 1 product per page #}
+{% extends "layouts/base.njk" %}
+{% block body %}
+<div class="bg bg--soft {% if mirror %}bg--mirror{% endif %}" style="background-image:url('assets/aurora/{{ cover.aurora }}.jpg')"></div>
+<div class="bg-fade"></div>
+{% include "partials/masthead.njk" %}
+
+<figure class="detail-product">
+  <span class="floor"></span>
+  <img src="{{ item.cutout }}" alt="">
+</figure>
+
+<section class="detail">
+  <div class="detail__id">
+    <div class="detail__meta">
+      <span class="t-index" data-font-role="serifDisplay">{{ itemNo | pad2 }}</span>
+      <span class="t-label-small" data-font-role="label">{{ item.categoryEn }}</span>
+    </div>
+    <div class="t-label detail__brand" data-font-role="label">{{ item.brand }}</div>
+    <h2 class="t-product-name" data-font-role="serifDisplay">{{ item.name }}</h2>
+    <div class="t-jp-body detail__ja" data-font-role="mincho">{{ item.category }}｜{{ item.nameJa }}</div>
+    <div class="detail__price">
+      <span class="t-price-l" data-font-role="serifDisplay">{{ item.price | yen }}</span>
+      <span class="t-jp-caption muted" data-font-role="mincho">税込・参考価格</span>
+    </div>
+  </div>
+
+  <div class="detail__info">
+    <div class="t-label-small muted section-label" data-font-role="label">Point</div>
+    <ol class="points">
+      {% for p in item.points %}<li><span class="t-label-small" data-font-role="label">{{ loop.index | pad2 }}</span><span class="t-jp-body" data-font-role="mincho">{{ p }}</span></li>{% endfor %}
+    </ol>
+    <div class="t-label-small muted section-label" data-font-role="label">Spec</div>
+    <dl class="spec">
+      {% for k, v in item.specs %}<div><dt class="t-jp-caption muted" data-font-role="mincho">{{ k }}</dt><dd class="t-jp-caption" data-font-role="mincho">{{ v }}</dd></div>{% endfor %}
+    </dl>
+  </div>
+</section>
+{% include "partials/dots.njk" %}
+{% endblock %}

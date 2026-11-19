@@ -1,0 +1,37 @@
+{# A案 比較ページ 1080×1350 — 2〜4 products #}
+{% extends "layouts/base.njk" %}
+{% block body %}
+<div class="bg bg--top" style="background-image:url('assets/aurora/{{ cover.aurora }}.jpg')"></div>
+<div class="bg-fade"></div>
+{% include "partials/masthead.njk" %}
+
+<header class="section-head">
+  {% if compare.kicker %}<div class="t-label-small cover-text__kicker" data-font-role="label">{{ compare.kicker }}</div>{% endif %}
+  <h1 class="t-section-word" data-font-role="serifDisplay">{{ compare.word or "Compare" }}</h1>
+  {% if compare.lead %}<p class="t-jp-lead muted-soft" data-font-role="mincho">{{ compare.lead | nl2br }}</p>{% endif %}
+</header>
+
+<section class="cmp" style="--n: {{ items | length }}">
+  <div class="cmp__row cmp__row--head">
+    <div></div>
+    {% for it in items %}
+    <div class="cmp__prod">
+      <div class="cmp__thumb"><img src="{{ it.cutout }}" alt=""></div>
+      <div class="t-label-small" data-font-role="label">{{ loop.index | pad2 }} — {{ it.brand }}</div>
+      <div class="t-product-name-s" data-font-role="serifDisplay">{{ it.name }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% for row in compareRows %}
+  <div class="cmp__row {% if row.kind == 'price' %}cmp__row--price{% endif %}">
+    <div class="t-jp-caption muted" data-font-role="mincho">{{ row.label }}</div>
+    {% for c in row.cells %}
+      {% if row.kind == 'price' %}<div class="t-price" data-font-role="serifDisplay">{{ c }}</div>
+      {% else %}<div class="t-jp-caption" data-font-role="mincho">{{ c }}</div>{% endif %}
+    {% endfor %}
+  </div>
+  {% endfor %}
+</section>
+<p class="t-jp-caption muted cmp__note" data-font-role="mincho">{{ priceNote }}</p>
+{% include "partials/dots.njk" %}
+{% endblock %}
