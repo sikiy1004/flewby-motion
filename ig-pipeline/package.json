@@ -11,7 +11,11 @@
     "assets:paint": ".venv/bin/python generators/paint.py",
     "board": "npm run tokens && node pipeline/shot.mjs docs/board/step1.html docs/previews/step1-board.png --width 1600 --full",
     "build": "node pipeline/build.mjs",
-    "assets:mock": ".venv/bin/python generators/mock_products.py"
+    "assets:mock": ".venv/bin/python generators/mock_products.py",
+    "cutout": ".venv/bin/python pipeline/cutout.py",
+    "all": "npm run tokens && npm run cutout && npm run build",
+    "ps:remove-bg": "bash scripts/photoshop/run.sh remove-bg",
+    "ps:export": "bash scripts/photoshop/run.sh export-cutout"
   },
   "devDependencies": {
     "playwright": "1.63.0"

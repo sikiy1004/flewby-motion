@@ -106,6 +106,8 @@ def save(rid, scene: Scene, backdrop="#E9E7E3"):
     rgba = np.dstack([srgb(rgb), a])[y0:y1, x0:x1]
     (ROOT / "assets/products/mock").mkdir(parents=True, exist_ok=True)
     Image.fromarray((rgba * 255 + 0.5).astype(np.uint8), "RGBA").save(ROOT / f"assets/products/mock/{rid}.png", optimize=True)
+    # crop offset in the raw photo, so cut-out QA can compare masks in the same coordinates
+    (ROOT / f"assets/products/mock/{rid}.json").write_text(f'{{"x0": {int(x0)}, "y0": {int(y0)}}}\n')
 
     # "photo": seamless backdrop with gradient, contact shadow, noise, slight blur
     bg = lin(backdrop) * (1.08 - 0.25 * ((Y - S * 0.35) / S) ** 2 * 2)[..., None]

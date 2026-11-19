@@ -22,7 +22,10 @@ function loadProducts() {
   const list = JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8"));
   return Object.fromEntries(
     list.map((p) => {
-      const cutout = `assets/products/cutout/${p.id}.png`;
+      // a hand-made cut-out (Photoshop) wins over the automatic rembg one
+      const manual = `assets/products/manual/${p.id}.png`;
+      const auto = `assets/products/cutout/${p.id}.png`;
+      const cutout = fs.existsSync(path.join(ROOT, manual)) ? manual : auto;
       if (!fs.existsSync(path.join(ROOT, cutout))) throw new Error(`cut-out missing for ${p.id}: run npm run cutout`);
       return [p.id, { ...p, cutout, displayHeight: p.displayHeight ?? T.layout.productMaxHeight }];
     })

@@ -398,7 +398,15 @@ export const tokens = {
       "Amazon"
     ],
     "savePrompt": "保存して、選ぶときに見返してください。",
-    "priceNote": "価格は{date}時点の参考価格（税込）です。最新情報は各ストアでご確認ください。"
+    "priceNote": "価格は{date}時点の参考価格（税込）です。最新情報は各ストアでご確認ください。",
+    "amazonDisclosure": "Amazonのアソシエイトとして、当アカウントは適格販売により収入を得ています。",
+    "hashtags": [
+      "#美容家電",
+      "#美容ガジェット",
+      "#美顔器",
+      "#スキンケア家電",
+      "#楽天ROOM"
+    ]
   }
 } as const;
 export type Tokens = typeof tokens;

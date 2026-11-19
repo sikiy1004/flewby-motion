@@ -1,7 +1,6 @@
+.cache/
 .venv/
-node_modules/
 __pycache__/
-.cache/
-out/**/*.tmp
+node_modules/
 out/
-.cache/
+out/**/*.tmp
