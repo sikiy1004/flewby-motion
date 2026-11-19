@@ -1,0 +1,46 @@
+{# B案 リールカバー 1080×1920 — impasto strokes + heavy gothic headline #}
+{% extends "layouts/base.njk" %}
+{% block head %}<script>window.__ready = false;</script>{% endblock %}
+{% block body %}
+<div class="b-labels">
+  <span class="t-label-small b-vert" data-font-role="label">{{ brand.collection }}<br>{{ reel.year or "2026" }}</span>
+  <span class="t-label-small b-vert" data-font-role="label">{{ reel.kicker or "Reel" }}<br>No. {{ post.collection.issue | pad2 }}</span>
+  <span class="t-label-small" data-font-role="label">{{ brand.handle }}</span>
+</div>
+
+{% for s in strokes %}
+<img class="stroke stroke--{{ s.z }}" {% if s.anchor %}data-anchor-dy="{{ s.dy }}"{% endif %} src="assets/paint/{{ s.name }}.png" style="left:{{ s.x }}px;top:{{ s.y }}px;width:{{ s.dw }}px;transform:translate(-50%,-50%) rotate({{ s.rot }}deg)">
+{% endfor %}
+
+<section class="b-head" style="top:{{ layout.headline.top }}px;bottom:{{ canvas.height - layout.headline.bottom }}px">
+  <h1 class="t-headline-heavy b-head__title" data-font-role="gothicHeavy" data-fit="{{ canvas.width - 2 * T.layout.margin.x }}">{{ reel.headline | nl2br }}</h1>
+  <div class="b-head__sub">
+    <span class="t-sub-heavy" data-font-role="gothicHeavy">{{ reel.sub }}</span>
+    {% if reel.accent %}<span class="b-accent" data-font-role="serifDisplay">{{ reel.accent }}</span>{% endif %}
+    <span class="pr-tag t-pr b-pr" data-font-role="label">{{ brand.prLabel }}</span>
+  </div>
+</section>
+
+<div class="b-foot">
+  <span class="t-label-small b-vert" data-font-role="label">Link in profile<br>{{ brand.stores | join(" / ") }}</span>
+</div>
+
+<script>
+// Fit the headline: largest size (≤ token size × maxScale) whose longest line fits the measure.
+document.fonts.ready.then(() => {
+  document.querySelectorAll("[data-fit]").forEach((el) => {
+    const max = parseFloat(getComputedStyle(el).fontSize) * {{ reel.maxScale or 1.35 }};
+    const measure = +el.dataset.fit;
+    el.style.whiteSpace = "nowrap";
+    el.style.width = "max-content";          // measure the text itself, not the block
+    let size = max;
+    el.style.fontSize = size + "px";
+    while (el.getBoundingClientRect().width > measure && size > 40) { size -= 2; el.style.fontSize = size + "px"; }
+  });
+  // strokes anchored to the headline: place them relative to its fitted top edge
+  const head = document.querySelector(".b-head__title").getBoundingClientRect();
+  document.querySelectorAll("[data-anchor-dy]").forEach((st) => { st.style.top = head.top + +st.dataset.anchorDy + "px"; });
+  window.__ready = true;
+});
+</script>
+{% endblock %}

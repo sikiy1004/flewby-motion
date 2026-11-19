@@ -1,0 +1,109 @@
+{
+  "_doc": "B-plan stroke layout. x,y = centre in 1x px on the 1080x1920 canvas; w = display width; rot = extra rotation (deg); z = 'under' | 'over' the headline; pool = which strokes may fill the slot ('any' or 'accent' = small dark dabs). Seed picks strokes and adds small jitter. anchor='headTop' + dy positions the slot relative to the fitted headline's top edge (y is then ignored).",
+  "headline": {
+    "top": 1080,
+    "bottom": 1540
+  },
+  "slots": [
+    {
+      "x": 230,
+      "y": 360,
+      "w": 360,
+      "rot": -4,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 560,
+      "y": 330,
+      "w": 340,
+      "rot": 3,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 880,
+      "y": 380,
+      "w": 300,
+      "rot": 0,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 250,
+      "y": 610,
+      "w": 300,
+      "rot": 6,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 560,
+      "y": 600,
+      "w": 330,
+      "rot": -8,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 870,
+      "y": 640,
+      "w": 330,
+      "rot": 4,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 260,
+      "y": 850,
+      "w": 350,
+      "rot": -6,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 590,
+      "y": 860,
+      "w": 300,
+      "rot": 10,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 880,
+      "y": 880,
+      "w": 320,
+      "rot": -3,
+      "z": "under",
+      "pool": "any"
+    },
+    {
+      "x": 760,
+      "y": 1080,
+      "w": 300,
+      "rot": 2,
+      "z": "over",
+      "pool": "any",
+      "anchor": "headTop",
+      "dy": -30
+    },
+    {
+      "x": 960,
+      "y": 1120,
+      "w": 140,
+      "rot": 20,
+      "z": "over",
+      "pool": "accent",
+      "anchor": "headTop",
+      "dy": -18
+    },
+    {
+      "x": 160,
+      "y": 1090,
+      "w": 150,
+      "rot": -14,
+      "z": "under",
+      "pool": "accent"
+    }
+  ]
+}

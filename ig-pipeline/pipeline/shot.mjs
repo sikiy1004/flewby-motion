@@ -40,6 +40,7 @@ export async function shoot(browser, inFile, outFile, { width = 1080, height = 1
   await page.evaluate((m) => document.documentElement.setAttribute("data-font-mode", m), fontMode);
   await page.evaluate(() => document.fonts.ready);
   await page.waitForFunction(() => [...document.images].every((i) => i.complete));
+  await page.waitForFunction(() => window.__ready !== false); // templates that measure text set this when done
   const report = fontsReport ? await reportFonts(page) : null;
   await page.screenshot({ path: outFile, fullPage: full, type: outFile.endsWith(".jpg") ? "jpeg" : "png", ...(outFile.endsWith(".jpg") ? { quality: 95 } : {}) });
   await page.close();

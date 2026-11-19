@@ -40,7 +40,36 @@ function slidesFor(post, items) {
     s.push({ key: "compare", tpl: "a-compare.njk", canvas: "carousel" });
   }
   s.push({ key: "summary", tpl: "a-summary.njk", canvas: "carousel" });
+  if (post.reel) s.push({ key: "reel-cover", group: "reel", tpl: "b-reel-cover.njk", canvas: "reel", standalone: true, ctx: reelCtx(post) });
   return s;
+}
+
+// ---- B-plan stroke placement (deterministic per post seed)
+function mulberry32(a) {
+  return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+function reelCtx(post) {
+  const reel = post.reel;
+  const layout = JSON.parse(fs.readFileSync(path.join(ROOT, `templates/b-layouts/${reel.layout ?? "scatter-a"}.json`), "utf8"));
+  const paint = JSON.parse(fs.readFileSync(path.join(ROOT, "generators/presets/paint.json"), "utf8")).strokes;
+  const rnd = mulberry32(reel.seed ?? 1);
+  const shuffle = (a) => a.map((v) => [rnd(), v]).sort((x, y) => x[0] - y[0]).map((x) => x[1]);
+  const isAccent = (p) => p.colors.length === 1 && p.colors[0] === "black" && p.length <= 320;
+  let pool = shuffle(paint.filter((p) => !isAccent(p)).map((p) => p.name));
+  let accents = shuffle(paint.filter(isAccent).map((p) => p.name));
+  if (reel.strokes) pool = [...reel.strokes];
+  const strokes = layout.slots.map((sl) => {
+    const name = sl.pool === "accent" ? accents.shift() ?? pool.shift() : pool.shift() ?? accents.shift();
+    const j = (k) => (rnd() - 0.5) * 2 * k;
+    if (!name) return null;
+    // size by the sprite's longest side so tall (rotated) strokes don't blow up
+    const png = fs.readFileSync(path.join(ROOT, `assets/paint/${name}.png`));
+    const pw = png.readUInt32BE(16), ph = png.readUInt32BE(20);
+    const longSide = sl.w * (0.92 + rnd() * 0.16);
+    const dw = Math.round(pw >= ph ? longSide : longSide * (pw / ph));
+    return { ...sl, name, dw, x: Math.round(sl.x + j(24)), y: Math.round(sl.y + j(20)), rot: +(sl.rot + j(6)).toFixed(1) };
+  }).filter(Boolean);
+  return { reel, layout, strokes };
 }
 
 const get = (obj, dotted) => dotted.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
@@ -75,6 +104,7 @@ export async function buildPost(postFile, { only, fonts } = {}) {
   fs.mkdirSync(htmlDir, { recursive: true });
 
   const all = slidesFor(post, items);
+  const carouselCount = all.filter((s) => !s.standalone).length;
   const slides = all.map((s, i) => ({ ...s, index: i })).filter((s) => !only || only.includes(s.key) || only.includes(s.group));
   const priceNote = T.brand.priceNote.replace("{date}", post.priceDate ?? "投稿");
   const dots = T.palette.aurora[post.cover.aurora]?.dots ?? T.palette.accentDots;
@@ -85,11 +115,11 @@ export async function buildPost(postFile, { only, fonts } = {}) {
       const ctx = {
         root: pathToFileURL(ROOT).href, T, brand: T.brand, post, cover: post.cover, compare: post.compare ?? {}, summary: post.summary ?? {},
         hero, items, dots, priceNote, compareRows: items.length >= 2 ? compareRows(post, items) : [],
-        pageNo: s.index === 0 ? null : `${String(s.index + 1).padStart(2, "0")} / ${String(all.length).padStart(2, "0")}`,
+        pageNo: s.index === 0 || s.standalone ? null : `${String(s.index + 1).padStart(2, "0")} / ${String(carouselCount).padStart(2, "0")}`,
         canvas: { name: s.canvas, ...c }, ...s.ctx,
       };
       const html = env.render(s.tpl, ctx);
-      const name = `${String(s.index + 1).padStart(2, "0")}-${s.key}`;
+      const name = s.standalone ? s.key : `${String(s.index + 1).padStart(2, "0")}-${s.key}`;
       const htmlFile = path.join(htmlDir, `${name}.html`);
       fs.writeFileSync(htmlFile, html);
       const png = path.join(outDir, `${name}.png`);
