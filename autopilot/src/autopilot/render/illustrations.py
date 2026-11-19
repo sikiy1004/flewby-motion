@@ -64,6 +64,49 @@ _ILLUST = {
     <ellipse cx="72" cy="146" rx="18" ry="26" fill="var(--pop)"/>
     <ellipse cx="130" cy="146" rx="18" ry="26" fill="var(--pop)"/>
   </g>""",
+    "humidifier": f"""
+  <g {S}>
+    <path d="M70 26 q-10 -14 2 -22 M100 22 q-10 -14 2 -22 M130 26 q-10 -14 2 -22" fill="none" stroke-width="4" opacity=".7"/>
+    <rect x="58" y="40" width="88" height="22" rx="11" fill="var(--pop)"/>
+    <path d="M50 62 L154 62 L146 182 Q146 194 132 194 L72 194 Q58 194 58 182 Z" fill="var(--accent)"/>
+    <rect x="76" y="92" width="52" height="64" rx="12" fill="var(--soft)"/>
+    <path d="M84 138 q18 -14 36 0" fill="none" stroke-width="4"/>
+    <circle cx="102" cy="176" r="6" fill="var(--soft)"/>
+  </g>""",
+    "futon_dryer": f"""
+  <g {S}>
+    <rect x="18" y="104" width="174" height="62" rx="20" fill="var(--soft)"/>
+    <path d="M18 128 Q105 112 192 128" fill="none" stroke-width="4"/>
+    <rect x="34" y="150" width="66" height="44" rx="12" fill="var(--accent)"/>
+    <path d="M100 168 Q130 168 136 140" fill="none" stroke-width="8"/>
+    <circle cx="56" cy="172" r="7" fill="var(--pop)"/>
+    <path d="M150 74 q8 -10 0 -20 M166 78 q8 -10 0 -20 M134 78 q8 -10 0 -20" fill="none" stroke-width="4" opacity=".7"/>
+  </g>""",
+    "massager": f"""
+  <g {S}>
+    <path d="M40 84 Q40 168 104 168 Q168 168 168 84" fill="none" stroke="var(--ink)" stroke-width="34"/>
+    <path d="M40 84 Q40 168 104 168 Q168 168 168 84" fill="none" stroke="var(--accent)" stroke-width="22"/>
+    <circle cx="40" cy="78" r="20" fill="var(--pop)"/>
+    <circle cx="168" cy="78" r="20" fill="var(--pop)"/>
+    <circle cx="104" cy="168" r="10" fill="var(--soft)"/>
+    <path d="M86 34 l0 18 M77 43 l18 0" stroke-width="4"/>
+  </g>""",
+    "smart_watch": f"""
+  <g {S}>
+    <rect x="76" y="10" width="54" height="52" rx="10" fill="var(--pop)"/>
+    <rect x="76" y="148" width="54" height="52" rx="10" fill="var(--pop)"/>
+    <rect x="52" y="52" width="102" height="106" rx="30" fill="var(--accent)"/>
+    <rect x="66" y="66" width="74" height="78" rx="20" fill="var(--soft)"/>
+    <path d="M76 108 l12 0 l6 -14 l10 28 l7 -14 l14 0" fill="none" stroke-width="4"/>
+    <rect x="154" y="88" width="10" height="26" rx="5" fill="var(--soft)"/>
+  </g>""",
+    "electric_blanket": f"""
+  <g {S}>
+    <path d="M28 52 Q104 34 180 52 L180 160 Q104 142 28 160 Z" fill="var(--accent)"/>
+    <path d="M44 78 Q104 64 164 78 M44 104 Q104 90 164 104 M44 130 Q104 116 164 130" fill="none" stroke="var(--soft)" stroke-width="5"/>
+    <path d="M180 140 Q196 150 186 172 Q178 190 194 196" fill="none" stroke-width="4"/>
+    <rect x="164" y="170" width="30" height="26" rx="7" fill="var(--pop)"/>
+  </g>""",
 }
 
 _ICONS = {

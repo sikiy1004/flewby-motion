@@ -14,7 +14,8 @@ from markupsafe import Markup
 from ..config import Settings
 from ..llm.schema import Copy
 from ..scoring import AXES
-from . import FORMAT_LABEL, base_css, phrase_html, render_template, screenshot_sections
+from . import FORMAT_LABEL, base_css, fit_font, phrase_html, render_template, screenshot_sections
+from ..media import attach_photos
 from .illustrations import arrow, icon, illustration, radar
 
 ANNOTATIONS = ["ここ大事！", "見落としがち", "要チェック", "比べてみて"]
@@ -59,12 +60,13 @@ def _big_number(plan: dict[str, Any]) -> tuple[str, str]:
 def build_slides(plan: dict[str, Any], copy: Copy) -> list[dict[str, Any]]:
     fmt, products, genre = plan["format"], plan["products"], plan["genre_key"]
     n_chars = len(copy.hook)
-    hook_size = 124 if n_chars <= 9 else (112 if n_chars <= 12 else (98 if n_chars <= 15 else 86))
+    hook_size = fit_font(copy.hook, 124 if n_chars <= 9 else (112 if n_chars <= 12 else (98 if n_chars <= 15 else 86)))
     big_n, big_label = _big_number(plan)
     slides: list[dict[str, Any]] = [{
         "type": "cover", "hook_html": phrase_html(copy.hook), "subtitle": copy.subtitle, "hook_size": hook_size,
         "illust": illustration(genre, 330), "big_n": big_n, "big_label": big_label,
         "lineup_text": " / ".join(p["name"] for p in products[:5]),
+        "photos": [p["photo"] for p in products if p.get("photo")][:3],
     }]
     if fmt == "guide":
         for k, t in enumerate(plan["tips"], 1):
@@ -99,7 +101,14 @@ def build_slides(plan: dict[str, Any], copy: Copy) -> list[dict[str, Any]]:
     return slides[:10]  # Instagram API のカルーセル上限
 
 
+def _with_photo_uris(settings: Settings, plan: dict[str, Any]) -> dict[str, Any]:
+    plan = attach_photos(settings, plan)
+    return {**plan, "products": [{**p, "photo": Path(p["photo"]).resolve().as_uri() if p.get("photo") else None}
+                                 for p in plan["products"]]}
+
+
 def render_carousel(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: int, out_dir: Path) -> list[Path]:
+    plan = _with_photo_uris(settings, plan)
     slides = build_slides(plan, copy)
     month, day = plan["date"][5:7], plan["date"][8:10]
     html_text = render_template(
@@ -124,10 +133,12 @@ def render_carousel(settings: Settings, plan: dict[str, Any], copy: Copy, post_n
 
 
 def render_story(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: int, out_dir: Path) -> Path:
+    plan = _with_photo_uris(settings, plan)
+    photo = next((p["photo"] for p in plan["products"] if p.get("photo")), None)
     html_text = render_template(
         "story.html.j2", **design_assets(settings), theme=plan["theme"], post_no=post_no,
         hook_html=phrase_html(copy.hook), genre=plan["genre_label"], illust=illustration(plan["genre_key"], 230),
-        arrow_down=arrow("down", 130))
+        arrow_down=arrow("down", 130), photo=photo)
     path = out_dir / "story.jpg"
     screenshot_sections(html_text, out_dir / "_work", [("#story", path)], width=1080, height=1920, jpeg=True)
     return path

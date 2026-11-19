@@ -20,7 +20,8 @@
     "rank": 2,
     "review_count": 3980,
     "review_avg": 4.61
-   }
+   },
+   "image": "sample/images/smp-dr-01.jpg"
   },
   {
    "item_code": "smp-dr-02",
@@ -41,7 +42,8 @@
     "rank": 3,
     "review_count": 2700,
     "review_avg": 4.47
-   }
+   },
+   "image": "sample/images/smp-dr-02.jpg"
   },
   {
    "item_code": "smp-dr-03",
@@ -62,7 +64,8 @@
     "rank": 9,
     "review_count": 1400,
     "review_avg": 4.3
-   }
+   },
+   "image": "sample/images/smp-dr-03.jpg"
   },
   {
    "item_code": "smp-dr-04",
@@ -83,7 +86,8 @@
     "rank": 4,
     "review_count": 920,
     "review_avg": 4.7
-   }
+   },
+   "image": "sample/images/smp-dr-04.jpg"
   },
   {
    "item_code": "smp-dr-05",
@@ -104,7 +108,8 @@
     "rank": 5,
     "review_count": 3200,
     "review_avg": 4.11
-   }
+   },
+   "image": "sample/images/smp-dr-05.jpg"
   },
   {
    "item_code": "smp-dr-06",
@@ -125,7 +130,8 @@
     "rank": 7,
     "review_count": 700,
     "review_avg": 4.24
-   }
+   },
+   "image": "sample/images/smp-dr-06.jpg"
   },
   {
    "item_code": "smp-fd-01",
@@ -146,7 +152,8 @@
     "rank": 1,
     "review_count": 1800,
     "review_avg": 4.55
-   }
+   },
+   "image": "sample/images/smp-fd-01.jpg"
   },
   {
    "item_code": "smp-fd-02",
@@ -167,7 +174,8 @@
     "rank": 6,
     "review_count": 2500,
     "review_avg": 4.32
-   }
+   },
+   "image": "sample/images/smp-fd-02.jpg"
   },
   {
    "item_code": "smp-fd-03",
@@ -188,7 +196,8 @@
     "rank": 3,
     "review_count": 500,
     "review_avg": 4.4
-   }
+   },
+   "image": "sample/images/smp-fd-03.jpg"
   },
   {
    "item_code": "smp-fd-04",
@@ -209,7 +218,8 @@
     "rank": 5,
     "review_count": 1150,
     "review_avg": 4.27
-   }
+   },
+   "image": "sample/images/smp-fd-04.jpg"
   },
   {
    "item_code": "smp-fd-05",
@@ -230,7 +240,8 @@
     "rank": 4,
     "review_count": 800,
     "review_avg": 4.46
-   }
+   },
+   "image": "sample/images/smp-fd-05.jpg"
   },
   {
    "item_code": "smp-fd-06",
@@ -251,7 +262,140 @@
     "rank": 8,
     "review_count": 1900,
     "review_avg": 4.03
-   }
+   },
+   "image": "sample/images/smp-fd-06.jpg"
+  },
+  {
+   "item_code": "smp-hu-01",
+   "genre_key": "humidifier",
+   "name": "Mistra ハイブリッド加湿器 上部給水 大容量 静音 タイマー",
+   "short_name": "Mistra ハイブリッド加湿器",
+   "shop": "サンプルショップ",
+   "caption": "ハイブリッド 上部給水 大容量 静音 タイマー 湿度センサー",
+   "url": "https://example.com/item/smp-hu-01",
+   "now": {
+    "price": 14800,
+    "rank": 1,
+    "review_count": 3120,
+    "review_avg": 4.52
+   },
+   "past": {
+    "price": 16800,
+    "rank": 3,
+    "review_count": 2950,
+    "review_avg": 4.51
+   },
+   "image": "sample/images/smp-hu-01.jpg"
+  },
+  {
+   "item_code": "smp-hu-02",
+   "genre_key": "humidifier",
+   "name": "Kumo スチーム加湿器 タイマー",
+   "short_name": "Kumo スチーム加湿器",
+   "shop": "サンプルショップ",
+   "caption": "スチーム タイマー",
+   "url": "https://example.com/item/smp-hu-02",
+   "now": {
+    "price": 9980,
+    "rank": 2,
+    "review_count": 2410,
+    "review_avg": 4.36
+   },
+   "past": {
+    "price": 9980,
+    "rank": 2,
+    "review_count": 2300,
+    "review_avg": 4.35
+   },
+   "image": "sample/images/smp-hu-02.jpg"
+  },
+  {
+   "item_code": "smp-hu-03",
+   "genre_key": "humidifier",
+   "name": "Shizuku 超音波加湿器 アロマ 上部給水",
+   "short_name": "Shizuku 超音波加湿器",
+   "shop": "サンプルショップ",
+   "caption": "超音波 アロマ 上部給水 静音",
+   "url": "https://example.com/item/smp-hu-03",
+   "now": {
+    "price": 4980,
+    "rank": 3,
+    "review_count": 1880,
+    "review_avg": 4.18
+   },
+   "past": {
+    "price": 4980,
+    "rank": 4,
+    "review_count": 1800,
+    "review_avg": 4.17
+   },
+   "image": "sample/images/smp-hu-03.jpg"
+  },
+  {
+   "item_code": "smp-hu-04",
+   "genre_key": "humidifier",
+   "name": "Fuwari 気化式加湿器 静音 大容量",
+   "short_name": "Fuwari 気化式加湿器",
+   "shop": "サンプルショップ",
+   "caption": "気化式 静音 大容量",
+   "url": "https://example.com/item/smp-hu-04",
+   "now": {
+    "price": 22800,
+    "rank": 4,
+    "review_count": 760,
+    "review_avg": 4.61
+   },
+   "past": {
+    "price": 22800,
+    "rank": 5,
+    "review_count": 700,
+    "review_avg": 4.6
+   },
+   "image": "sample/images/smp-hu-04.jpg"
+  },
+  {
+   "item_code": "smp-hu-05",
+   "genre_key": "humidifier",
+   "name": "Ame ミニ加湿器 USB",
+   "short_name": "Ame ミニ加湿器",
+   "shop": "サンプルショップ",
+   "caption": "超音波",
+   "url": "https://example.com/item/smp-hu-05",
+   "now": {
+    "price": 3280,
+    "rank": 5,
+    "review_count": 2950,
+    "review_avg": 4.02
+   },
+   "past": {
+    "price": 3280,
+    "rank": 6,
+    "review_count": 2850,
+    "review_avg": 4.01
+   },
+   "image": "sample/images/smp-hu-05.jpg"
+  },
+  {
+   "item_code": "smp-hu-06",
+   "genre_key": "humidifier",
+   "name": "Yuge ハイブリッド加湿器 Pro 湿度センサー",
+   "short_name": "Yuge ハイブリッド加湿器 Pro",
+   "shop": "サンプルショップ",
+   "caption": "ハイブリッド 湿度センサー 大容量 タイマー",
+   "url": "https://example.com/item/smp-hu-06",
+   "now": {
+    "price": 29800,
+    "rank": 6,
+    "review_count": 540,
+    "review_avg": 4.48
+   },
+   "past": {
+    "price": 29800,
+    "rank": 7,
+    "review_count": 500,
+    "review_avg": 4.47
+   },
+   "image": "sample/images/smp-hu-06.jpg"
   }
  ]
 }

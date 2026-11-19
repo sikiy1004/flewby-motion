@@ -33,16 +33,19 @@
 .tbl-title { font-size: 74px; line-height: 1.2; }
 .legend { display: flex; gap: 26px; margin: 18px 0 26px; font: 700 26px "Zen Kaku Gothic New"; color: var(--sub); }
 .legend b { font-size: 34px; margin-right: 4px; }
-.grid { display: grid; grid-template-columns: 1fr 112px 112px 112px 112px 130px; border-radius: 26px; overflow: hidden; background: var(--soft);
+.grid { display: grid; grid-template-columns: 1fr 104px 104px 104px 104px 116px; border-radius: 26px; overflow: hidden; background: var(--soft);
         box-shadow: 0 2px 0 var(--line), 0 18px 40px rgba(40,30,20,.08); }
-.grid > div { display: flex; align-items: center; justify-content: center; padding: 18px 8px; border-bottom: 2px solid var(--line); }
+.grid > div { display: flex; align-items: center; justify-content: center; padding: 14px 6px; border-bottom: 2px solid var(--line); min-height: 104px; }
+.grid .h { min-height: 0; }
 .grid .h { background: var(--ink); color: var(--paper); font: 900 24px "Zen Kaku Gothic New"; flex-direction: column; gap: 6px; padding: 16px 4px; }
 .grid .h svg { width: 44px; height: 44px; }
-.grid .p { justify-content: flex-start; gap: 16px; padding-left: 22px; }
+.grid .p { justify-content: flex-start; gap: 14px; padding-left: 18px; }
 .grid .p .rk { flex: none; min-width: 54px; height: 54px; padding: 0 8px; border-radius: 27px; border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; font: 900 24px "Zen Kaku Gothic New"; }
-.grid .p .nm { font: 900 27px/1.3 "Zen Kaku Gothic New"; }
+.grid .p .nm { font: 900 25px/1.25 "Zen Kaku Gothic New"; }
 .grid .p .pr2 { font: 400 26px "DM Serif Display"; color: var(--sub); }
-.grid .sc { font: 400 52px "DM Serif Display"; }
+.grid .sc { font: 400 48px "DM Serif Display"; }
+.grid .mk { font-size: 56px; }
+.grid .thumb { width: 54px; height: 54px; }
 .grid .best { background: color-mix(in srgb, var(--pop) 38%, var(--soft)); }
 .grid > div:nth-last-child(-n+6) { border-bottom: none; }
 .tbl-note { display: flex; align-items: flex-start; gap: 6px; margin-top: 22px; position: relative; }
@@ -128,8 +131,16 @@
     <div class="sub">{{ s.subtitle | jp }}</div>
   </div>
   <div class="art">
+    {% if s.photos %}
+      {% set pos = [(150, 70, 300, -4, 3), (-20, 20, 220, -12, 2), (290, -10, 210, 10, 1)] %}
+      {% for ph in s.photos[:3] %}{% set q = pos[loop.index0] %}
+      <div class="polaroid" style="left: {{ q[0] }}px; top: {{ q[1] }}px; width: {{ q[2] }}px; height: {{ q[2] + 30 }}px; transform: rotate({{ q[3] }}deg); z-index: {{ q[4] }}"><img src="{{ ph }}"></div>
+      {% endfor %}
+      <div class="tape" style="left: 200px; top: 50px; transform: rotate(-8deg)"></div>
+    {% else %}
     <div class="illust-wrap">{{ s.illust | safe }}</div>
     <div class="tape" style="left: 70px; top: 30px; transform: rotate(-24deg)"></div>
+    {% endif %}
     <div class="stamp" style="right: -10px; top: -30px"><small>DATA</small><b>比較</b><small>{{ date_short }}</small></div>
   </div>
   <div class="bignum"><span class="n">{{ s.big_n }}</span><span class="l">{{ s.big_label | safe }}</span></div>
@@ -146,7 +157,7 @@
       <div class="h">{{ icons.people | safe }}口コミ</div><div class="h">{{ icons.spark | safe }}機能</div><div class="h">スコア</div>
       {% for p in s.products %}
       {% set b = 'best' if p.best else '' %}
-      <div class="p {{ b }}"><span class="rk">{{ p.label_short }}</span><span><div class="nm">{{ p.name }}</div><div class="pr2">¥{{ '{:,}'.format(p.price) }}</div></span></div>
+      <div class="p {{ b }}"><span class="rk">{{ p.label_short }}</span>{% if p.photo %}<img class="thumb" src="{{ p.photo }}">{% endif %}<span><div class="nm">{{ p.name }}</div><div class="pr2">¥{{ '{:,}'.format(p.price) }}</div></span></div>
       {% for k in ['value', 'rating', 'popular', 'features'] %}
       {% set m = p.marks[k] %}
       <div class="{{ b }}"><span class="mk {{ 'mk-best' if m == '◎' else ('mk-mid' if m == '○' else 'mk-low') }}">{{ m }}</span></div>
@@ -163,7 +174,7 @@
     {{ mast(i) }}
     <div class="top">
       <div class="rank"><div><span class="lab">{{ s.label_chip }}</span><div class="rrow"><span class="n {{ 'jp' if s.label_jp else '' }}">{{ s.label_main }}</span><span class="u">{{ s.label_suffix }}</span></div></div></div>
-      <div class="art"><div class="illust-wrap">{{ s.illust | safe }}</div><div class="tape" style="right: -30px; top: 6px; transform: rotate(28deg)"></div></div>
+      <div class="art">{% if p.photo %}<div class="polaroid" style="left: -10px; top: 0; width: 260px; height: 290px; transform: rotate(4deg)"><img src="{{ p.photo }}"><div class="cap">{{ p.name }}</div></div>{% else %}<div class="illust-wrap">{{ s.illust | safe }}</div>{% endif %}<div class="tape" style="right: -30px; top: 6px; transform: rotate(28deg)"></div></div>
     </div>
     <div class="name head">{{ p.name | jp }}</div>
     <div class="price"><span class="v">{{ '{:,}'.format(p.price) }}</span><span class="y">円</span><span class="asof">{{ date_label }}時点</span></div>

@@ -24,7 +24,7 @@ section { width: 1080px; height: 1920px; position: relative; overflow: hidden; }
   <div class="new"><span class="chip accent">NEW</span><span class="hand">新しい比較を投稿しました</span></div>
   <div class="hook head">{{ hook_html | safe }}</div>
   <div class="no"><span class="l">{{ genre }}の比較</span><span class="n">No.{{ '%03d' % post_no }}</span></div>
-  <div class="art"><div class="illust-wrap">{{ illust | safe }}</div><div class="tape" style="left: 10px; top: 10px; transform: rotate(-20deg)"></div></div>
+  <div class="art">{% if photo %}<div class="polaroid" style="left: 0; top: -60px; width: 300px; height: 330px; transform: rotate(5deg)"><img src="{{ photo }}"></div>{% else %}<div class="illust-wrap">{{ illust | safe }}</div>{% endif %}<div class="tape" style="left: 10px; top: 10px; transform: rotate(-20deg)"></div></div>
   <div class="box card">フィードで全部見られます。<br>商品リンクはプロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
 </section>
 </body></html>

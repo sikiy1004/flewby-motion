@@ -1,10 +1,14 @@
 # 対象ジャンル。rakuten_genre_id が空なら、初回の collect 時にキーワード検索の結果から自動で推定して DB に保存します。
 # features: 商品名・説明文にキーワードが含まれていたら、そのラベルを「機能タグ」として表示（LLM に作らせない事実データ）。
 # tips: 「選び方」投稿の本文（効能を断定しない表現で書くこと）。
+# group: beauty（美容ガジェット）/ qol（暮らしが快適になる家電）。比率は settings.yaml の content.group_weights。
+# stock_queries: 動画冒頭の実写背景（Pexels）の検索語（英語）。
 
 genres:
   - key: hair_dryer
     label: ドライヤー
+    group: beauty
+    stock_queries: ["woman drying hair bathroom", "hair care morning routine"]
     keyword: ドライヤー
     rakuten_genre_id: null
     exclude: [ノズル, 替え, ケース, スタンド, ホルダー, 互換, 部品]
@@ -27,6 +31,8 @@ genres:
 
   - key: hair_iron
     label: ヘアアイロン
+    group: beauty
+    stock_queries: ["woman styling hair mirror", "hair straightener styling"]
     keyword: ヘアアイロン
     rakuten_genre_id: null
     exclude: [替え, ケース, ポーチ, 互換, 部品]
@@ -49,6 +55,8 @@ genres:
 
   - key: facial_device
     label: 美顔器
+    group: beauty
+    stock_queries: ["skincare routine mirror", "woman skincare bathroom"]
     keyword: 美顔器
     rakuten_genre_id: null
     exclude: [ジェル, 替え, 交換, 互換, 部品, 化粧水]
@@ -70,6 +78,8 @@ genres:
 
   - key: epilator
     label: 家庭用光美容器
+    group: beauty
+    stock_queries: ["body care bathroom", "self care routine woman"]
     keyword: 光美容器
     rakuten_genre_id: null
     exclude: [ジェル, 替え, カートリッジ単品, 互換, 部品, サングラス]
@@ -90,6 +100,8 @@ genres:
 
   - key: toothbrush
     label: 電動歯ブラシ
+    group: beauty
+    stock_queries: ["morning routine bathroom", "brushing teeth mirror"]
     keyword: 電動歯ブラシ
     rakuten_genre_id: null
     exclude: [替えブラシ, 替え, 交換, 互換, 部品, スタンド]
@@ -111,6 +123,8 @@ genres:
 
   - key: body_scale
     label: 体組成計
+    group: beauty
+    stock_queries: ["healthy morning routine", "woman fitness home"]
     keyword: 体組成計
     rakuten_genre_id: null
     exclude: [電池, 替え, 互換, 部品, マット]
@@ -129,3 +143,122 @@ genres:
       - { title: 測れる項目, body: "体脂肪率・筋肉量など、測定できる項目の数はモデルごとに違います。" }
       - { title: 家族で使うなら, body: "登録できる人数や自動で人を判別する機能があるかもチェック。" }
       - { title: 置き場所, body: "薄型・軽量だと出し入れしやすく、毎日乗る習慣をつけやすいです。" }
+
+  # ---------------- 暮らしの質が上がる家電（QOL） ----------------
+  - key: humidifier
+    label: 加湿器
+    group: qol
+    stock_queries: ["cozy bedroom winter morning", "humidifier steam room"]
+    keyword: 加湿器
+    rakuten_genre_id: null
+    exclude: [フィルター, 替え, 交換, カートリッジ, 互換, 部品, 抗菌剤]
+    hashtags: ["#加湿器", "#暮らしを整える", "#QOL爆上がり"]
+    features:
+      ハイブリッド: ハイブリッド式
+      スチーム: スチーム式
+      超音波: 超音波式
+      気化式: 気化式
+      上部給水: 上部給水
+      大容量: 大容量
+      静音: 静音
+      アロマ: アロマ対応
+      タイマー: タイマー
+      湿度センサー: 湿度センサー
+    tips:
+      - { title: 加湿方式を知る, body: "スチーム・気化・超音波・ハイブリッドで、電気代や手入れのしやすさが変わります。置く部屋と使い方で選びましょう。" }
+      - { title: 適用畳数をチェック, body: "部屋の広さに対して余裕のある「適用畳数」のモデルを選ぶと、物足りなさを感じにくくなります。" }
+      - { title: 給水と手入れ, body: "上部給水やパーツの少なさは、毎日使い続けられるかに直結するポイントです。" }
+      - { title: 寝室なら運転音, body: "寝室で使うなら静音モードやライトの消灯機能があると快適です。" }
+
+  - key: futon_dryer
+    label: 布団乾燥機
+    group: qol
+    stock_queries: ["cozy bed morning sunlight", "making bed bedroom"]
+    keyword: 布団乾燥機
+    rakuten_genre_id: null
+    exclude: [ホース, 替え, 交換, 互換, 部品, マット単品]
+    hashtags: ["#布団乾燥機", "#暮らしを整える", "#QOL爆上がり"]
+    features:
+      マット不要: マット不要
+      マットなし: マット不要
+      靴: 靴乾燥
+      衣類: 衣類乾燥
+      ダブルノズル: ダブルノズル
+      タイマー: タイマー
+      コンパクト: コンパクト
+      温風: 温風
+    tips:
+      - { title: マットの有無, body: "マット不要タイプは準備と片付けがラク。毎日気軽に使いたい人に向いています。" }
+      - { title: ノズルの数, body: "ダブルノズルなら2組の布団を同時に温められるので、家族で使うときに便利です。" }
+      - { title: プラスαの使い道, body: "靴や衣類の乾燥に使えるモデルは、雨の日や部屋干しのときにも出番があります。" }
+      - { title: 置き場所, body: "コンパクトさや収納のしやすさも、出しっぱなしにしないために大事なポイントです。" }
+
+  - key: massager
+    label: マッサージ器
+    group: qol
+    stock_queries: ["relaxing evening sofa", "self care relax home"]
+    keyword: ネックマッサージャー
+    rakuten_genre_id: null
+    exclude: [替え, 交換, カバー単品, 互換, 部品]
+    hashtags: ["#マッサージ器", "#おうち時間", "#セルフケア"]
+    features:
+      ヒーター: ヒーター付き
+      温め: ヒーター付き
+      コードレス: コードレス
+      もみ玉: もみ玉
+      首: 首用
+      肩: 肩用
+      充電: 充電式
+      強さ: 強さ調整
+    tips:
+      - { title: 使う部位で選ぶ, body: "首・肩・足など、どこに使いたいかで形が大きく違います。まず使う場面をイメージしましょう。" }
+      - { title: 温め機能, body: "ヒーター付きのモデルは、寒い季節のリラックスタイムにうれしい機能です。" }
+      - { title: コードの有無, body: "コードレスならソファでも寝室でも使えて、出番が増えやすくなります。" }
+      - { title: 使用上の注意, body: "使用時間や体調に関する注意は、購入前に取扱説明書で必ず確認しておきましょう。" }
+
+  - key: smart_watch
+    label: スマートウォッチ
+    group: qol
+    stock_queries: ["woman checking smartwatch", "morning run city"]
+    keyword: スマートウォッチ
+    rakuten_genre_id: null
+    exclude: [バンド, ベルト, 保護, フィルム, ケース, 充電器, 互換]
+    hashtags: ["#スマートウォッチ", "#ガジェット好き", "#QOL爆上がり"]
+    features:
+      心拍: 心拍計測
+      睡眠: 睡眠記録
+      GPS: GPS
+      防水: 防水
+      通知: スマホ通知
+      Suica: Suica対応
+      着信: 着信通知
+      長時間: 長時間バッテリー
+    tips:
+      - { title: 何を記録したい？, body: "歩数・心拍・睡眠など、記録できる項目はモデルごとに違います。続けたい習慣から選ぶのがコツ。" }
+      - { title: バッテリーの持ち, body: "充電の手間は続けやすさに直結します。毎日充電できるかで選び方が変わります。" }
+      - { title: スマホとの相性, body: "iPhone・Android どちらに対応しているか、専用アプリの使いやすさもチェックしておきましょう。" }
+      - { title: 見た目とサイズ, body: "毎日つけるものなので、文字盤の大きさや服装との合わせやすさも大事です。" }
+
+  - key: electric_blanket
+    label: 電気毛布
+    group: qol
+    stock_queries: ["cozy blanket winter home", "warm living room winter"]
+    keyword: 電気毛布
+    rakuten_genre_id: null
+    exclude: [カバー単品, 替え, 互換, 部品]
+    hashtags: ["#電気毛布", "#冬支度", "#おうち時間"]
+    features:
+      洗える: 丸洗いOK
+      丸洗い: 丸洗いOK
+      タイマー: タイマー
+      掛け敷き: 掛け敷き兼用
+      ひざ掛け: ひざ掛け
+      室温センサー: 室温センサー
+      ダブル: ダブルサイズ
+      USB: USB給電
+    tips:
+      - { title: 掛けるか敷くか, body: "掛け敷き兼用なら、季節や好みで使い方を変えられます。" }
+      - { title: 洗えるかどうか, body: "肌に触れるものなので、丸洗いできるかは清潔に使い続けるための大事なポイントです。" }
+      - { title: タイマーと温度調整, body: "切り忘れ防止のタイマーや、細かい温度調整があると安心して使えます。" }
+      - { title: サイズ, body: "ひざ掛け・シングル・ダブルなど、使う場所に合わせてサイズを選びましょう。" }
+

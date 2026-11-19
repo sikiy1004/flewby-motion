@@ -89,3 +89,14 @@ def screenshot_sections(html_text: str, work: Path, selectors: list[tuple[str, P
             out.append(path)
         page.close()
     return out
+
+
+def fit_font(text: str, base: int, width: int = 940, min_size: int = 72) -> int:
+    """最長の文節が 1 行に収まるよう見出しの文字サイズを決める（全角 ≒ 1em、半角 ≒ 0.6em）。"""
+    chunks = _parser.parse(text) if _parser else [text]
+
+    def em(c: str) -> float:
+        return sum(0.6 if ord(ch) < 0x2000 else 1.0 for ch in c)
+
+    longest = max((em(c) for c in chunks), default=1.0)
+    return int(max(min_size, min(base, width / max(1.0, longest))))

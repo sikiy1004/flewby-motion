@@ -55,7 +55,7 @@ const Background: React.FC<{ bgVideo?: string; hookEnd: number }> = ({ bgVideo, 
         <Sequence durationInFrames={hookEnd}>
           <AbsoluteFill style={{ opacity: interpolate(frame, [hookEnd - 8, hookEnd], [1, 0], clamp) }}>
             <OffthreadVideo src={staticFile(bgVideo)} muted style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.05) 40%, var(--paper) 78%)" }} />
+            <AbsoluteFill style={{ background: "linear-gradient(180deg, rgba(15,10,8,.62) 0%, rgba(15,10,8,.38) 48%, rgba(15,10,8,.15) 70%, var(--paper) 96%)" }} />
           </AbsoluteFill>
         </Sequence>
       ) : null}
@@ -64,11 +64,11 @@ const Background: React.FC<{ bgVideo?: string; hookEnd: number }> = ({ bgVideo, 
 };
 
 // ---------------------------------------------------------------- header & progress
-const Header: React.FC<{ postNo: number; scenes: Scene[] }> = ({ postNo, scenes }) => {
+const Header: React.FC<{ postNo: number; scenes: Scene[]; light: boolean }> = ({ postNo, scenes, light }) => {
   const frame = useCurrentFrame();
   const t = frame / 30;
   return (
-    <div style={{ position: "absolute", left: 70, right: 170, top: 214 }}>
+    <div style={{ position: "absolute", left: 70, right: 170, top: 214, color: light ? "#fff" : "var(--ink)" }}>
       <div style={{ display: "flex", gap: 8, marginBottom: 22 }}>
         {scenes.map((s, i) => {
           const p = interpolate(t, [s.start, s.start + s.duration], [0, 1], clamp);
@@ -107,8 +107,17 @@ const Wipe: React.FC<{ at: number }> = ({ at }) => {
 // ---------------------------------------------------------------- scenes
 const AREA: React.CSSProperties = { position: "absolute", left: 70, right: 150, top: 350, height: 860 };
 
+const Photo: React.FC<{ src: string; size: number; rot: number; style?: React.CSSProperties; cap?: string }> = ({ src, size, rot, style, cap }) => (
+  <div className="polaroid" style={{ width: size, height: size + 32, transform: `rotate(${rot}deg)`, ...style }}>
+    <img src={staticFile(src)} />
+    {cap ? <div className="cap">{cap}</div> : null}
+  </div>
+);
+
 const HookScene: React.FC<{ s: Scene; p: ReelProps }> = ({ s, p }) => {
   const frame = useCurrentFrame();
+  const onVideo = !!p.bgVideo;
+  const photos = s.photos || [];
   const stamp = useSpring(5, { damping: 9, mass: 0.6, stiffness: 160 });
   const big = useSpring(16);
   const art = useSpring(10);
@@ -118,7 +127,8 @@ const HookScene: React.FC<{ s: Scene; p: ReelProps }> = ({ s, p }) => {
       <div style={{ display: "flex", gap: 14, alignItems: "center", transform: `translateX(${interpolate(frame, [0, 10], [-600, 0], { ...clamp, easing: Easing.out(Easing.cubic) })}px)` }}>
         <span className="chip">{p.genre}</span><span className="chip line">{p.formatLabel}</span>
       </div>
-      <div className="head" style={{ fontSize: 118, lineHeight: 1.16, marginTop: 34, display: "flex", flexWrap: "wrap" }}>
+      <div className="head" style={{ fontSize: s.hookSize || 118, lineHeight: 1.16, marginTop: 34, display: "flex", flexWrap: "wrap",
+        color: onVideo ? "#fff" : "var(--ink)", textShadow: onVideo ? "0 4px 24px rgba(0,0,0,.45)" : undefined }}>
         {chunks.map((c, i) => {
           const sp = spring({ frame: frame - 2 - i * 3, fps: 30, config: { damping: 11, mass: 0.5, stiffness: 170 } });
           const sweep = interpolate(frame, [10 + i * 3, 18 + i * 3], [0, 100], clamp);
@@ -133,13 +143,24 @@ const HookScene: React.FC<{ s: Scene; p: ReelProps }> = ({ s, p }) => {
       <div style={{ position: "absolute", left: -10, bottom: 70, display: "flex", alignItems: "flex-end", gap: 14,
         transform: `translateY(${(1 - big) * 300}px)`, opacity: big }}>
         <span style={{ font: 'italic 400 280px/0.8 "DM Serif Display"', color: "var(--accent)" }}>{s.bigN}</span>
-        <span className="head" style={{ fontSize: 52, lineHeight: 1.25, paddingBottom: 12 }} dangerouslySetInnerHTML={{ __html: s.bigLabel || "" }} />
+        <span className="head" style={{ fontSize: 52, lineHeight: 1.25, paddingBottom: 12, color: onVideo ? "#fff" : "var(--ink)" }} dangerouslySetInnerHTML={{ __html: s.bigLabel || "" }} />
       </div>
       <div style={{ position: "absolute", right: -30, bottom: -10, width: 400, height: 400, transform: `scale(${art}) rotate(${(1 - art) * -30}deg)` }}>
-        <div className="illust-wrap" style={{ width: 380, height: 380 }}><Svg html={p.illust} /></div>
-        <div className="tape" style={{ left: 40, top: 20, transform: "rotate(-24deg)" }} />
+        {photos.length ? (
+          <>
+            {photos[1] ? <Photo src={photos[1]} size={210} rot={-12} style={{ left: -60, top: 40, opacity: interpolate(frame, [10, 16], [0, 1], clamp) }} /> : null}
+            {photos[2] ? <Photo src={photos[2]} size={200} rot={11} style={{ left: 200, top: -10, opacity: interpolate(frame, [13, 19], [0, 1], clamp) }} /> : null}
+            <Photo src={photos[0]} size={300} rot={-4} style={{ left: 50, top: 70 }} />
+            <div className="tape" style={{ left: 120, top: 60, transform: "rotate(-8deg)" }} />
+          </>
+        ) : (
+          <>
+            <div className="illust-wrap" style={{ width: 380, height: 380 }}><Svg html={p.illust} /></div>
+            <div className="tape" style={{ left: 40, top: 20, transform: "rotate(-24deg)" }} />
+          </>
+        )}
       </div>
-      <div className="stamp" style={{ right: 250, top: 400, transform: `rotate(-14deg) scale(${interpolate(stamp, [0, 1], [2.4, 1])})`, opacity: Math.min(1, stamp * 1.5) }}>
+      <div className="stamp" style={{ right: -20, top: 400, transform: `rotate(-14deg) scale(${interpolate(stamp, [0, 1], [2.4, 1])})`, opacity: Math.min(1, stamp * 1.5) }}>
         <small>SAVE</small><b>保存版</b><small>{p.dateLabel.replace("月", ".").replace("日", "")}</small>
       </div>
     </div>
@@ -184,7 +205,11 @@ const ProductScene: React.FC<{ s: Scene; p: ReelProps }> = ({ s, p }) => {
           </div>
         </div>
         <div style={{ position: "relative", transform: `scale(${art}) rotate(${(1 - art) * 25}deg)` }}>
-          <div className="illust-wrap" style={{ width: 270, height: 270 }}><Svg html={p.illust.replace(/width="\d+" height="\d+"/, 'width="210" height="210"')} /></div>
+          {pr.photo ? (
+            <div style={{ position: "relative", width: 290, height: 320 }}><Photo src={pr.photo} size={280} rot={4} style={{ left: 0, top: 0 }} /></div>
+          ) : (
+            <div className="illust-wrap" style={{ width: 270, height: 270 }}><Svg html={p.illust.replace(/width="\d+" height="\d+"/, 'width="210" height="210"')} /></div>
+          )}
           <div className="tape" style={{ right: -40, top: 0, transform: "rotate(28deg)", width: 160 }} />
         </div>
       </div>
@@ -375,7 +400,7 @@ export const Reel: React.FC<ReelProps> = (p) => {
           </Sequence>
         );
       })}
-      <Header postNo={p.postNo} scenes={p.scenes} />
+      <Header postNo={p.postNo} scenes={p.scenes} light={!!p.bgVideo && frame < hookEnd} />
       <Captions captions={p.captions} />
       {p.scenes.slice(1).map((s, i) => <Wipe key={i} at={Math.round(s.start * 30)} />)}
       {/* 効果音 */}

@@ -3,9 +3,9 @@
 # ============================================================
 
 account:
-  name: "美容家電ガチ比較ノート"          # 画像・リンク集ページに出るアカウント名
+  name: "美容とくらしの家電ノート"        # 画像・リンク集ページに出るアカウント名
   handle: "@your_account"                  # 画像のフッターに表示（未設定なら非表示にしてOK）
-  concept: "買う前に3秒で比較。美容家電の“ガチ比較”ノート"
+  concept: "キレイと暮らしが整う家電を、買う前に3秒で比較"
   timezone: "Asia/Tokyo"
 
 # ---- 投稿量（立ち上げ期の推奨値。伸びてきたら増やす） ----
@@ -36,7 +36,9 @@ content:
   min_price: 3000             # 安い付属品・消耗品を除外
   product_cooldown_days: 21
   similarity_threshold: 0.85  # 過去キャプションとの類似度がこれ以上なら作り直し
-  use_product_images: false   # 商品画像の利用は各規約を確認してから true に
+  use_product_images: true    # 楽天APIの商品画像を使う（取得できない場合は自作イラストで代替）
+  # 美容ガジェット : 暮らし家電(QOL) の比率。アカウントの軸がぶれないよう美容を主役に
+  group_weights: { beauty: 0.7, qol: 0.3 }
   hashtags_max: 5
 
 video:
@@ -47,6 +49,7 @@ video:
   speed_scale: 1.15
   require_voice: true         # 本番で音声合成が失敗したら投稿しない（--sample 時は無音で続行）
   bgm_volume: 0.18
+  stock_background: true      # PEXELS_API_KEY があれば冒頭に実写の縦動画を敷く
   max_seconds: 45
 
 tts:

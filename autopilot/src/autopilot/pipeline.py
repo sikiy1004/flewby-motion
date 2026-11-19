@@ -41,7 +41,10 @@ MAX_ATTEMPTS = 3
 # ======================================================================
 # captions
 # ======================================================================
-def build_captions(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: int, credit: str | None) -> dict[str, str]:
+def build_captions(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: int,
+                   credit: str | list[str] | None) -> dict[str, str]:
+    """credit: 文字列（音声クレジット）またはクレジット行のリスト。"""
+    credits = [f"音声: {credit}"] if isinstance(credit, str) else list(credit or [])
     req = settings.ng.get("required", {})
     disclaimer = req.get("price_disclaimer", "").format(date=plan["date_label"])
     no = f"No.{post_no:03d}"
@@ -50,13 +53,12 @@ def build_captions(settings: Settings, plan: dict[str, Any], copy: Copy, post_no
     tags_tt = " ".join(["#PR", *copy.hashtags_tiktok[: n_tags - 1]])
     lines = [f"{req.get('caption_prefix', 'PR')}｜{copy.hook}", "", copy.caption_body.strip(), "",
              f"📌 紹介した商品のリンクはプロフィールのリンク → {no}", disclaimer]
-    if credit:
-        lines.append(f"音声: {credit}")
+    lines += credits
     lines += ["", tags_ig]
     ig = "\n".join(lines).strip()
     tt = f"PR｜{copy.caption_tiktok.strip()} 商品はプロフのリンク {no} {tags_tt}"
-    if credit:
-        tt += f" 音声:{credit}"
+    if credits:
+        tt += " " + " / ".join(credits)
     return {"instagram": ig, "tiktok": tt[:2200]}
 
 
@@ -112,8 +114,9 @@ def stage_render(settings: Settings, db: DB, post: dict[str, Any]) -> None:
         assets = {"slides": [s.name for s in slides], "story": story.name}
     else:
         v = render_video(settings, plan, copy, post["post_no"], out, rng=random.Random(post["post_no"]))
-        credit = v["credit"]
-        assets = {"video": v["video"].name, "cover": v["cover"].name, "seconds": v["seconds"], "voice": v["voice"]}
+        credit = v["credits"]
+        assets = {"video": v["video"].name, "cover": v["cover"].name, "seconds": v["seconds"], "voice": v["voice"],
+                  "bgm": v["bgm"]}
     captions = build_captions(settings, plan, copy, post["post_no"], credit)
     problems = compliance.check_final_caption(settings, captions["instagram"])
     problems += compliance.ng_violations(settings, [captions["instagram"], captions["tiktok"]])
@@ -396,7 +399,7 @@ def maintain(settings: Settings, db: DB) -> dict[str, Any]:
         out["insights"] += 1
 
     # 2) 学習（公開から3日以上経った投稿の成績で arm を更新）
-    rows = db.q("""SELECT pub.id, p.format, p.hook_type, p.theme, m.reach, m.saves, m.shares
+    rows = db.q("""SELECT pub.id, p.format, p.hook_type, p.theme, p.script_json, m.reach, m.saves, m.shares
                    FROM publications pub JOIN posts p ON p.id = pub.post_id
                    JOIN metrics m ON m.publication_id = pub.id
                    WHERE pub.platform='instagram' AND pub.kind!='story' AND pub.published_at <= ?
@@ -410,6 +413,12 @@ def maintain(settings: Settings, db: DB) -> dict[str, Any]:
         reward = min(1.0, rate / 0.03)  # 保存+シェア率 3% を満点とする
         for dim, opt in (("format", r["format"]), ("hook", r["hook_type"]), ("theme", r["theme"])):
             reward_arm(db, dim, opt, reward)
+        try:
+            track = (json.loads(r["script_json"] or "{}").get("assets") or {}).get("bgm")
+        except ValueError:
+            track = None
+        if track and track != "generated":
+            reward_arm(db, "bgm", track, reward)
         db.exec("INSERT INTO rewarded VALUES (?)", (r["id"],))
         out["rewards"] += 1
 

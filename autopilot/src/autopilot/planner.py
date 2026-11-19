@@ -134,11 +134,39 @@ def _genre_score(settings: Settings, db: DB, genre_key: str, now: datetime, rng:
     return has_data * freshness * season * (1 + 0.2 * min(trend, 5)) * rng.uniform(0.8, 1.2)
 
 
+def pick_group(settings: Settings, db: DB, rng: random.Random, window: int = 20) -> str | None:
+    """美容 / 暮らし(QOL) の比率を設定値に近づけるように、次に出すグループを決める。"""
+    weights: dict[str, float] = dict(settings.get("content.group_weights", {}) or {})
+    groups = {g.get("group", "beauty") for g in settings.genres}
+    weights = {k: float(v) for k, v in weights.items() if k in groups and float(v) > 0}
+    if len(weights) < 2:
+        return next(iter(weights), None)
+    total = sum(weights.values())
+    group_of = {g["key"]: g.get("group", "beauty") for g in settings.genres}
+    rows = db.q("SELECT genre_key FROM posts WHERE status NOT IN ('failed','skipped') ORDER BY id DESC LIMIT ?", (window,))
+    if not rows:
+        r, acc = rng.uniform(0, total), 0.0
+        for k, w in weights.items():
+            acc += w
+            if r <= acc:
+                return k
+    counts = {k: 0 for k in weights}
+    for r_ in rows:
+        g = group_of.get(r_["genre_key"])
+        if g in counts:
+            counts[g] += 1
+    n = sum(counts.values()) or 1
+    deficit = {k: weights[k] / total - counts[k] / n + rng.uniform(-0.05, 0.05) for k in weights}
+    return max(deficit, key=deficit.get)
+
+
 def plan_post(settings: Settings, db: DB, kind: str, rng: random.Random | None = None) -> dict[str, Any]:
     """1 投稿分の企画を作って DB に登録（status=planned）。"""
     rng = rng or random.Random()
     now = now_jst()
-    genres = sorted(settings.genres, key=lambda g: _genre_score(settings, db, g["key"], now, rng), reverse=True)
+    group = pick_group(settings, db, rng)
+    genres = sorted(settings.genres, key=lambda g: (g.get("group", "beauty") == group,
+                                                    _genre_score(settings, db, g["key"], now, rng)), reverse=True)
     formats = list(settings.get("content.formats", ["ranking"]))
     for genre in genres:
         tried: set[str] = set()
@@ -173,6 +201,8 @@ def plan_post(settings: Settings, db: DB, kind: str, rng: random.Random | None =
                 "picks": _picks(products),
                 "tips": genre.get("tips", [])[:4] if fmt == "guide" else [],
                 "genre_hashtags": genre.get("hashtags", []),
+                "group": genre.get("group", "beauty"),
+                "stock_queries": genre.get("stock_queries", []),
             }
             post = db.create_post(kind=kind, fmt=fmt, genre_key=genre["key"], hook_type=hook, theme=theme,
                                   content_hash=h, plan=plan, product_ids=[p["id"] for p in products])

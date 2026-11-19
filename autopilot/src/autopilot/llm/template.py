@@ -108,8 +108,9 @@ def template_copy(plan: dict[str, Any], rng: random.Random | None = None) -> Cop
         lines.append(f"・{p['name']}：{p['price']:,}円／★{p['review_avg']:.2f}（{p['review_count']:,}件）")
     lines.append("")
     lines.append("気になるものがあったら保存して、比べるときに見返してね。")
-    tags_ig = list(plan.get("genre_hashtags", []))[:3] + ["#美容家電", "#比較"]
-    tags_tt = list(plan.get("genre_hashtags", []))[:2] + ["#美容家電", "#おすすめ"]
+    base_tag = "#便利家電" if plan.get("group") == "qol" else "#美容家電"
+    tags_ig = list(plan.get("genre_hashtags", []))[:3] + [base_tag, "#比較"]
+    tags_tt = list(plan.get("genre_hashtags", []))[:2] + [base_tag, "#おすすめ"]
 
     return Copy(
         hook=hook,

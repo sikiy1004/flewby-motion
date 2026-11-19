@@ -19,9 +19,11 @@ from typing import Any
 
 from ..config import Settings
 from ..llm.schema import Copy
-from ..render import FORMAT_LABEL
+from ..media import attach_photos
+from ..render import FORMAT_LABEL, fit_font
 from ..render.carousel import product_labels
 from ..render.illustrations import icon, illustration
+from . import bgm
 from .stock import fetch_background_video
 from .subtitles import build_captions, phrases
 from .tts import get_tts, probe_duration
@@ -56,6 +58,8 @@ def build_scenes(plan: dict[str, Any], copy: Copy) -> list[dict[str, Any]]:
     scenes: list[dict[str, Any]] = [{
         "type": "hook", "hookChunks": _hook_chunks(copy.hook), "subtitle": copy.subtitle, "bigN": big_n,
         "bigLabel": big_label, "narration": copy.narration_hook, "min": 3.0,
+        "hookSize": fit_font(copy.hook, 118, width=860),
+        "photos": [p["photo"] for p in plan["products"] if p.get("photo")][:3],
     }]
     if fmt == "guide":
         annos = ["ここ大事！", "見落としがち", "要チェック", "比べてみて"]
@@ -71,7 +75,8 @@ def build_scenes(plan: dict[str, Any], copy: Copy) -> list[dict[str, Any]]:
             idx = plan["products"].index(p)
             big, suffix, chip, _ = product_labels(fmt, idx, p)
             prod = {k: p[k] for k in ("name", "price", "review_avg", "review_count", "features", "score", "axes", "marks")}
-            prod.update({"best": bool(p.get("best")), "label_main": big, "label_suffix": suffix, "label_chip": chip})
+            prod.update({"best": bool(p.get("best")), "label_main": big, "label_suffix": suffix, "label_chip": chip,
+                         "photo": p.get("photo")})
             scenes.append({"type": "product", "product": prod, "index": i, "total": len(prods),
                            "narration": copy.narration_products.get(p["item_code"], p["name"]), "min": 3.4})
         icons = {"価格重視なら": icon("yen", 80), "評価重視なら": icon("star", 80), "定番を選ぶなら": icon("people", 80)}
@@ -88,11 +93,10 @@ def _run(cmd: list[str], cwd: Path | None = None) -> None:
         raise RuntimeError(f"command failed: {' '.join(cmd[:4])} ...\n{(proc.stderr or proc.stdout)[-3000:]}")
 
 
-def _bgm(settings: Settings, work: Path, seconds: float, rng: random.Random) -> Path:
-    bgm_dir = settings.assets_dir / "bgm"
-    files = sorted([*bgm_dir.glob("*.mp3"), *bgm_dir.glob("*.wav"), *bgm_dir.glob("*.m4a")])
-    if files:
-        return rng.choice(files)
+def _bgm(settings: Settings, work: Path, seconds: float, fmt: str, rng: random.Random) -> tuple[Path, dict[str, Any] | None]:
+    track = bgm.choose_track(settings, fmt, rng)
+    if track:
+        return bgm.prepare(track, work / "bgm.wav", seconds), track
     # 素材が無い場合：テンポのある Lo-fi 風ループを生成（キック＋ハイハット＋コード。権利フリー）
     chords = [(220.0, 277.18, 329.63), (196.0, 246.94, 293.66), (174.61, 220.0, 261.63), (196.0, 246.94, 329.63)]
     pad = "+".join(
@@ -105,7 +109,7 @@ def _bgm(settings: Settings, work: Path, seconds: float, rng: random.Random) -> 
     out = work / "bgm.wav"
     _run(["ffmpeg", "-v", "error", "-y", "-f", "lavfi", "-i", f"aevalsrc='{expr}':s=44100:d={seconds + 2:.2f}",
           "-af", "lowpass=f=5000,highpass=f=35,aecho=0.8:0.6:180:0.18,volume=0.9", "-ac", "2", str(out)])
-    return out
+    return out, None
 
 
 def _ensure_node_modules() -> None:
@@ -123,6 +127,16 @@ def render_video(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: 
     public = work / "public"
     public.mkdir(parents=True)
     fps = int(settings.get("video.fps", 30))
+    # 商品画像を public にコピーし、Remotion からは相対パスで参照する
+    plan = attach_photos(settings, plan)
+    products = []
+    for i, p in enumerate(plan["products"]):
+        if p.get("photo"):
+            name = f"photo_{i:02d}.jpg"
+            shutil.copyfile(p["photo"], public / name)
+            p = {**p, "photo": name}
+        products.append(p)
+    plan = {**plan, "products": products}
     scenes = build_scenes(plan, copy)
 
     # 1) 音声（長すぎたら話速を上げて作り直す。最大 1.4 倍）
@@ -158,8 +172,8 @@ def render_video(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: 
     shutil.copyfile(settings.assets_dir / "design" / "design.css", public / "design.css")
     for name in ("slide", "impact", "pop", "line"):
         shutil.copyfile(settings.assets_dir / "sfx" / f"{name}.wav", public / f"sfx_{name}.wav")
-    bgm = _bgm(settings, work, total, rng)
-    shutil.copyfile(bgm, public / f"bgm{bgm.suffix}")
+    bgm_path, track = _bgm(settings, work, total, plan["format"], rng)
+    shutil.copyfile(bgm_path, public / "bgm.wav")
     bg_video = fetch_background_video(settings, plan, work)
     if bg_video:
         shutil.move(str(bg_video), public / "stock.mp4")
@@ -177,7 +191,7 @@ def render_video(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: 
                   "bookmark_big": icon("bookmark", 230)},
         "scenes": [{k: v for k, v in s.items() if k not in ("narration", "min", "voice_dur")} for s in scenes],
         "captions": captions,
-        "bgm": f"bgm{bgm.suffix}", "bgmVolume": float(settings.get("video.bgm_volume", 0.18)) * 1.4,
+        "bgm": "bgm.wav", "bgmVolume": float(settings.get("video.bgm_volume", 0.18)) * 1.4,
         "sfx": {"whoosh": "sfx_slide.wav", "impact": "sfx_impact.wav", "pop": "sfx_pop.wav", "line": "sfx_line.wav"},
         "bgVideo": "stock.mp4" if bg_video else None,
         "credit": voice.credit,
@@ -209,5 +223,8 @@ def render_video(settings: Settings, plan: dict[str, Any], copy: Copy, post_no: 
         raise RuntimeError(f"動画が長すぎます（{total:.1f}秒）")
     if total > max_s:
         log.warning("動画尺 %.1f 秒が推奨上限 %.0f 秒を超えています", total, max_s)
+    credits = [f"音声: {voice.credit}"] if voice.credit else []
+    if track and track.get("credit"):
+        credits.append(str(track["credit"]))
     return {"video": out, "cover": cover, "seconds": round(total, 2), "voice": voice.engine, "credit": voice.credit,
-            "scenes": len(scenes)}
+            "credits": credits, "bgm": track["file"] if track else "generated", "scenes": len(scenes)}

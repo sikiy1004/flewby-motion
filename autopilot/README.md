@@ -268,16 +268,32 @@ cd autopilot && autopilot status
 | NG 表現の追加 | `config/ng_words.yaml` |
 | 季節イベント | `config/calendar.yaml` |
 | 声の変更 | `config/settings.yaml` の `tts.voicevox_speaker`（VOICEVOX のキャラクター名） |
-| BGM | `assets/bgm/` に **商用利用可・クレジット不要** の mp3/wav を置く（無ければ自動生成のパッド音） |
+| BGM | `assets/bgm/upbeat` `cute` `chill` に曲を置き、`assets/bgm/bgm.yaml` に盛り上がり位置・クレジットを書く（下の「BGM の入れ方」参照） |
+| 美容 / 暮らし家電の比率 | `config/settings.yaml` の `content.group_weights`（初期値 美容 0.7 : 暮らし 0.3） |
 | デザイン（共通パーツ・配色テーマ） | `assets/design/design.css`（kraft / rose / sage / noir） |
 | カルーセルのレイアウト | `src/autopilot/render/templates/carousel.html.j2` |
 | 動画の演出 | `remotion/src/Reel.tsx`（`cd remotion && npm run studio` でブラウザ上でプレビュー可） |
 | 商品イラスト | `src/autopilot/render/illustrations.py`（自作SVG） |
-| 商品画像を使う | `content.use_product_images: true`（各 EC・ASP の素材利用規約を確認してから） |
+| 商品画像を使わない | `content.use_product_images: false`（自作イラストに切り替わる） |
 
 フォーマット（ランキング / 価格帯別 / 注目モデル / 選び方）、フックの型、配色テーマは、保存数・シェア数をもとに **自動で伸びる組み合わせに寄っていきます**（Thompson Sampling）。
 
 ---
+
+### BGM の入れ方
+
+API からの自動投稿では、**Instagram / TikTok アプリ内の流行曲や J-POP は使えません**（権利処理がアプリ内の機能に限られるため。無断で使うとミュート・削除・アカウント制限の原因になります）。代わりに「商用利用可・SNS 利用可」のフリー BGM の中から、人気順・再生数順の上位でテンポの良い曲を選んで入れます。
+
+1. DOVA-SYNDROME / 甘茶の音楽工房 / Pixabay Music などで、**人気順** に並べて 10〜20 曲ほど選ぶ（各曲の規約を確認）
+   - ランキング・価格帯向け: BPM 110〜130 の明るいポップ → `assets/bgm/upbeat/`
+   - 注目モデル向け: かわいい・キラキラ系 → `assets/bgm/cute/`
+   - 選び方向け: Lo-fi・チル系 → `assets/bgm/chill/`
+2. `assets/bgm/bgm.yaml` に曲ごとの `start`（いちばん盛り上がる秒数）と、必要なら `credit` を書く
+3. コミットして push。以後は形式に合う曲から、直近 3 本と被らないように自動で選曲し、**保存・シェア率の高い曲ほど選ばれやすく**なります。クレジットが必要な曲はキャプションに自動で表記されます。
+
+### 動画冒頭の実写背景
+
+`PEXELS_API_KEY` を登録すると、動画の冒頭に実写の縦動画（ジャンルごとの検索語は `config/genres.yaml` の `stock_queries`）が自動で入ります。同じ動画は 30 本空けるまで再利用しません。
 
 ## 7. トラブルシューティング
 
@@ -346,6 +362,7 @@ autopilot/
 
 - **ステマ規制**: キャプション冒頭の「PR」、画像右上の「PR」、リンク集ページの広告表記は自動で入ります。削除しないでください。
 - **薬機法・景品表示法**: NG 表現は自動検査していますが、完全ではありません。`config/ng_words.yaml` を随時強化し、ときどき投稿を目視してください。
+- **商品画像**: 楽天 API の商品画像は各ショップ・メーカーに権利があります。楽天アフィリエイト等の規約上の扱いを確認のうえ利用し、権利者から指摘があった場合は該当投稿を削除して `content.use_product_images: false` にしてください。
 - **Remotion**（動画テンプレート）: 個人および従業員 3 人以下の企業は無料で利用できます。それを超える組織で使う場合は Remotion の会社ライセンスが必要です。
 - **フォント**: Noto Sans JP / Zen Kaku Gothic New / Zen Old Mincho / Klee One / DM Serif Display / Inter / Archivo Black（いずれも SIL Open Font License）。
 - **VOICEVOX**: キャラクターごとの利用規約に従い、キャプションと動画内にクレジット（例「VOICEVOX:冥鳴ひまり」）を自動表記しています。

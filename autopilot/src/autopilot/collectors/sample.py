@@ -25,7 +25,7 @@ def load_sample(settings: Settings, db: DB) -> dict[str, int]:
                 "short_name": item.get("short_name") or clean_name(item["name"]),
                 "shop": item.get("shop"),
                 "caption": item.get("caption", ""),
-                "image_url": None,
+                "image_url": item.get("image"),
                 "affiliate_url": item.get("url"),
                 "amazon_url": amazon_search_url(item.get("short_name") or item["name"], "sample-22"),
                 "date": (today - timedelta(days=days_ago)).isoformat(),

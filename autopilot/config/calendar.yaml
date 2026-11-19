@@ -9,3 +9,6 @@ events:
   - { name: クリスマス, start: "12-01", end: "12-24", phrase: "クリスマスギフトにも", genres: [hair_dryer, hair_iron, facial_device, toothbrush] }
   - { name: 年末年始, start: "12-26", end: "01-10", phrase: "新年のご褒美に", genres: [facial_device, hair_dryer, body_scale] }
   - { name: 乾燥の季節, start: "10-15", end: "02-28", phrase: "乾燥する季節の", genres: [hair_dryer, facial_device] }
+  - { name: 冬支度, start: "10-20", end: "12-31", phrase: "本格的に寒くなる前に", genres: [humidifier, electric_blanket, futon_dryer, massager] }
+  - { name: 梅雨, start: "06-01", end: "07-15", phrase: "ジメジメの季節に", genres: [futon_dryer] }
+  - { name: 新年の目標, start: "01-01", end: "01-31", phrase: "新しい習慣づくりに", genres: [smart_watch, body_scale] }

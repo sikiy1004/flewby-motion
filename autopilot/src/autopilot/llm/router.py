@@ -19,7 +19,7 @@ from .template import template_copy
 
 log = logging.getLogger(__name__)
 
-SYSTEM = """あなたは日本の Instagram / TikTok で美容家電の比較情報を発信する編集者です。
+SYSTEM = """あなたは日本の Instagram / TikTok で、美容家電と「暮らしが快適になる家電」の比較情報を発信する編集者です。
 読者は20〜30代女性。親しみやすく、でも誠実なトーンで書きます。
 
 【絶対に守るルール】

@@ -14,6 +14,7 @@ export type Product = {
   label_main: string;
   label_suffix: string;
   label_chip: string;
+  photo?: string;
 };
 
 export type Word = { text: string; start: number; end: number; em?: boolean };
@@ -30,6 +31,8 @@ export type Scene = {
   subtitle?: string;
   bigN?: string;
   bigLabel?: string;
+  hookSize?: number;
+  photos?: string[];
   // product
   product?: Product;
   index?: number;
