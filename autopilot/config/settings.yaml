@@ -31,7 +31,7 @@ platforms:
 content:
   formats: [ranking, price_band, spotlight, guide]
   hook_types: [number, loss, compare, question]
-  themes: [milk, sakura, mint, night]
+  themes: [kraft, rose, sage, noir]
   products_per_post: 5
   min_price: 3000             # 安い付属品・消耗品を除外
   product_cooldown_days: 21

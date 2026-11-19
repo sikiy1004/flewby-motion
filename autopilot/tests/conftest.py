@@ -47,3 +47,5 @@ def chromium_available() -> bool:
 
 needs_chromium = pytest.mark.skipif(not chromium_available(), reason="Chromium がありません")
 needs_ffmpeg = pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="ffmpeg がありません")
+
+needs_node = pytest.mark.skipif(shutil.which("node") is None or not (ROOT / "remotion" / "node_modules" / "remotion").exists(), reason="Remotion 未インストール")

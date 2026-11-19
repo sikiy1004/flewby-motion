@@ -17,7 +17,7 @@ _NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
 def _allowed_numbers(plan: dict[str, Any]) -> set[str]:
     allowed: set[str] = {str(i) for i in range(0, 11)}
     for p in plan.get("products", []):
-        for k in ("price", "review_count", "rank"):
+        for k in ("price", "review_count", "rank", "score"):
             v = p.get(k)
             if v is not None:
                 allowed.add(str(int(v)))

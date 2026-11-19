@@ -1,95 +1,117 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
+<link rel="stylesheet" href="{{ webfonts }}">
 <style>
 {{ base_css }}
-.slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; background: var(--bg); }
-.slide .inner { position: absolute; inset: 64px 72px 120px 72px; display: flex; flex-direction: column; }
-.topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-.topbar .no { font: 800 30px "InterX"; color: var(--sub); letter-spacing: .06em; }
-.footer { position: absolute; left: 72px; right: 72px; bottom: 48px; display: flex; justify-content: space-between; align-items: center;
-          font: 700 24px "NotoJP"; color: var(--sub); }
-.dots { display: flex; gap: 10px; }
-.dots i { width: 12px; height: 12px; border-radius: 6px; background: var(--line); display: block; }
-.dots i.on { width: 36px; background: var(--accent); }
-h2.title { font: 800 64px/1.25 "NotoJP"; letter-spacing: .01em; margin-bottom: 36px; }
-h2.title small { display: block; font: 700 30px "NotoJP"; color: var(--sub); margin-top: 10px; }
+{{ design_css }}
+.slide { width: 1080px; height: 1350px; position: relative; overflow: hidden; }
+.inner { position: absolute; inset: 56px 64px 96px 64px; display: flex; flex-direction: column; }
+.mast { display: flex; align-items: center; justify-content: space-between; padding-bottom: 18px; border-bottom: 3px solid var(--ink); margin-bottom: 6px; }
+.mast .logo { font: 400 40px "DM Serif Display"; letter-spacing: .02em; }
+.mast .logo i { font-style: italic; color: var(--accent); }
+.mast .vol { font: 400 28px "DM Serif Display"; color: var(--sub); margin-left: 16px; }
+.mast2 { height: 3px; background: var(--ink); margin-bottom: 34px; opacity: .25; }
+.foot { position: absolute; left: 64px; right: 64px; bottom: 40px; display: flex; justify-content: space-between; align-items: baseline; color: var(--sub); }
+.foot .acc { font: 900 22px "Zen Kaku Gothic New"; letter-spacing: .06em; }
+.foot .pg { font: 400 30px "DM Serif Display"; } .foot .pg b { color: var(--ink); font-weight: 400; }
+.src { font: 700 21px/1.5 "Zen Kaku Gothic New"; color: var(--sub); }
 
-/* cover */
-.cover .blob { position: absolute; border-radius: 50%; background: var(--bg2); }
-.cover .hook { font: 800 112px/1.2 "NotoJP"; letter-spacing: -.01em; margin-top: 50px; word-break: keep-all; overflow-wrap: anywhere; }
-.cover .hook em { font-style: normal; color: var(--accent); }
-.cover .subtitle { font: 700 38px/1.5 "NotoJP"; color: var(--sub); margin-top: 40px; }
-.cover .badge { margin-top: auto; display: flex; gap: 16px; align-items: center; }
-.cover .asof { font: 700 26px "NotoJP"; color: var(--sub); margin-top: 22px; }
-.cover .lineup { margin-top: auto; margin-bottom: 70px; background: var(--surface); border-radius: 28px; padding: 30px 36px; width: 760px; }
-.cover .lineup .lh { font: 800 24px "NotoJP"; color: var(--accent); letter-spacing: .08em; margin-bottom: 14px; }
-.cover .lineup .li { display: flex; align-items: center; gap: 18px; font: 700 30px "NotoJP"; padding: 7px 0; }
-.cover .lineup .rk { width: 46px; height: 46px; border-radius: 12px; font-size: 24px; }
-.cover .swipe { position: absolute; right: 72px; bottom: 140px; font: 800 30px "NotoJP"; color: var(--accent); }
+/* ===== cover ===== */
+.cover .kicker { display: flex; align-items: center; gap: 14px; margin-top: 14px; }
+.cover .kicker .hand { font-size: 40px; color: var(--accent); margin-left: 6px; }
+.cover .hl { font-size: 116px; line-height: 1.16; margin-top: 30px; word-break: keep-all; overflow-wrap: anywhere; position: relative; z-index: 3; }
+.cover .sub { font: 700 34px/1.55 "Zen Kaku Gothic New"; color: var(--sub); margin-top: 26px; max-width: 900px; }
+.cover .bignum { position: absolute; left: 50px; bottom: 210px; display: flex; align-items: flex-end; gap: 14px; z-index: 3; }
+.cover .bignum .n { font: italic 400 330px/0.78 "DM Serif Display"; color: var(--accent); }
+.cover .bignum .l { font: 900 50px/1.25 "Zen Kaku Gothic New"; padding-bottom: 14px; }
+.cover .art { position: absolute; right: 30px; bottom: 170px; width: 470px; height: 470px; z-index: 2; }
+.cover .art .illust-wrap { width: 430px; height: 430px; position: absolute; right: 0; bottom: 0; }
+.cover .lineup { position: absolute; left: 64px; bottom: 150px; font: 700 24px "Zen Kaku Gothic New"; color: var(--sub); z-index: 4; width: 540px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cover .swipe { position: absolute; right: 70px; bottom: 96px; font-size: 34px; color: var(--accent); z-index: 4; display: flex; align-items: center; gap: 8px; }
 
-/* table */
-table { width: 100%; border-collapse: separate; border-spacing: 0 16px; }
-td { background: var(--surface); padding: 24px 18px; font: 700 30px "NotoJP"; vertical-align: middle; }
-td.num { white-space: nowrap; }
-td:first-child { border-radius: 18px 0 0 18px; padding-left: 26px; }
-td:last-child { border-radius: 0 18px 18px 0; padding-right: 26px; text-align: right; }
-th { font: 700 24px "NotoJP"; color: var(--sub); text-align: left; padding: 0 18px; }
-th:last-child { text-align: right; }
-.rk { display: inline-flex; width: 58px; height: 58px; border-radius: 16px; background: var(--soft); align-items: center; justify-content: center; font: 800 30px "InterX"; }
-.rk.top { background: var(--accent); color: var(--accent-ink); }
-.pname { font: 700 30px/1.3 "NotoJP"; }
-.best { display: inline-block; padding: 4px 12px; border-radius: 8px; background: var(--accent); color: var(--accent-ink); }
-.note-src { font: 700 22px "NotoJP"; color: var(--sub); margin-top: auto; }
+/* ===== compare table ===== */
+.tbl-title { font-size: 74px; line-height: 1.2; }
+.legend { display: flex; gap: 26px; margin: 18px 0 26px; font: 700 26px "Zen Kaku Gothic New"; color: var(--sub); }
+.legend b { font-size: 34px; margin-right: 4px; }
+.grid { display: grid; grid-template-columns: 1fr 112px 112px 112px 112px 130px; border-radius: 26px; overflow: hidden; background: var(--soft);
+        box-shadow: 0 2px 0 var(--line), 0 18px 40px rgba(40,30,20,.08); }
+.grid > div { display: flex; align-items: center; justify-content: center; padding: 18px 8px; border-bottom: 2px solid var(--line); }
+.grid .h { background: var(--ink); color: var(--paper); font: 900 24px "Zen Kaku Gothic New"; flex-direction: column; gap: 6px; padding: 16px 4px; }
+.grid .h svg { width: 44px; height: 44px; }
+.grid .p { justify-content: flex-start; gap: 16px; padding-left: 22px; }
+.grid .p .rk { flex: none; min-width: 54px; height: 54px; padding: 0 8px; border-radius: 27px; border: 3px solid var(--ink); display: flex; align-items: center; justify-content: center; font: 900 24px "Zen Kaku Gothic New"; }
+.grid .p .nm { font: 900 27px/1.3 "Zen Kaku Gothic New"; }
+.grid .p .pr2 { font: 400 26px "DM Serif Display"; color: var(--sub); }
+.grid .sc { font: 400 52px "DM Serif Display"; }
+.grid .best { background: color-mix(in srgb, var(--pop) 38%, var(--soft)); }
+.grid > div:nth-last-child(-n+6) { border-bottom: none; }
+.tbl-note { display: flex; align-items: flex-start; gap: 6px; margin-top: 22px; position: relative; }
+.tbl-note .hand { font-size: 36px; color: var(--accent); line-height: 1.4; }
 
-/* product card */
-.card { background: var(--surface); border-radius: 36px; padding: 56px 56px 48px; flex: 1; display: flex; flex-direction: column; }
-.card .label { display: flex; align-items: center; gap: 18px; }
-.card .big-rank { font: 800 120px/1 "InterX"; color: var(--accent); }
-.card .big-rank span { font: 800 48px "NotoJP"; margin-left: 4px; }
-.card .pn { font: 800 60px/1.25 "NotoJP"; margin: 26px 0 30px; }
-.card .price { font: 800 92px/1 "InterX"; letter-spacing: -.02em; }
-.card .price span { font: 800 40px "NotoJP"; margin-left: 6px; }
-.card .price small { font: 700 24px "NotoJP"; color: var(--sub); margin-left: 14px; }
-.card .rating { display: flex; align-items: center; gap: 18px; margin: 30px 0 34px; font: 700 30px "NotoJP"; color: var(--sub); }
-.card .rating b { font: 800 40px "InterX"; color: var(--ink); }
-.bars { margin: 10px 0 30px; }
-.bar { display: grid; grid-template-columns: 150px 1fr 190px; align-items: center; gap: 18px; margin-bottom: 18px; font: 700 26px "NotoJP"; color: var(--sub); }
-.bar .track { height: 22px; border-radius: 11px; background: var(--soft); position: relative; overflow: hidden; }
-.bar .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 11px; background: var(--accent); display: block; }
-.bar .v { text-align: right; color: var(--ink); font: 800 28px "InterX", "NotoJP"; white-space: nowrap; }
-.bars .cap { font: 700 22px "NotoJP"; color: var(--sub); margin-bottom: 18px; }
-.card .for { margin-top: auto; background: var(--soft); border-radius: 22px; padding: 28px 32px; font: 700 34px/1.5 "NotoJP"; }
-.card .for::before { content: "こんな人に"; display: block; font: 800 24px "NotoJP"; color: var(--accent); margin-bottom: 8px; letter-spacing: .08em; }
-.card .img { position: absolute; right: 120px; top: 230px; width: 260px; height: 260px; object-fit: contain; border-radius: 24px; background: #fff; }
+/* ===== product ===== */
+.product .top { display: flex; justify-content: space-between; align-items: flex-start; margin-top: 10px; }
+.product .rank { display: flex; align-items: flex-end; gap: 10px; }
+.product .rank .n { font: italic 400 170px/0.8 "DM Serif Display"; color: var(--accent); white-space: nowrap; }
+.product .rank .n.jp { font: 900 104px/1 "Zen Kaku Gothic New"; font-style: normal; }
+.product .rank .u { font: 900 54px "Zen Kaku Gothic New"; }
+.product .rrow { display: flex; align-items: flex-end; gap: 4px; }
+.product .rank .lab { font: 900 26px "Zen Kaku Gothic New"; color: var(--sub); display: block; margin-bottom: 14px; }
+.product .art { position: relative; width: 240px; height: 240px; margin-top: -14px; flex: none; }
+.product .art .illust-wrap { width: 230px; height: 230px; }
+.product .name { font-size: 56px; line-height: 1.2; margin: 6px 0 8px; position: relative; z-index: 3; }
+.product .price { display: flex; align-items: baseline; gap: 10px; }
+.product .price .v { font: 400 108px/1 "DM Serif Display"; letter-spacing: -.02em; }
+.product .price .y { font: 900 46px "Zen Kaku Gothic New"; }
+.product .price .asof { font: 700 24px "Zen Kaku Gothic New"; color: var(--sub); margin-left: 12px; }
+.product .rating { display: flex; align-items: center; gap: 16px; margin: 8px 0 4px; font: 700 30px "Zen Kaku Gothic New"; color: var(--sub); }
+.product .rating b { font: 400 50px "DM Serif Display"; color: var(--ink); }
+.product .mid { display: flex; align-items: center; gap: 20px; margin-left: -20px; }
+.product .scorebox { position: relative; flex: 1; text-align: center; }
+.product .scorebox .t { font: 400 28px "DM Serif Display"; letter-spacing: .16em; color: var(--sub); }
+.product .scorebox .v { font: 400 132px/1 "DM Serif Display"; color: var(--accent); }
+.product .scorebox .v small { font-size: 46px; color: var(--sub); }
+.product .scorebox .hand { font-size: 28px; color: var(--sub); }
+.product .stickers { margin-top: 6px; }
+.product .sticky { margin-top: auto; font-size: 34px; line-height: 1.45; padding: 20px 30px; }
+.product .sticky .lbl { display: block; font: 900 24px "Zen Kaku Gothic New"; letter-spacing: .14em; color: var(--accent); margin-bottom: 4px; }
 
-/* tips */
-.tip .pt { font: 800 34px "InterX"; color: var(--accent); letter-spacing: .12em; }
-.tip .tt { font: 800 84px/1.25 "NotoJP"; margin: 24px 0 40px; }
-.tip .tb { font: 700 44px/1.7 "NotoJP"; color: var(--ink); }
-.tip .bignum { position: absolute; right: -20px; bottom: 60px; font: 800 560px/1 "InterX"; color: var(--bg2); z-index: 0; }
-.tip .inner > * { position: relative; z-index: 1; }
+/* ===== tip ===== */
+.tip .pt { display: flex; align-items: flex-end; gap: 18px; margin-top: 30px; }
+.tip .pt .w { font: 400 52px "DM Serif Display"; letter-spacing: .14em; color: var(--sub); padding-bottom: 26px; }
+.tip .pt .n { font: italic 400 300px/0.8 "DM Serif Display"; color: var(--accent); }
+.tip .tt { font-size: 92px; line-height: 1.2; margin: 40px 0 34px; }
+.tip .tb { font: 500 42px/68px "NotoJP"; padding: 0 30px; border-radius: 22px; background-color: var(--soft); }
+.tip .anno { position: absolute; right: 70px; bottom: 120px; display: flex; align-items: flex-end; gap: 4px; }
+.tip .anno .hand { font-size: 44px; color: var(--accent); transform: rotate(-6deg); }
+.tip .art { position: absolute; right: 60px; top: 170px; }
+.tip .art .illust-wrap { width: 250px; height: 250px; }
 
-/* picks */
-.pick { background: var(--surface); border-radius: 26px; padding: 34px 40px; margin-bottom: 24px; }
-.pick .pl { font: 800 28px "NotoJP"; color: var(--accent); }
-.pick .pv { font: 800 46px/1.3 "NotoJP"; margin: 8px 0 6px; }
-.pick .pr2 { font: 700 28px "NotoJP"; color: var(--sub); }
-.summary-line { font: 700 36px/1.6 "NotoJP"; margin-top: auto; }
+/* ===== picks ===== */
+.picks h2 { font-size: 78px; line-height: 1.2; margin: 20px 0 34px; }
+.tk { display: flex; align-items: center; gap: 30px; padding: 30px 36px; margin-bottom: 24px; }
+.tk .ic { flex: none; width: 110px; height: 110px; border-radius: 50%; background: var(--paper2); display: flex; align-items: center; justify-content: center; }
+.tk .l { font: 900 28px "Zen Kaku Gothic New"; color: var(--accent); letter-spacing: .06em; }
+.tk .v { font: 900 46px/1.25 "Zen Kaku Gothic New"; margin: 4px 0; }
+.tk .r { font: 700 28px "Zen Kaku Gothic New"; color: var(--sub); }
+.picks .concl { margin-top: auto; font-size: 40px; line-height: 1.5; }
 
-/* cta */
-.cta .big { font: 800 84px/1.3 "NotoJP"; margin-top: 80px; }
-.cta .big em { font-style: normal; color: var(--accent); }
-.cta .box { margin-top: 70px; background: var(--surface); border-radius: 30px; padding: 44px 48px; font: 700 40px/1.6 "NotoJP"; }
-.cta .box b { color: var(--accent); font-family: "InterX", "NotoJP"; }
-.cta .follow { margin-top: 36px; font: 700 34px "NotoJP"; color: var(--sub); }
-.disclaimer { font: 700 22px/1.5 "NotoJP"; color: var(--sub); margin-top: auto; }
+/* ===== cta ===== */
+.cta .big { font-size: 96px; line-height: 1.22; margin-top: 60px; position: relative; z-index: 3; max-width: 760px; }
+.cta .bm { position: absolute; right: 80px; top: 210px; transform: rotate(8deg); }
+.cta .box { margin-top: 64px; padding: 42px 46px; font: 900 44px/1.55 "Zen Kaku Gothic New"; }
+.cta .box .no { font: 400 64px "DM Serif Display"; color: var(--accent); }
+.cta .follow { margin-top: 30px; font: 700 32px "Zen Kaku Gothic New"; color: var(--sub); }
+.cta .saveh { position: absolute; right: 80px; bottom: 210px; display: flex; align-items: flex-end; gap: 6px; }
+.cta .saveh .hand { font-size: 44px; color: var(--accent); transform: rotate(-4deg); }
+.cta .disc { font: 700 20px/1.6 "Zen Kaku Gothic New"; color: var(--sub); margin-top: auto; }
 </style></head>
 <body class="theme-{{ theme }}">
-{% macro top(i) -%}
-<div class="topbar"><span class="pr">PR</span><span class="no">No.{{ '%03d' % post_no }}</span></div>
+{% macro mast(i) -%}
+<div class="mast"><div><span class="logo">BIKADEN <i>Note</i></span><span class="vol">vol.{{ '%03d' % post_no }}</span></div><span class="pr">PR</span></div>
+<div class="mast2"></div>
 {%- endmacro %}
 {% macro foot(i) -%}
-<div class="footer"><span>{{ account }}</span><span class="dots">{% for k in range(total) %}<i class="{{ 'on' if k == i else '' }}"></i>{% endfor %}</span></div>
+<div class="foot"><span class="acc">{{ account }}</span><span class="pg"><b>{{ '%02d' % (i + 1) }}</b> / {{ '%02d' % total }}</span></div>
 {%- endmacro %}
 {% macro stars(v) -%}
 <span class="stars">★★★★★<span class="fill" style="width: {{ (v / 5 * 100) | round(1) }}%">★★★★★</span></span>
@@ -97,85 +119,94 @@ th:last-child { text-align: right; }
 
 {% for s in slides %}
 {% set i = loop.index0 %}
-<section class="slide {{ s.type }}" id="slide-{{ i }}" data-pr="1">
+<section class="slide paper {{ s.type }}" id="slide-{{ i }}" data-pr="1">
 {% if s.type == 'cover' %}
-  <div class="blob" style="width:760px;height:760px;right:-260px;top:-200px"></div>
-  <div class="blob" style="width:420px;height:420px;left:-160px;bottom:-120px;opacity:.6"></div>
   <div class="inner">
-    {{ top(i) }}
-    <div><span class="chip">{{ genre }}</span> <span class="chip ghost">{{ format_label }}</span></div>
-    <div class="hook" style="font-size: {{ s.hook_size }}px">{{ s.hook_html | safe }}</div>
-    <div class="subtitle">{{ s.subtitle | jp }}</div>
-    <div class="asof">{{ date_label }}時点・楽天市場の公開データをもとに作成</div>
-    <div class="lineup">
-      <div class="lh">{{ s.lineup_title }}</div>
-      {% for p in s.lineup %}<div class="li"><span class="rk {{ 'top' if loop.first else '' }}">{{ loop.index }}</span><span>{{ p.name }}</span></div>{% endfor %}
-    </div>
+    {{ mast(i) }}
+    <div class="kicker"><span class="chip">{{ genre }}</span><span class="chip line">{{ format_label }}</span><span class="hand">保存版</span></div>
+    <div class="hl head" style="font-size: {{ s.hook_size }}px">{{ s.hook_html | safe }}</div>
+    <div class="sub">{{ s.subtitle | jp }}</div>
   </div>
-  <div class="swipe">スワイプ →</div>
+  <div class="art">
+    <div class="illust-wrap">{{ s.illust | safe }}</div>
+    <div class="tape" style="left: 70px; top: 30px; transform: rotate(-24deg)"></div>
+    <div class="stamp" style="right: -10px; top: -30px"><small>DATA</small><b>比較</b><small>{{ date_short }}</small></div>
+  </div>
+  <div class="bignum"><span class="n">{{ s.big_n }}</span><span class="l">{{ s.big_label | safe }}</span></div>
+  <div class="lineup">{{ s.lineup_text }}</div>
+  <div class="swipe hand">めくってね →</div>
 {% elif s.type == 'table' %}
   <div class="inner">
-    {{ top(i) }}
-    <h2 class="title">{{ s.title }}<small>{{ s.caption }}</small></h2>
-    <table>
-      <tr><th></th><th>商品</th><th>価格</th><th>評価</th><th>レビュー数</th></tr>
+    {{ mast(i) }}
+    <div class="tbl-title head">{{ s.title_html | safe }}</div>
+    <div class="legend"><span><b class="mk-best">◎</b>上位</span><span><b>○</b>中位</span><span><b class="mk-low">△</b>下位</span><span>（比較した{{ s.n }}台の中で）</span></div>
+    <div class="grid">
+      <div class="h">商品</div>
+      <div class="h">{{ icons.yen | safe }}価格</div><div class="h">{{ icons.star | safe }}評価</div>
+      <div class="h">{{ icons.people | safe }}口コミ</div><div class="h">{{ icons.spark | safe }}機能</div><div class="h">スコア</div>
       {% for p in s.products %}
-      <tr>
-        <td><span class="rk {{ 'top' if loop.first and s.ranked else '' }}">{{ p.label_short }}</span></td>
-        <td><div class="pname">{{ p.name }}</div></td>
-        <td class="num">{% if p.id == s.best_price %}<span class="best">{{ '{:,}'.format(p.price) }}円</span>{% else %}{{ '{:,}'.format(p.price) }}円{% endif %}</td>
-        <td class="num">{% if p.id == s.best_avg %}<span class="best">★{{ '%.2f' % p.review_avg }}</span>{% else %}★{{ '%.2f' % p.review_avg }}{% endif %}</td>
-        <td class="num">{% if p.id == s.best_count %}<span class="best">{{ '{:,}'.format(p.review_count) }}</span>{% else %}{{ '{:,}'.format(p.review_count) }}{% endif %}</td>
-      </tr>
+      {% set b = 'best' if p.best else '' %}
+      <div class="p {{ b }}"><span class="rk">{{ p.label_short }}</span><span><div class="nm">{{ p.name }}</div><div class="pr2">¥{{ '{:,}'.format(p.price) }}</div></span></div>
+      {% for k in ['value', 'rating', 'popular', 'features'] %}
+      {% set m = p.marks[k] %}
+      <div class="{{ b }}"><span class="mk {{ 'mk-best' if m == '◎' else ('mk-mid' if m == '○' else 'mk-low') }}">{{ m }}</span></div>
       {% endfor %}
-    </table>
-    <div class="note-src">色付き＝比較した中で「いちばん手頃／評価が高い／レビューが多い」。{{ date_label }}時点・楽天市場調べ</div>
+      <div class="{{ b }}"><span class="sc">{{ p.score }}</span></div>
+      {% endfor %}
+    </div>
+    <div class="tbl-note">{{ arrow_up | safe }}<span class="hand">総合スコアは<br>「{{ s.best_name }}」がトップ</span></div>
+    <div class="src" style="margin-top:auto">スコア＝楽天のレビュー評価40%・口コミ数30%・価格20%・機能数10%から算出した当アカウント独自の比較用指標（{{ date_label }}時点）。</div>
   </div>
 {% elif s.type == 'product' %}
   {% set p = s.product %}
   <div class="inner">
-    {{ top(i) }}
-    <div class="card">
-      <div class="label"><span class="big-rank">{{ s.label_main }}<span>{{ s.label_suffix }}</span></span>{% if s.label_chip %}<span class="chip ghost">{{ s.label_chip }}</span>{% endif %}</div>
-      {% if p.image_url %}<img class="img" src="{{ p.image_url }}">{% endif %}
-      <div class="pn">{{ p.name | jp }}</div>
-      <div class="price num">{{ '{:,}'.format(p.price) }}<span>円</span><small>{{ date_label }}時点</small></div>
-      <div class="rating">{{ stars(p.review_avg) }}<b>{{ '%.2f' % p.review_avg }}</b>レビュー {{ '{:,}'.format(p.review_count) }}件</div>
-      <div>{% for f in p.features %}<span class="tag">{{ f }}</span>{% endfor %}</div>
-      <div class="bars">
-        <div class="cap">比較した{{ s.n }}台の中での位置</div>
-        <div class="bar"><span>価格</span><span class="track"><i style="width: {{ (p.price / s.max_price * 100) | round(1) }}%"></i></span><span class="v">{{ '{:,}'.format(p.price) }}円</span></div>
-        <div class="bar"><span>評価</span><span class="track"><i style="width: {{ (p.review_avg / 5 * 100) | round(1) }}%"></i></span><span class="v">★{{ '%.2f' % p.review_avg }}</span></div>
-        <div class="bar"><span>レビュー数</span><span class="track"><i style="width: {{ (p.review_count / s.max_count * 100) | round(1) }}%"></i></span><span class="v">{{ '{:,}'.format(p.review_count) }}件</span></div>
-      </div>
-      <div class="for">{{ s.note | jp }}</div>
+    {{ mast(i) }}
+    <div class="top">
+      <div class="rank"><div><span class="lab">{{ s.label_chip }}</span><div class="rrow"><span class="n {{ 'jp' if s.label_jp else '' }}">{{ s.label_main }}</span><span class="u">{{ s.label_suffix }}</span></div></div></div>
+      <div class="art"><div class="illust-wrap">{{ s.illust | safe }}</div><div class="tape" style="right: -30px; top: 6px; transform: rotate(28deg)"></div></div>
     </div>
+    <div class="name head">{{ p.name | jp }}</div>
+    <div class="price"><span class="v">{{ '{:,}'.format(p.price) }}</span><span class="y">円</span><span class="asof">{{ date_label }}時点</span></div>
+    <div class="rating">{{ stars(p.review_avg) }}<b>{{ '%.2f' % p.review_avg }}</b>口コミ {{ '{:,}'.format(p.review_count) }}件</div>
+    <div class="mid">
+      {{ s.radar | safe }}
+      <div class="scorebox"><div class="t">DATA SCORE</div><div class="v">{{ p.score }}<small>/100</small></div><div class="hand">比較した{{ s.n }}台の中での指標</div></div>
+    </div>
+    <div class="stickers">{% for f in p.features %}<span class="sticker">{{ f }}</span>{% endfor %}</div>
+    <div class="sticky"><span class="lbl">こんな人に</span>{{ s.note | jp }}</div>
   </div>
 {% elif s.type == 'tip' %}
-  <div class="bignum">{{ s.n }}</div>
   <div class="inner">
-    {{ top(i) }}
-    <div class="pt">POINT {{ s.n }}</div>
-    <div class="tt">{{ s.title | jp }}</div>
-    <div class="tb">{{ s.body | jp }}</div>
+    {{ mast(i) }}
+    <div class="pt"><span class="w">POINT</span><span class="n">{{ '%02d' % s.n }}</span></div>
+    <div class="tt head">{{ s.title_html | safe }}</div>
+    <div class="tb ruled">{{ s.body | jp }}</div>
   </div>
+  <div class="art"><div class="illust-wrap">{{ s.icon | safe }}</div></div>
+  <div class="anno"><span class="hand">{{ s.anno }}</span></div>
 {% elif s.type == 'picks' %}
   <div class="inner">
-    {{ top(i) }}
-    <h2 class="title">{{ s.title }}</h2>
+    {{ mast(i) }}
+    <h2 class="head">{{ s.title_html | safe }}</h2>
     {% for k in s.picks %}
-    <div class="pick"><div class="pl">{{ k.label }}</div><div class="pv">{{ k.name }}</div><div class="pr2">{{ k.reason }}</div></div>
+    <div class="tk card">
+      <div class="ic">{{ k.icon | safe }}</div>
+      <div><div class="l">{{ k.label }}</div><div class="v">{{ k.name | jp }}</div><div class="r">{{ k.reason }}</div></div>
+      {% if loop.first %}<div class="tape" style="right: -20px; top: -18px; transform: rotate(14deg); width: 150px"></div>{% endif %}
+    </div>
     {% endfor %}
-    <div class="summary-line">{{ s.summary | jp }}</div>
+    <div class="concl hand">{{ s.summary | jp }}</div>
   </div>
 {% elif s.type == 'cta' %}
   <div class="inner">
-    {{ top(i) }}
-    <div class="big">{{ "あとで比べるときのために" | jp }}<br><em>保存</em>しておいてね</div>
-    <div class="box">紹介した商品のリンクは<br>プロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
+    {{ mast(i) }}
+    <div class="big head">{{ s.title_html | safe }}</div>
+    <div class="box card">紹介した商品のリンクは<br>プロフィールのリンク → <span class="no">No.{{ '%03d' % post_no }}</span></div>
     <div class="follow">フォローすると新しい比較が届きます　{{ handle }}</div>
-    <div class="disclaimer">※本投稿はアフィリエイト広告を含みます。価格・ランキング・レビューは{{ date_label }}時点の楽天市場の情報で、変動します。効果・効能を保証するものではありません。</div>
+    <div class="disc">※本投稿はアフィリエイト広告を含みます。価格・ランキング・口コミは{{ date_label }}時点の楽天市場の情報で、変動します。効果・効能を保証するものではありません。</div>
   </div>
+  <div class="bm">{{ icons.bookmark_big | safe }}</div>
+  <div class="saveh"><span class="hand">保存はここから</span>{{ arrow_down | safe }}</div>
 {% endif %}
   {{ foot(i) }}
 </section>

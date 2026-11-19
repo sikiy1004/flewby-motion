@@ -9,7 +9,7 @@ from autopilot.llm.template import template_copy
 from autopilot.planner import plan_post
 from autopilot.render.carousel import render_carousel, render_story
 
-from .conftest import needs_chromium, needs_ffmpeg
+from .conftest import needs_chromium, needs_ffmpeg, needs_node
 
 
 @needs_chromium
@@ -29,6 +29,7 @@ def test_carousel_images(settings, db):
 
 @needs_chromium
 @needs_ffmpeg
+@needs_node
 def test_short_video(settings, db):
     from autopilot.video.composer import render_video
 

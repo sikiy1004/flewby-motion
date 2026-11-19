@@ -15,6 +15,7 @@ from .collectors import extract_features
 from .collectors.trends import season_for
 from .config import Settings, now_jst
 from .db import DB
+from .scoring import score_products
 
 FORMAT_MIN_PRODUCTS = {"ranking": 3, "price_band": 3, "spotlight": 3, "guide": 3}
 
@@ -148,6 +149,7 @@ def plan_post(settings: Settings, db: DB, kind: str, rng: random.Random | None =
             products, signal = _select_products(settings, db, fmt, genre["key"], n)
             if len(products) < FORMAT_MIN_PRODUCTS[fmt]:
                 continue
+            products = score_products(products)
             week = now.strftime("%G-W%V")
             codes = ",".join(sorted(p["item_code"] for p in products))
             h = hashlib.sha1(f"{kind}|{fmt}|{genre['key']}|{week}|{codes}".encode()).hexdigest()

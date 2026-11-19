@@ -180,6 +180,10 @@ def cmd_doctor(args) -> int:
         line(True, "Playwright Chromium")
     except Exception as e:
         line(False, "Playwright Chromium", f"→ python -m playwright install chromium （{str(e)[:80]}）")
+    line(shutil.which("node") is not None, "Node.js（動画テンプレート Remotion 用）")
+    remotion_dir = s.root / "remotion"
+    line((remotion_dir / "node_modules" / "remotion").exists(), "Remotion", f"→ cd {remotion_dir} && npm ci")
+    line((s.assets_dir / "webfonts" / "webfonts.css").exists(), "デザイン用フォント（Zen Kaku Gothic New / DM Serif / Klee One）")
     try:
         r = requests.get(f"{s.env('VOICEVOX_URL', 'http://localhost:50021')}/version", timeout=3)
         line(r.ok, "VOICEVOX Engine", r.text.strip())

@@ -4,6 +4,7 @@
 
 - 戦略: [`../docs/strategy.md`](../docs/strategy.md)
 - 設計: [`../docs/architecture.md`](../docs/architecture.md)
+- デザインのリサーチと方針: [`../docs/design-research.md`](../docs/design-research.md)
 
 あなたがやることは **最初のアカウント連携（2〜3 時間）** と **月 1 回の収益確認** だけです。
 
@@ -36,7 +37,7 @@
 
 ### B. 手元で試す
 
-必要なもの: Python 3.10+、FFmpeg、（音声も確認するなら）Docker
+必要なもの: Python 3.10+、FFmpeg、Node.js 18+（動画テンプレート）、（音声も確認するなら）Docker
 
 ```bash
 cd autopilot
@@ -48,6 +49,10 @@ pip install -e ".[dev]"
 
 ```bash
 python -m playwright install chromium
+```
+
+```bash
+cd remotion && npm ci && cd ..
 ```
 
 ```bash
@@ -264,7 +269,10 @@ cd autopilot && autopilot status
 | 季節イベント | `config/calendar.yaml` |
 | 声の変更 | `config/settings.yaml` の `tts.voicevox_speaker`（VOICEVOX のキャラクター名） |
 | BGM | `assets/bgm/` に **商用利用可・クレジット不要** の mp3/wav を置く（無ければ自動生成のパッド音） |
-| デザイン | `src/autopilot/render/templates/*.j2`（配色テーマは `base.css.j2`） |
+| デザイン（共通パーツ・配色テーマ） | `assets/design/design.css`（kraft / rose / sage / noir） |
+| カルーセルのレイアウト | `src/autopilot/render/templates/carousel.html.j2` |
+| 動画の演出 | `remotion/src/Reel.tsx`（`cd remotion && npm run studio` でブラウザ上でプレビュー可） |
+| 商品イラスト | `src/autopilot/render/illustrations.py`（自作SVG） |
 | 商品画像を使う | `content.use_product_images: true`（各 EC・ASP の素材利用規約を確認してから） |
 
 フォーマット（ランキング / 価格帯別 / 注目モデル / 選び方）、フックの型、配色テーマは、保存数・シェア数をもとに **自動で伸びる組み合わせに寄っていきます**（Thompson Sampling）。
@@ -311,7 +319,8 @@ docker compose up -d --build
 ```
 autopilot/
 ├── config/                 設定（投稿量・ジャンル・NG表現・季節・ASP案件）
-├── assets/                 フォント（Noto Sans JP / Inter, OFL）・効果音・BGM
+├── assets/                 フォント・Webフォント・デザインCSS・効果音・BGM
+├── remotion/               動画テンプレート（React / Remotion）
 ├── sample/products.json    デモ用の架空商品データ
 ├── scripts/state.sh        SQLite を autopilot-state ブランチに保存・復元
 └── src/autopilot/
@@ -319,8 +328,9 @@ autopilot/
     ├── planner.py          ジャンル/フォーマット/フック/テーマ選択（Thompson Sampling）・重複防止
     ├── llm/                無料LLMルーター（Gemini→Groq→OpenRouter→Ollama→定型文）
     ├── compliance.py       PR表記・薬機法NG・数値捏造・類似度チェック
-    ├── render/             HTML/CSS → Playwright でカルーセル・ストーリー・動画シーン画像
-    ├── video/              VOICEVOX・字幕(ASS)・FFmpeg合成・Pexels
+    ├── render/             HTML/CSS → Playwright でカルーセル・ストーリー（雑誌風デザイン・自作イラスト）
+    ├── scoring.py          データスコア・◎○△（実データから算出）
+    ├── video/              VOICEVOX（発話タイミング付き）・字幕・Remotion 呼び出し・音量正規化
     ├── publish/            Instagram Graph API・TikTok API・メディア公開
     ├── linkpage/           プロフィール用リンク集ページ
     └── pipeline.py         ステートマシン（失敗段階から再開・3回で諦めて通知）
@@ -336,6 +346,8 @@ autopilot/
 
 - **ステマ規制**: キャプション冒頭の「PR」、画像右上の「PR」、リンク集ページの広告表記は自動で入ります。削除しないでください。
 - **薬機法・景品表示法**: NG 表現は自動検査していますが、完全ではありません。`config/ng_words.yaml` を随時強化し、ときどき投稿を目視してください。
+- **Remotion**（動画テンプレート）: 個人および従業員 3 人以下の企業は無料で利用できます。それを超える組織で使う場合は Remotion の会社ライセンスが必要です。
+- **フォント**: Noto Sans JP / Zen Kaku Gothic New / Zen Old Mincho / Klee One / DM Serif Display / Inter / Archivo Black（いずれも SIL Open Font License）。
 - **VOICEVOX**: キャラクターごとの利用規約に従い、キャプションと動画内にクレジット（例「VOICEVOX:冥鳴ひまり」）を自動表記しています。
 - **Edge-TTS** は非公式な利用方法のため予備扱いです（VOICEVOX が使えない場合のみ）。
 - **無料枠の変更**: 各 API の無料枠・仕様は予告なく変わることがあります。失敗通知が続いたら公式情報を確認してください。

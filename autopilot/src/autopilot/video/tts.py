@@ -61,7 +61,7 @@ class VoicevoxTTS:
         self.speaker_name = speakers[0]["name"]
         return int(speakers[0]["styles"][0]["id"])
 
-    def synth(self, text: str, path: Path) -> None:
+    def synth(self, text: str, path: Path) -> list[tuple[float, float]] | None:
         q = requests.post(f"{self.url}/audio_query", params={"text": _reading(text), "speaker": self.speaker_id}, timeout=60)
         q.raise_for_status()
         query = q.json()
@@ -71,10 +71,30 @@ class VoicevoxTTS:
         w = requests.post(f"{self.url}/synthesis", params={"speaker": self.speaker_id}, json=query, timeout=120)
         w.raise_for_status()
         path.write_bytes(w.content)
+        return clause_timings(query)
 
     @property
     def credit(self) -> str:
         return f"VOICEVOX:{self.speaker_name}"
+
+
+def clause_timings(query: dict) -> list[tuple[float, float]]:
+    """VOICEVOX の audio_query から、句読点（ポーズ）で区切った節ごとの (開始, 終了) 秒を求める。字幕同期用。"""
+    speed = float(query.get("speedScale", 1.0)) or 1.0
+    t = float(query.get("prePhonemeLength", 0.1)) / speed
+    out: list[tuple[float, float]] = []
+    start = t
+    phrases = query.get("accent_phrases", [])
+    for i, ph in enumerate(phrases):
+        for m in ph.get("moras", []):
+            t += (float(m.get("consonant_length") or 0) + float(m.get("vowel_length") or 0)) / speed
+        pause = ph.get("pause_mora")
+        if pause or i == len(phrases) - 1:
+            out.append((start, t))
+            if pause:
+                t += float(pause.get("vowel_length") or 0) / speed
+            start = t
+    return out
 
 
 class EdgeTTS:
@@ -87,7 +107,7 @@ class EdgeTTS:
         self.speed = speed
 
     def synth(self, text: str, path: Path) -> None:
-        import edge_tts
+        import edge_tts  # noqa: F811
 
         mp3 = path.with_suffix(".mp3")
         rate = f"+{int(round((self.speed - 1) * 100))}%"

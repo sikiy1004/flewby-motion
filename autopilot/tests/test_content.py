@@ -97,3 +97,16 @@ def test_subtitle_split_is_short():
     chunks = split_caption("1万円以下なら、Pureskin イオン導入美顔器。イオン導入と温冷が特徴です。")
     assert chunks and all(len(c) <= 17 for c in chunks)
     assert all(not c.endswith("。") for c in chunks)
+
+
+def test_scores_and_marks_are_data_derived():
+    from autopilot.scoring import score_products
+    ps = [dict(price=19800, review_avg=4.62, review_count=4210, features=["a", "b", "c", "d"]),
+          dict(price=7980, review_avg=4.31, review_count=1520, features=["a"]),
+          dict(price=34800, review_avg=4.71, review_count=980, features=["a", "b"])]
+    out = score_products(ps)
+    assert all(40 <= p["score"] <= 100 for p in out)
+    assert out[1]["marks"]["value"] == "◎"      # いちばん安い
+    assert out[2]["marks"]["rating"] == "◎"     # 評価がいちばん高い
+    assert out[0]["marks"]["popular"] == "◎"    # 口コミがいちばん多い
+    assert sum(1 for p in out if p.get("best")) == 1

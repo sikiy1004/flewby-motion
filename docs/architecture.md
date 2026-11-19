@@ -57,7 +57,7 @@
 | 画像生成 | **Jinja2 + HTML/CSS + Playwright（Chromium）** | OSS。リポジトリ既存の Noto Sans JP / Inter フォントを再利用 | Pillow 簡易レンダラー |
 | 音声合成 | **VOICEVOX Engine（Docker, CPU版 `cpu-0.26.2`。既定の声は冥鳴ひまり）** | 無料・商用可（キャラクターごとの規約に従いクレジット表記を自動付与） | Edge-TTS（※非公式利用のため規約上グレー。あくまで非常用） |
 | 素材 | Pexels API / Pixabay API | 無料（Pexels: 200req/時） | 単色グラデ＋図形のモーション背景（素材なしでも成立） |
-| 動画編集 | **FFmpeg**（zoompan / xfade / libass 字幕 / sidechain ダッキング / loudnorm） | OSS。MoviePyより高速・省メモリでCI向き | — |
+| 動画編集 | **Remotion**（React でモーション・字幕・音声ミックス）＋ **FFmpeg**（音量正規化） | 個人・3人以下の企業は無料。デザイン刷新（2026-11）で FFmpeg 単体から移行 | — |
 | BGM | `assets/bgm/` に置いた商用可・クレジット不要の音源 | 素材を置かない場合はFFmpegで生成する環境音パッドを使用 | — |
 | 投稿 | **Instagram Graph API**（Content Publishing：カルーセル・リール・ストーリーズ） | 公式・無料 | — |
 | 投稿 | **TikTok Content Posting API**（Direct Post, FILE_UPLOAD） | 公式・無料（公開投稿には審査通過が必要） | 審査前は無効化 |

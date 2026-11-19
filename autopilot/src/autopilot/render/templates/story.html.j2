@@ -1,22 +1,30 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
+<link rel="stylesheet" href="{{ webfonts }}">
 <style>
 {{ base_css }}
-section { width: 1080px; height: 1920px; position: relative; overflow: hidden;
-  background: radial-gradient(1200px 900px at 85% 10%, var(--bg2), transparent 70%), radial-gradient(900px 900px at 0% 95%, var(--soft), transparent 70%), var(--bg); }
-.top { position: absolute; left: 80px; right: 80px; top: 250px; display: flex; justify-content: space-between; align-items: center; }
-.top .no { font: 800 34px "InterX"; color: var(--sub); }
-.new { position: absolute; left: 80px; top: 420px; }
-.hook { position: absolute; left: 80px; right: 80px; top: 540px; font: 800 120px/1.2 "NotoJP"; word-break: keep-all; overflow-wrap: anywhere; }
-.hook em { font-style: normal; color: var(--accent); }
-.box { position: absolute; left: 80px; right: 80px; top: 1130px; background: var(--surface); border-radius: 40px; padding: 50px; font: 700 48px/1.55 "NotoJP"; }
-.box b { color: var(--accent); font-family: "InterX", "NotoJP"; }
+{{ design_css }}
+section { width: 1080px; height: 1920px; position: relative; overflow: hidden; }
+.top { position: absolute; left: 80px; right: 80px; top: 240px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 3px solid var(--ink); }
+.top .logo { font: 400 44px "DM Serif Display"; } .top .logo i { color: var(--accent); }
+.new { position: absolute; left: 80px; top: 360px; display: flex; gap: 14px; align-items: center; }
+.new .hand { font-size: 44px; color: var(--accent); }
+.hook { position: absolute; left: 80px; right: 80px; top: 470px; font-size: 124px; line-height: 1.18; word-break: keep-all; overflow-wrap: anywhere; z-index: 3; }
+.art { position: absolute; right: 70px; top: 1060px; width: 300px; height: 300px; }
+.art .illust-wrap { width: 280px; height: 280px; }
+.no { position: absolute; left: 80px; top: 960px; }
+.no .n { font: italic 400 150px/1 "DM Serif Display"; color: var(--accent); }
+.no .l { font: 900 40px "Zen Kaku Gothic New"; display: block; }
+.box { position: absolute; left: 80px; right: 80px; top: 1390px; padding: 40px 46px; font: 900 44px/1.55 "Zen Kaku Gothic New"; }
+.box b { color: var(--accent); font: 400 58px "DM Serif Display"; }
 </style></head>
 <body class="theme-{{ theme }}">
-<section id="story">
-  <div class="top"><span class="pr">PR</span><span class="no">No.{{ '%03d' % post_no }}</span></div>
-  <div class="new"><span class="chip">新しい比較を投稿しました</span></div>
-  <div class="hook">{{ hook_html | safe }}</div>
-  <div class="box">{{ genre }}の比較はフィードで。<br>商品リンクはプロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
+<section id="story" class="paper">
+  <div class="top"><span class="logo">BIKADEN <i>Note</i></span><span class="pr">PR</span></div>
+  <div class="new"><span class="chip accent">NEW</span><span class="hand">新しい比較を投稿しました</span></div>
+  <div class="hook head">{{ hook_html | safe }}</div>
+  <div class="no"><span class="l">{{ genre }}の比較</span><span class="n">No.{{ '%03d' % post_no }}</span></div>
+  <div class="art"><div class="illust-wrap">{{ illust | safe }}</div><div class="tape" style="left: 10px; top: 10px; transform: rotate(-20deg)"></div></div>
+  <div class="box card">フィードで全部見られます。<br>商品リンクはプロフィールのリンク → <b>No.{{ '%03d' % post_no }}</b></div>
 </section>
 </body></html>

@@ -1,0 +1,88 @@
+/* =====================================================================
+   BIKADEN NOTE design system
+   2026 トレンド: AI っぽい均質さへの反動としての「紙・手書き・雑誌（エディトリアル）」
+   ＋ 比較アカウント定番の「データ・採点・◎○△」をミックスする。
+   カルーセル（Playwright）と動画（Remotion）で共通利用。
+   ===================================================================== */
+
+.theme-kraft { --paper:#F3ECE0; --paper2:#E8DCC8; --ink:#2B2420; --sub:#7A6B5E; --accent:#C8553D; --accent-ink:#FFFFFF;
+               --pop:#F4C84F; --soft:#FBF7F0; --line:#D8CAB4; --tape:rgba(244,200,79,.62); --note:#FFF1B8; --grid:rgba(43,36,32,.055); }
+.theme-rose  { --paper:#F8ECEA; --paper2:#F0D7D4; --ink:#35232B; --sub:#8C6670; --accent:#C9476B; --accent-ink:#FFFFFF;
+               --pop:#FFE36E; --soft:#FFF9F7; --line:#E8CDCD; --tape:rgba(201,71,107,.28); --note:#FFF6C7; --grid:rgba(53,35,43,.05); }
+.theme-sage  { --paper:#EDF0E6; --paper2:#DCE4D2; --ink:#1F2B24; --sub:#5E6F62; --accent:#2F7A57; --accent-ink:#FFFFFF;
+               --pop:#FF9A76; --soft:#F8FAF4; --line:#C9D4C0; --tape:rgba(255,154,118,.5); --note:#FFE9D9; --grid:rgba(31,43,36,.055); }
+.theme-noir  { --paper:#1D1D21; --paper2:#2A2A31; --ink:#F6F1E7; --sub:#A9A398; --accent:#E9C46A; --accent-ink:#1D1D21;
+               --pop:#FF6F91; --soft:#2B2B32; --line:#43434C; --tape:rgba(233,196,106,.38); --note:#3A3540; --grid:rgba(246,241,231,.045); }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: transparent; }
+body { color: var(--ink); -webkit-font-smoothing: antialiased; font-family: "Zen Kaku Gothic New", "NotoJP", sans-serif; }
+
+/* ---------- 書体 ---------- */
+.head  { font-family: "Zen Kaku Gothic New", "NotoJP", sans-serif; font-weight: 900; letter-spacing: -.01em; }
+.mincho{ font-family: "Zen Old Mincho", serif; font-weight: 900; }
+.serif { font-family: "DM Serif Display", serif; font-weight: 400; letter-spacing: -.01em; }
+.serif-i { font-family: "DM Serif Display", serif; font-style: italic; }
+.hand  { font-family: "Klee One", cursive; font-weight: 600; }
+.body  { font-family: "NotoJP", "Zen Kaku Gothic New", sans-serif; font-weight: 500; }
+.num   { font-family: "DM Serif Display", serif; font-feature-settings: "lnum" 1; }
+
+/* ---------- 紙（方眼＋ノイズ） ---------- */
+.paper {
+  background-color: var(--paper);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .09 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+    linear-gradient(var(--grid) 2px, transparent 2px),
+    linear-gradient(90deg, var(--grid) 2px, transparent 2px);
+  background-size: 300px 300px, 54px 54px, 54px 54px;
+}
+
+/* ---------- 蛍光マーカー・下線 ---------- */
+.marker { background: linear-gradient(transparent 56%, var(--pop) 56%, var(--pop) 90%, transparent 90%); padding: 0 .06em; }
+.marker-full { background: var(--pop); padding: 0 .12em; border-radius: .08em; color: var(--ink); }
+em { font-style: normal; background: linear-gradient(transparent 56%, var(--pop) 56%, var(--pop) 90%, transparent 90%); padding: 0 .04em; }
+.wavy { text-decoration: underline wavy var(--accent); text-underline-offset: .22em; text-decoration-thickness: .08em; }
+
+/* ---------- マスキングテープ ---------- */
+.tape { position: absolute; width: 190px; height: 50px; z-index: 5;
+        background: repeating-linear-gradient(-45deg, var(--tape) 0 14px, transparent 14px 22px), var(--tape);
+        opacity: .95; box-shadow: 0 1px 0 rgba(0,0,0,.04);
+        clip-path: polygon(3% 0, 97% 4%, 100% 50%, 96% 100%, 2% 96%, 0 50%); }
+
+/* ---------- スタンプ ---------- */
+.stamp { position: absolute; width: 200px; height: 200px; border-radius: 50%; display: flex; flex-direction: column;
+         align-items: center; justify-content: center; border: 6px solid var(--accent); color: var(--accent);
+         box-shadow: inset 0 0 0 6px var(--paper), inset 0 0 0 9px var(--accent); transform: rotate(-12deg); z-index: 6;
+         background: color-mix(in srgb, var(--paper) 80%, transparent); }
+.stamp b { font-family: "Zen Kaku Gothic New"; font-weight: 900; font-size: 46px; line-height: 1.05; }
+.stamp small { font-family: "DM Serif Display"; font-size: 24px; letter-spacing: .14em; }
+
+/* ---------- 付箋・カード ---------- */
+.card  { background: var(--soft); border-radius: 26px; box-shadow: 0 2px 0 var(--line), 0 18px 40px rgba(40,30,20,.08); position: relative; }
+.sticky { background: var(--note); padding: 28px 34px; position: relative; transform: rotate(-1.6deg);
+          box-shadow: 0 14px 26px rgba(40,30,20,.12); font-family: "Klee One"; font-weight: 600; color: var(--ink); }
+.sticky::after { content: ""; position: absolute; right: 0; bottom: 0; width: 46px; height: 46px;
+                 background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,.08) 50%); }
+.ruled { background-image: repeating-linear-gradient(transparent 0 66px, var(--line) 66px 68px); line-height: 68px; }
+
+/* ---------- バッジ・タグ ---------- */
+.pr { display: inline-flex; align-items: center; justify-content: center; height: 44px; padding: 0 16px; border-radius: 8px;
+      border: 3px solid var(--ink); font: 900 24px "Zen Kaku Gothic New"; letter-spacing: .1em; color: var(--ink); background: var(--soft); }
+.chip { display: inline-flex; align-items: center; gap: 10px; height: 56px; padding: 0 26px; border-radius: 999px;
+        background: var(--ink); color: var(--paper); font: 900 28px "Zen Kaku Gothic New"; letter-spacing: .04em; }
+.chip.accent { background: var(--accent); color: var(--accent-ink); }
+.chip.line { background: transparent; color: var(--ink); border: 3px solid var(--ink); }
+.sticker { display: inline-flex; align-items: center; height: 58px; padding: 0 24px; border-radius: 14px; margin: 0 12px 14px 0;
+           background: var(--soft); border: 3px solid var(--ink); font: 900 28px "Zen Kaku Gothic New"; box-shadow: 4px 4px 0 var(--ink); }
+.sticker:nth-child(2n) { transform: rotate(-2deg); } .sticker:nth-child(2n+1) { transform: rotate(1.5deg); }
+
+/* ---------- 星 ---------- */
+.stars { position: relative; display: inline-block; font-size: 38px; line-height: 1; letter-spacing: 4px; color: var(--line); }
+.stars .fill { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; color: var(--accent); }
+
+/* ---------- 記号評価 ---------- */
+.mk { font-family: "Zen Kaku Gothic New"; font-weight: 900; font-size: 64px; line-height: 1; }
+.mk-best { color: var(--accent); } .mk-mid { color: var(--ink); } .mk-low { color: var(--sub); opacity: .75; }
+
+.illust-wrap { position: relative; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper2); }
+.illust-wrap .illust { position: relative; z-index: 2; }
