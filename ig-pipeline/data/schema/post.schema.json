@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "post.schema.json",
+  "title": "Post",
+  "type": "object",
+  "required": ["id", "collection", "cover", "products"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$", "description": "出力フォルダ名 out/<id>/" },
+    "collection": {
+      "type": "object", "required": ["number", "issue"], "additionalProperties": false,
+      "properties": { "number": { "type": "integer", "minimum": 0 }, "issue": { "type": "integer", "minimum": 0 } }
+    },
+    "priceDate": { "type": "string", "description": "価格の時点 例: 2026年11月" },
+    "cover": {
+      "type": "object", "required": ["word", "lead", "aurora"], "additionalProperties": false,
+      "properties": {
+        "word": { "type": "string", "pattern": "^[A-Za-z]+$", "maxLength": 9, "description": "主役の英単語1語" },
+        "kicker": { "type": "string", "maxLength": 40 },
+        "lead": { "type": "string", "maxLength": 50, "description": "日本語リード。\\n で改行（2行まで推奨）" },
+        "aurora": { "enum": ["dawn", "shift", "radiance", "ember", "tide", "mist"] },
+        "hero": { "type": "string", "description": "表紙に載せる商品ID（省略時は products の先頭）" }
+      }
+    },
+    "products": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "type": "string" }, "description": "商品ID。2〜4件で比較ページが付く" },
+    "compare": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "word": { "type": "string" }, "kicker": { "type": "string" }, "lead": { "type": "string" },
+        "rows": {
+          "type": "array", "maxItems": 7,
+          "items": {
+            "type": "object", "required": ["label"], "additionalProperties": false,
+            "properties": { "label": { "type": "string" }, "field": { "type": "string", "description": "price / category / points.0 など" }, "spec": { "type": "string", "description": "specs の項目名" } }
+          }
+        }
+      }
+    },
+    "summary": { "type": "object", "additionalProperties": false, "properties": { "word": { "type": "string" } } },
+    "reel": {
+      "type": "object", "required": ["headline"], "additionalProperties": false,
+      "properties": {
+        "headline": { "type": "string", "maxLength": 30, "description": "B案の特大見出し。\\n で改行" },
+        "sub": { "type": "string", "maxLength": 30 },
+        "accent": { "type": "string", "maxLength": 20, "description": "英字イタリックのアクセント（任意）" },
+        "kicker": { "type": "string" },
+        "year": { "type": "string" },
+        "layout": { "type": "string", "description": "templates/b-layouts/<name>.json" },
+        "seed": { "type": "integer" },
+        "strokes": { "type": "array", "items": { "type": "string" } },
+        "maxScale": { "type": "number" }
+      }
+    },
+    "hashtags": { "type": "array", "items": { "type": "string", "pattern": "^#" } }
+  }
+}

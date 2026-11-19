@@ -3,7 +3,7 @@
     .venv/bin/python pipeline/cutout.py                 # every product in data/products.json
     .venv/bin/python pipeline/cutout.py facial-ems      # selected ids
     .venv/bin/python pipeline/cutout.py --force         # redo even if up to date
-    .venv/bin/python pipeline/cutout.py --model isnet-general-use
+    .venv/bin/python pipeline/cutout.py --model isnet-general-use   # force a model (default: auto)
 
 Input : the product's "image" (data/products.json), e.g. assets/products/raw/<id>.jpg
 Output: assets/products/cutout/<id>.png  (trimmed RGBA, edge colour decontaminated)
@@ -31,7 +31,28 @@ ROOT = Path(__file__).resolve().parents[1]
 os.environ.setdefault("U2NET_HOME", str(ROOT / ".cache/models"))  # rembg model cache inside the project
 from rembg import new_session, remove  # noqa: E402
 
-DEFAULT_MODEL = "birefnet-general"
+# "auto": birefnet-general (best edges, ~8 GB peak) when enough memory is free, else isnet-general-use (~1 GB).
+DEFAULT_MODEL = "auto"
+HQ_MODEL, LIGHT_MODEL = "birefnet-general", "isnet-general-use"
+HQ_MIN_FREE_GB = float(os.environ.get("REMBG_HQ_MIN_GB", "10"))
+
+
+def pick_model(requested: str) -> str:
+    if requested != "auto":
+        return requested
+    import psutil
+    free = psutil.virtual_memory().available / 2**30
+    model = HQ_MODEL if free >= HQ_MIN_FREE_GB else LIGHT_MODEL
+    print(f"model auto → {model} (available memory {free:.1f} GB, birefnet needs ≥ {HQ_MIN_FREE_GB:.0f} GB)")
+    return model
+
+
+def make_session(model: str):
+    import onnxruntime as ort
+    o = ort.SessionOptions()
+    o.enable_cpu_mem_arena = False  # lowers birefnet peak memory from ~9.4 GB to ~8 GB
+    o.enable_mem_pattern = False
+    return new_session(model, sess_opts=o)
 PAD = 16
 
 
@@ -117,7 +138,7 @@ def process_one(pid: str, model: str):
     raw = ROOT / p["image"]
     outdir = ROOT / "assets/products/cutout"
     t = time.time()
-    img, meta = cut(raw, new_session(model))
+    img, meta = cut(raw, make_session(model))
     img.save(outdir / f"{pid}.png", optimize=True)
     score = iou_vs_mock(pid, img, meta)
     meta.update(model=model, iou=score, seconds=round(time.time() - t, 1))
@@ -151,8 +172,14 @@ def main():
             rows.append((pid, raw, Image.open(manual).convert("RGBA"), None, "manual"))
             continue
         if a.force or not dst.exists() or dst.stat().st_mtime < raw.stat().st_mtime:
-            print(f"{pid}: removing background with '{a.model}'…", flush=True)
-            subprocess.run([sys.executable, __file__, pid, "--worker", "--model", a.model], check=True)
+            model = pick_model(a.model)
+            print(f"{pid}: removing background with '{model}'…", flush=True)
+            r = subprocess.run([sys.executable, __file__, pid, "--worker", "--model", model])
+            if r.returncode != 0 and model == HQ_MODEL:
+                print(f"{pid}: {HQ_MODEL} failed (exit {r.returncode}, likely out of memory) → retrying with {LIGHT_MODEL}")
+                r = subprocess.run([sys.executable, __file__, pid, "--worker", "--model", LIGHT_MODEL])
+            if r.returncode != 0:
+                raise SystemExit(f"{pid}: background removal failed")
         else:
             print(f"{pid}: up to date")
         meta = json.loads(meta_f.read_text()) if meta_f.exists() else {}

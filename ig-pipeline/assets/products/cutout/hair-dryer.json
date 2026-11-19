@@ -1,1 +1,1 @@
-{"x0": 245, "y0": 379, "src_size": [1400, 1400], "model": "birefnet-general", "iou": 0.9976686850106027, "seconds": 27.6}
+{"x0": 245, "y0": 379, "src_size": [1400, 1400], "model": "birefnet-general", "iou": 0.9976686850106027, "seconds": 30.0}

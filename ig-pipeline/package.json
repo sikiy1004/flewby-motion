@@ -13,14 +13,22 @@
     "build": "node pipeline/build.mjs",
     "assets:mock": ".venv/bin/python generators/mock_products.py",
     "cutout": ".venv/bin/python pipeline/cutout.py",
-    "all": "npm run tokens && npm run cutout && npm run build",
+    "all": "npm run tokens && npm run validate && npm run cutout && npm run build",
     "ps:remove-bg": "bash scripts/photoshop/run.sh remove-bg",
-    "ps:export": "bash scripts/photoshop/run.sh export-cutout"
+    "ps:export": "bash scripts/photoshop/run.sh export-cutout",
+    "validate": "node pipeline/validate.mjs",
+    "preview": "node pipeline/preview.mjs",
+    "csv:import": "node pipeline/csv.mjs import",
+    "csv:export": "node pipeline/csv.mjs export"
   },
   "devDependencies": {
     "playwright": "1.63.0"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "nunjucks": "^3.2.4"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

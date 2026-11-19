@@ -4,6 +4,7 @@
     "number": 2,
     "issue": 9
   },
+  "priceDate": "2026年11月",
   "cover": {
     "word": "Clear",
     "kicker": "Sonic Cleansing Brush",
@@ -14,7 +15,6 @@
   "products": [
     "face-brush"
   ],
-  "priceDate": "2026年11月",
   "summary": {
     "word": "Index"
   },

@@ -4,6 +4,7 @@
     "number": 2,
     "issue": 7
   },
+  "priceDate": "2026年11月",
   "cover": {
     "word": "Ritual",
     "kicker": "Morning Beauty Tech — 3 Items",
@@ -16,7 +17,6 @@
     "hair-dryer",
     "face-brush"
   ],
-  "priceDate": "2026年11月",
   "compare": {
     "word": "Compare",
     "kicker": "Morning Beauty Tech — 3 Items",
@@ -51,15 +51,15 @@
   "summary": {
     "word": "Index"
   },
-  "hashtags": [
-    "#朝美容",
-    "#時短美容"
-  ],
   "reel": {
     "headline": "朝の美容家電、\n結局この3つ。",
     "sub": "3年使い比べた結論",
     "accent": "the answer",
     "kicker": "Reel / Ranking",
     "seed": 3
-  }
+  },
+  "hashtags": [
+    "#朝美容",
+    "#時短美容"
+  ]
 }

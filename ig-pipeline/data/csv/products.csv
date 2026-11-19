@@ -1,0 +1,4 @@
+﻿id,category,categoryEn,brand,name,nameJa,price,image,displayHeight,spec1_label,spec1_value,spec2_label,spec2_value,spec3_label,spec3_value,spec4_label,spec4_value,spec5_label,spec5_value,spec6_label,spec6_value,point1,point2,point3,rakuten,amazon
+facial-ems,美顔器,EMS Facial Device,LUMEA,Warm Lift Pro,ウォームリフト プロ,29800,assets/products/raw/facial-ems.jpg,,モード,温熱 / EMS / LED,重さ,128g,充電,USB-C・約90分,防水,IPX5,,,,,温熱とEMSを1台で,顔に沿う楕円プレート,1回3分のオートモード,,
+hair-dryer,ヘアドライヤー,Hair Dryer,AERIS,Silk Flow 1600,シルクフロー 1600,24800,assets/products/raw/hair-dryer.jpg,,風量,2.0㎥/分,重さ,320g,温度,4段階＋スカルプ,イオン,マイナスイオン,,,,,320gの軽さ,大風量で速乾,低温スカルプモード,,
+face-brush,電動洗顔ブラシ,Sonic Cleansing Brush,MOREA,Pure Sonic,ピュアソニック,12800,assets/products/raw/face-brush.jpg,,振動,"8,000回/分",素材,医療用シリコン,充電,USB-C・約2時間,防水,IPX7,,,,,やわらかシリコン,"毎分8,000回の音波振動",お風呂で使える完全防水,,

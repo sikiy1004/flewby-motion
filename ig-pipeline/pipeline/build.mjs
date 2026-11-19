@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import nunjucks from "nunjucks";
 import { withBrowser, shoot } from "./shot.mjs";
+import { validateProducts, validatePost } from "./validate.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const T = JSON.parse(fs.readFileSync(path.join(ROOT, "tokens/tokens.json"), "utf8"));
@@ -20,6 +21,7 @@ for (const f of ["pad2", "yen"]) capEnv.addFilter(f, env.getFilter(f));
 
 function loadProducts() {
   const list = JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8"));
+  validateProducts(list);
   return Object.fromEntries(
     list.map((p) => {
       // a hand-made cut-out (Photoshop) wins over the automatic rembg one
@@ -99,6 +101,7 @@ function compareRows(post, items) {
 export async function buildPost(postFile, { only, fonts } = {}) {
   const post = JSON.parse(fs.readFileSync(postFile, "utf8"));
   const products = loadProducts();
+  validatePost(post, products, path.relative(ROOT, path.resolve(postFile)));
   const items = post.products.map((id) => products[id] ?? (() => { throw new Error(`unknown product ${id}`); })());
   const hero = products[post.cover.hero] ?? items[0];
   const outDir = path.join(ROOT, "out", post.id);

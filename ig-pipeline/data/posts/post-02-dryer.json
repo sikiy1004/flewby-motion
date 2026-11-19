@@ -4,6 +4,7 @@
     "number": 2,
     "issue": 8
   },
+  "priceDate": "2026年11月",
   "cover": {
     "word": "Flow",
     "kicker": "Hair Dryer Review",
@@ -14,7 +15,6 @@
   "products": [
     "hair-dryer"
   ],
-  "priceDate": "2026年11月",
   "summary": {
     "word": "Index"
   },
