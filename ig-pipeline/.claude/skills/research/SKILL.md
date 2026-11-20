@@ -20,10 +20,13 @@ CLAUDE.md のルールをすべて守る。各段階の終わりに、何をし�
 - キーがない・失敗した場合は、その旨を1行で伝え、Web 調査だけで進める（実行IDは `node -e 'import("./pipeline/research/lib.mjs").then(m=>console.log(m.newRunId()))'` で作り、`research/runs/<実行ID>/` を用意する）。
 
 ## 2. Web 調査（並行して検索。出典 URL と取得日時を必ず控える）
-1. **セールの時期**：楽天スーパーSALE・お買い物マラソン・Qoo10メガ割・Amazon の大型セール（プライムデー、ブラックフライデーなど）の、**公式の告知ページ**で開催期間を確認する。
-   結果を `research/runs/<実行ID>/sales.md` に表で残す（イベント・開始・終了・URL・取得日時）。日付が公式で確認できないものは「未確認」と書く。
+1. **セールの時期 → `research/calendar.json`**：楽天スーパーSALE・お買い物マラソン・Qoo10メガ割・Amazon の大型セールなどを調べ、セール暦を更新する。
+   - 各イベントに開始・終了（日本時間）と出典（URL・取得日時）を入れ、確度を `status` で示す：公式ページの本文で確認＝`confirmed`、
+     公式発表をプレスリリース・報道・検索結果で確認＝`reported`、予想＝`expected`。既存の `reported`/`expected` は、公式ページを読めたら更新する。
+   - `npm run research:calendar -- check` でエラーがないことを確認し、`npm run research:calendar -- snapshot <実行ID>` で `sales.md` を作る。
 2. **新商品・話題の商品**：メーカー公式のニュース・商品ページを優先し、直近 `freshness.newsWindowDays` 日以内の発売・リニューアルを拾う。
-3. **トレンド（切り口）**：美容ガジェットで話題のテーマ（例：韓国美容デバイス、時短ケア）を検索し、`research/runs/<実行ID>/trends.md` に出典つきで要約する。
+3. **トレンド（切り口）→ `research/runs/<実行ID>/trends.json`**（形式：`research/schema/trends.schema.json`）：美容ガジェットで話題のテーマ
+   （例：韓国美容デバイス、時短ケア）を T01, T02… として、事実の要約・切り口・出典を記録する。効能の主張は書かない。
    **デザイン（トークン・テンプレート・世界観）には反映しない。**
 4. **競合の「型」**：`research/competitors/` にオーナーが記録したものがあれば参考にする（自分で Instagram を収集しない）。
 
@@ -39,7 +42,9 @@ CLAUDE.md のルールをすべて守る。各段階の終わりに、何をし�
 ## 4. 投稿案を書く → `research/runs/<実行ID>/ideas.json`（形式：`research/schema/ideas.schema.json`）
 - 3〜5案。A案（カルーセル：単品 `single`／2〜4点の比較 `compare`）と B案（リール：結論 `reel-conclusion`／ランキング `reel-ranking`）を、投稿済みの分も含めて約 8:2 に保つ。
 - 表紙の英単語（英字のみ・9字まで）＋別案、明朝のリード（50字まで・2行）、オーロラの種類（dawn/shift/radiance/ember/tide/mist）、B案はリール見出し（30字まで）。
-- 推奨タイミングは、`sales.md` のセール期間と連動させる（理由と出典を書く）。期限が切れたセール・72時間より古い価格は使わない。
+- 推奨タイミングをセールと連動させる場合は、`timing.eventId` にセール暦のIDを入れ、`windowStart`/`windowEnd` をセール暦と同じ値にする（違うとエラー）。
+  予想（`expected`）の日程に連動させる場合は、その旨を理由に書く。期限が切れたセール・72時間より古い価格は使わない。
+- 案の根拠にしたトレンドは `trends` に ID で書く（例 `["T01"]`）。
 - 文言は短く静かに。数値は出典ファイルにあるものだけ。効能の断定・使用感の表現は書かない。
 - `npm run research:ideas -- render <実行ID>` を実行し、エラーがあれば直す（ルールを緩めない）。
 

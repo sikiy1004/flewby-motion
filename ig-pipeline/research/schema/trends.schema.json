@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "trends.schema.json",
+  "title": "Trend notes of one research run (research layer only). Topics and angles for posts — never design changes.",
+  "type": "object",
+  "required": ["runId", "createdAt", "topics"],
+  "additionalProperties": false,
+  "definitions": {
+    "time": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?\\+09:00$" },
+    "source": {
+      "type": "object", "required": ["url", "fetchedAt"], "additionalProperties": false,
+      "properties": { "url": { "type": "string", "pattern": "^(https://|fixture:)" }, "title": { "type": "string" }, "fetchedAt": { "$ref": "#/definitions/time" } }
+    }
+  },
+  "properties": {
+    "runId": { "type": "string" },
+    "createdAt": { "$ref": "#/definitions/time" },
+    "testData": { "type": "boolean" },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "topic", "summary", "sources"], "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^T\\d{2}$" },
+          "topic": { "type": "string", "description": "例：韓国美容デバイス、時短ケア" },
+          "angle": { "type": "string", "description": "投稿の切り口として使える見方" },
+          "categories": { "type": "array", "items": { "type": "string" }, "description": "research/config.json のカテゴリキー" },
+          "summary": { "type": "string", "description": "何が話題か（事実の要約。効能の主張は含めない）" },
+          "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/definitions/source" } }
+        }
+      }
+    }
+  }
+}

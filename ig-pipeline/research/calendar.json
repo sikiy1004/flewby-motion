@@ -1,0 +1,48 @@
+{
+  "_doc": "Sale calendar used to time post ideas. Keep only what a source says; status shows how sure we are. Upgrade reported → confirmed after reading the official page itself. Never use an event that has ended.",
+  "updatedAt": "2026-11-20T20:04:52+09:00",
+  "events": [
+    {
+      "id": "qoo10-megawari-2026-11", "name": "Qoo10 メガ割（2026年最後）", "platform": "qoo10",
+      "start": "2026-11-20T10:00:00+09:00", "end": "2026-12-02T23:59:00+09:00", "status": "reported",
+      "sources": [
+        { "url": "https://www.qoo10.jp/gmkt.inc/Special/Special.aspx?sid=162288", "title": "Qoo10 公式 メガ割ページ（検索結果の記載で確認）", "fetchedAt": "2026-11-20T20:04:52+09:00" },
+        { "url": "https://prtimes.jp/main/html/rd/p/000001025.000022933.html", "title": "eBay Japan プレスリリース（PR TIMES）", "fetchedAt": "2026-11-20T20:04:52+09:00" }
+      ],
+      "note": "第1弾 11/20〜11/24、第2弾 11/25〜11/28、第3弾 11/29〜12/2。開始時刻は今回から10:00。公式ページ本文の直接確認は未了"
+    },
+    {
+      "id": "amazon-blackfriday-2026-pre", "name": "Amazon ブラックフライデー 先行セール", "platform": "amazon",
+      "start": "2026-11-27T00:00:00+09:00", "end": "2026-11-29T23:59:00+09:00", "status": "reported",
+      "sources": [ { "url": "https://news.yahoo.co.jp/articles/30bb59df5348550bb01a4fb02499ea1ea1d546f1", "title": "ネットショップ担当者フォーラム（Yahoo!ニュース）11/19 発表の報道", "fetchedAt": "2026-11-20T20:04:52+09:00" } ],
+      "note": "Amazon 公式の告知ページは未確認"
+    },
+    {
+      "id": "amazon-blackfriday-2026", "name": "Amazon ブラックフライデー 本セール", "platform": "amazon",
+      "start": "2026-11-30T00:00:00+09:00", "end": "2026-12-07T23:59:00+09:00", "status": "reported",
+      "sources": [ { "url": "https://news.yahoo.co.jp/articles/30bb59df5348550bb01a4fb02499ea1ea1d546f1", "title": "ネットショップ担当者フォーラム（Yahoo!ニュース）11/19 発表の報道", "fetchedAt": "2026-11-20T20:04:52+09:00" } ],
+      "note": "Amazon 公式の告知ページは未確認"
+    },
+    {
+      "id": "rakuten-blackfriday-2026", "name": "楽天ブラックフライデー", "platform": "rakuten",
+      "start": "2026-11-20T20:00:00+09:00", "end": "2026-11-27T01:59:00+09:00", "status": "expected",
+      "sources": [ { "url": "https://www.r-zyunin.com/rakuten-sale-campaign/when-marathon-and-supersale", "title": "楽天のセール日程の解説記事（予想を含む）", "fetchedAt": "2026-11-20T20:04:52+09:00" } ],
+      "note": "楽天市場の公式ページで要確認"
+    },
+    {
+      "id": "rakuten-supersale-2026-12", "name": "楽天スーパーSALE（12月）", "platform": "rakuten",
+      "start": "2026-12-04T20:00:00+09:00", "end": "2026-12-11T01:59:00+09:00", "status": "expected",
+      "sources": [
+        { "url": "https://calendar.rakuten.co.jp/evt?ct=2&eid=592112", "title": "楽天カレンダー（開催予定として掲載）", "fetchedAt": "2026-11-20T20:04:52+09:00" },
+        { "url": "https://hubmedia.co.jp/ec/rakuten/rakuten-super-sale-next-202612/", "title": "開催時期の予想記事", "fetchedAt": "2026-11-20T20:04:52+09:00" }
+      ],
+      "note": "公式発表前の見込み。12/3〜12/10 とする記事もある。12/3 20:00〜 楽天モバイル会員向け先行セールの情報あり"
+    },
+    {
+      "id": "rakuten-daikanshasai-2026-12", "name": "楽天大感謝祭", "platform": "rakuten",
+      "start": "2026-12-19T20:00:00+09:00", "end": "2026-12-26T01:59:00+09:00", "status": "expected",
+      "sources": [ { "url": "https://www.r-zyunin.com/rakuten-sale-campaign/when-marathon-and-supersale", "title": "楽天のセール日程の解説記事（予想）", "fetchedAt": "2026-11-20T20:04:52+09:00" } ],
+      "note": "公式発表前の見込み"
+    }
+  ]
+}

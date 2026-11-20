@@ -36,6 +36,7 @@ function create() {
   for (const f of fs.readdirSync(path.join(SRC, "market"))) writeJson(path.join(dst, "market", f), shift(readJson(path.join(SRC, "market", f)), ms));
   for (const f of fs.readdirSync(path.join(SRC, "evidence"))) writeJson(path.join(dst, "evidence", f), { ...shift(readJson(path.join(SRC, "evidence", f)), ms), runId });
   writeJson(path.join(dst, "ideas.json"), { ...shift(ideas, ms), runId });
+  if (fs.existsSync(path.join(SRC, "trends.json"))) writeJson(path.join(dst, "trends.json"), { ...shift(readJson(path.join(SRC, "trends.json")), ms), runId });
   fs.copyFileSync(path.join(SRC, "market.md"), path.join(dst, "market.md"));
   for (const [id, from] of Object.entries(IMAGES)) {
     const to = path.join(ROOT, `assets/products/raw/${id}.jpg`);

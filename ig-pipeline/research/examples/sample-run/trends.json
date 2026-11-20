@@ -1,0 +1,39 @@
+{
+  "runId": "20261120-r2test",
+  "createdAt": "2026-11-20T19:49:55+09:00",
+  "testData": true,
+  "topics": [
+    {
+      "id": "T01",
+      "topic": "（テスト）時短ケア",
+      "angle": "朝の数分で終わるお手入れ",
+      "categories": [
+        "facial-device"
+      ],
+      "summary": "（テスト用の要約）短時間で終えられるモードやオートオフ機能が比較の軸として注目されている、という想定の見本",
+      "sources": [
+        {
+          "url": "fixture:trends/time-saving",
+          "title": "テスト用の出典",
+          "fetchedAt": "2026-11-20T19:49:55+09:00"
+        }
+      ]
+    },
+    {
+      "id": "T02",
+      "topic": "（テスト）軽量ドライヤー",
+      "angle": "重さを数字で比べる",
+      "categories": [
+        "hair-dryer"
+      ],
+      "summary": "（テスト用の要約）本体重量の数値で選ぶ比較が話題、という想定の見本",
+      "sources": [
+        {
+          "url": "fixture:trends/light-dryer",
+          "title": "テスト用の出典",
+          "fetchedAt": "2026-11-20T19:49:55+09:00"
+        }
+      ]
+    }
+  ]
+}

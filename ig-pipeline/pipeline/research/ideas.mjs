@@ -9,6 +9,7 @@ import Ajv from "ajv";
 import { readJson, runDir, parseArgs, latestRun, config, jstIso } from "./lib.mjs";
 import { loadEvidence } from "./evidence.mjs";
 import { lintTexts } from "./lint.mjs";
+import { findEvent, upcoming, calendarTable, loadCalendar } from "./calendar.mjs";
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 const validate = ajv.compile(readJson("research/schema/ideas.schema.json"));
@@ -16,6 +17,8 @@ const validate = ajv.compile(readJson("research/schema/ideas.schema.json"));
 export const ideaHash = (idea) => crypto.createHash("sha256").update(JSON.stringify(idea)).digest("hex").slice(0, 16);
 export const resolveRun = (r) => (!r || r === "latest" ? latestRun() : r);
 export const loadIdeas = (runId) => readJson(path.join(runDir(runId), "ideas.json"));
+export const loadTrends = (runId) => { const f = path.join(runDir(runId), "trends.json"); return fs.existsSync(f) ? readJson(f) : null; };
+const vTrends = ajv.compile(readJson("research/schema/trends.schema.json"));
 
 const yen = (n) => (n == null ? "—" : "¥" + Number(n).toLocaleString("ja-JP"));
 const fmt = (iso) => (iso ? iso.slice(5, 16).replace("T", " ").replace("-", "/") : "");
@@ -27,6 +30,9 @@ export function checkIdeas(doc, runId, now = new Date()) {
   if (!validate(doc)) validate.errors.forEach((e) => errors.push(`ideas.json${e.instancePath} ${e.message}`));
   const ev = loadEvidence(runId);
   const maxAge = config().freshness.priceMaxAgeHours;
+  const trends = loadTrends(runId);
+  if (trends && !vTrends(trends)) vTrends.errors.forEach((e) => errors.push(`trends.json${e.instancePath} ${e.message}`));
+  const trendIds = new Set((trends?.topics ?? []).map((t) => t.id));
   const ids = new Set();
   for (const idea of doc.ideas ?? []) {
     const P = idea.id;
@@ -38,6 +44,18 @@ export function checkIdeas(doc, runId, now = new Date()) {
     if (idea.design === "B" && !idea.reel) errors.push(`${P}: B案には reel.headline が必要です`);
     if (idea.design === "A" && idea.format.startsWith("reel")) errors.push(`${P}: A案に reel の形式は使えません`);
     if (idea.format === "compare" && idea.products.length < 2) errors.push(`${P}: 比較は商品2〜4点です`);
+    // sale timing must come from the calendar (and match it)
+    if (idea.timing?.eventId) {
+      const ev = findEvent(idea.timing.eventId);
+      if (!ev) errors.push(`${P}: セール暦にないイベントID「${idea.timing.eventId}」です（research/calendar.json）`);
+      else {
+        if (new Date(ev.end) < now) errors.push(`${P}: ${ev.name} は ${fmt(ev.end)} に終了しています`);
+        if ((idea.timing.windowStart && idea.timing.windowStart !== ev.start) || (idea.timing.windowEnd && idea.timing.windowEnd !== ev.end)) errors.push(`${P}: タイミングの期間がセール暦（${ev.id}）と一致しません`);
+        if (ev.status === "expected") warnings.push(`${P}: 連動する ${ev.name} は予想の日程です（公式発表で確認が必要）`);
+        if (new Date(idea.timing.recommended + "T23:59:59+09:00") > new Date(ev.end)) errors.push(`${P}: 推奨日 ${idea.timing.recommended} が ${ev.name} の終了後です`);
+      }
+    } else if (idea.timing?.event && !doc.testData) warnings.push(`${P}: 連動するセール「${idea.timing.event}」がセール暦に登録されていません（eventId なし）`);
+    for (const t of idea.trends ?? []) if (!trendIds.has(t)) errors.push(`${P}: trends.json にないトピック ${t} です`);
     if (idea.timing?.windowEnd && new Date(idea.timing.windowEnd) < now) errors.push(`${P}: 連動するセール（${idea.timing.event ?? ""}）は ${fmt(idea.timing.windowEnd)} に終了しています`);
     if (new Date(idea.timing?.recommended + "T23:59:59+09:00") < now) errors.push(`${P}: 推奨日 ${idea.timing.recommended} が過ぎています`);
     for (const p of idea.products) {
@@ -77,10 +95,17 @@ export function renderIdeas(doc, runId, checks) {
     const timing = `${i.timing.recommended}${i.timing.event ? `<br>${i.timing.event}` : ""}`;
     md += `| ${i.id} | ${i.theme} | ${prods} | ${i.design === "A" ? "A案 カルーセル" : "B案 リール"}（${i.format}） | ${word} | ${head} | ${timing} |\n`;
   }
+  md += `\n## セール暦（今後45日）\n\n${calendarTable(upcoming())}`;
+  const trends = loadTrends(runId);
+  if (trends?.topics?.length) {
+    md += `\n## トレンドの要点\n\n| ID | テーマ | 切り口 | 要点 | 出典 |\n|---|---|---|---|---|\n`;
+    for (const t of trends.topics) md += `| ${t.id} | ${t.topic} | ${t.angle ?? ""} | ${t.summary} | ${t.sources.map((x) => `[${x.title ?? "出典"}](${x.url})`).join("<br>")} |\n`;
+  }
   md += `\n## 各案の詳細\n`;
   for (const i of doc.ideas) {
     md += `\n### ${i.id}　${i.theme}\n\n`;
-    if (i.angle) md += `- 切り口：${i.angle}\n`;
+    if (i.angle) md += `- 切り口：${i.angle}${i.trends?.length ? `（トレンド ${i.trends.join("・")}）` : ""}\n`;
+    if (i.timing.eventId) { const ev = findEvent(i.timing.eventId); if (ev) md += `- 連動セール：${ev.name}（${ev.status === "expected" ? "予想の日程" : ev.status === "reported" ? "公式発表の報道等で確認" : "公式で確認"}）\n`; }
     md += `- なぜ今：${i.why}\n- タイミング：${i.timing.recommended}${i.timing.event ? `（${i.timing.event}${i.timing.windowStart ? ` ${fmt(i.timing.windowStart)}〜${fmt(i.timing.windowEnd)}` : ""}）` : ""}。${i.timing.reason}\n`;
     md += `- 表紙：${i.cover.kicker ? `${i.cover.kicker} ／ ` : ""}**${i.cover.word.toUpperCase()}** ／ ${i.cover.lead.replace(/\n/g, " ")}（オーロラ：${i.aurora}）\n`;
     if (i.reel) md += `- リール：${i.reel.headline.replace(/\n/g, " ")} ／ ${i.reel.sub ?? ""}${i.reel.accent ? ` ／ ${i.reel.accent}` : ""}\n`;
