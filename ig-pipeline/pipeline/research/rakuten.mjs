@@ -111,7 +111,7 @@ export async function scan({ categories, fixture, run }) {
   return runId;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   loadEnv();
   const a = parseArgs(process.argv.slice(2));
   scan({ categories: a._, fixture: !!a.fixture, run: a.run }).catch((e) => { console.error(e.message); process.exit(1); });

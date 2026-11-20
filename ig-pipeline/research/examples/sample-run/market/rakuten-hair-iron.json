@@ -1,0 +1,305 @@
+{
+  "category": {
+    "key": "hair-iron",
+    "label": "ヘアアイロン",
+    "labelEn": "Hair Iron",
+    "group": "ヘアケア家電",
+    "keywords": [
+      "ヘアアイロン"
+    ],
+    "genreId": null,
+    "minPrice": 3000
+  },
+  "mode": "fixture",
+  "requests": [
+    {
+      "kind": "ranking",
+      "url": "fixture:research/fixtures/rakuten/hair-iron.ranking.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 5
+    },
+    {
+      "kind": "search",
+      "url": "fixture:research/fixtures/rakuten/hair-iron.search.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 5
+    }
+  ],
+  "ranking": [
+    {
+      "source": "rakuten-ranking",
+      "rank": 1,
+      "itemName": "（テスト）ブラシ型 ストレートアイロン",
+      "itemCode": "test-shop-hair-iron:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3094,
+      "reviewAverage": 3.97,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 2,
+      "itemName": "（テスト）ストレートアイロン 230℃",
+      "itemCode": "test-shop-hair-iron:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 24800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1079,
+      "reviewAverage": 3.73,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 3,
+      "itemName": "（テスト）マイナスイオン ヘアアイロン 25mm",
+      "itemCode": "test-shop-hair-iron:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 449,
+      "reviewAverage": 4.09,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1004.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 4,
+      "itemName": "（テスト）2way カールアイロン 32mm",
+      "itemCode": "test-shop-hair-iron:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 161,
+      "reviewAverage": 4,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 5,
+      "itemName": "（テスト）コードレス ミニアイロン",
+      "itemCode": "test-shop-hair-iron:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 126,
+      "reviewAverage": 4.71,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1002.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "search": [
+    {
+      "source": "rakuten-search",
+      "rank": 1,
+      "itemName": "（テスト）ストレートアイロン 230℃",
+      "itemCode": "test-shop-hair-iron:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 24800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1079,
+      "reviewAverage": 3.73,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 2,
+      "itemName": "（テスト）2way カールアイロン 32mm",
+      "itemCode": "test-shop-hair-iron:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 161,
+      "reviewAverage": 4,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 3,
+      "itemName": "（テスト）コードレス ミニアイロン",
+      "itemCode": "test-shop-hair-iron:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 126,
+      "reviewAverage": 4.71,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 4,
+      "itemName": "（テスト）ブラシ型 ストレートアイロン",
+      "itemCode": "test-shop-hair-iron:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3094,
+      "reviewAverage": 3.97,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 5,
+      "itemName": "（テスト）マイナスイオン ヘアアイロン 25mm",
+      "itemCode": "test-shop-hair-iron:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-iron-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 449,
+      "reviewAverage": 4.09,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1004.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "fetchedAt": "2026-11-20T19:49:55+09:00"
+}

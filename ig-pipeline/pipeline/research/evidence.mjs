@@ -60,7 +60,7 @@ export function scaffold(runId, productId, from, list) {
   };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const a = parseArgs(process.argv.slice(2));
   const [cmd, runArg, productId] = a._;
   const runId = runArg === "latest" ? latestRun() : runArg;

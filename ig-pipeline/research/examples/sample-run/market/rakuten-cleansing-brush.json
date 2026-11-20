@@ -1,0 +1,265 @@
+{
+  "category": {
+    "key": "cleansing-brush",
+    "label": "電動洗顔ブラシ",
+    "labelEn": "Sonic Cleansing Brush",
+    "group": "電動洗顔ブラシ",
+    "keywords": [
+      "洗顔ブラシ 電動"
+    ],
+    "genreId": null,
+    "minPrice": 2000
+  },
+  "mode": "fixture",
+  "requests": [
+    {
+      "kind": "ranking",
+      "url": "fixture:research/fixtures/rakuten/cleansing-brush.ranking.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 4
+    },
+    {
+      "kind": "search",
+      "url": "fixture:research/fixtures/rakuten/cleansing-brush.search.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 4
+    }
+  ],
+  "ranking": [
+    {
+      "source": "rakuten-ranking",
+      "rank": 1,
+      "itemName": "（テスト）毛穴ケア 洗顔ブラシ 2段階",
+      "itemCode": "test-shop-cleansing-brush:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3361,
+      "reviewAverage": 4.31,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 2,
+      "itemName": "（テスト）温感 洗顔ブラシ",
+      "itemCode": "test-shop-cleansing-brush:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3166,
+      "reviewAverage": 4.43,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 3,
+      "itemName": "（テスト）回転式 洗顔ブラシ 防水",
+      "itemCode": "test-shop-cleansing-brush:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1799,
+      "reviewAverage": 3.88,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 4,
+      "itemName": "（テスト）音波 洗顔ブラシ シリコン",
+      "itemCode": "test-shop-cleansing-brush:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1003,
+      "reviewAverage": 4.72,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1000.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "search": [
+    {
+      "source": "rakuten-search",
+      "rank": 1,
+      "itemName": "（テスト）音波 洗顔ブラシ シリコン",
+      "itemCode": "test-shop-cleansing-brush:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1003,
+      "reviewAverage": 4.72,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 2,
+      "itemName": "（テスト）回転式 洗顔ブラシ 防水",
+      "itemCode": "test-shop-cleansing-brush:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1799,
+      "reviewAverage": 3.88,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 3,
+      "itemName": "（テスト）温感 洗顔ブラシ",
+      "itemCode": "test-shop-cleansing-brush:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3166,
+      "reviewAverage": 4.43,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 4,
+      "itemName": "（テスト）毛穴ケア 洗顔ブラシ 2段階",
+      "itemCode": "test-shop-cleansing-brush:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/cleansing-brush-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3361,
+      "reviewAverage": 4.31,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/cleansing-brush-1003.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "fetchedAt": "2026-11-20T19:49:55+09:00"
+}

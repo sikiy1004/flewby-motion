@@ -21,7 +21,9 @@
     "csv:import": "node pipeline/csv.mjs import",
     "csv:export": "node pipeline/csv.mjs export",
     "research:rakuten": "node pipeline/research/rakuten.mjs",
-    "research:evidence": "node pipeline/research/evidence.mjs"
+    "research:evidence": "node pipeline/research/evidence.mjs",
+    "research:ideas": "node pipeline/research/ideas.mjs",
+    "research:approve": "node pipeline/research/approve.mjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

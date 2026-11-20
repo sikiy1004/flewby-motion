@@ -1,0 +1,489 @@
+{
+  "category": {
+    "key": "facial-device",
+    "label": "美顔器",
+    "labelEn": "Facial Device",
+    "group": "美顔器",
+    "keywords": [
+      "美顔器"
+    ],
+    "genreId": null,
+    "minPrice": 3000
+  },
+  "mode": "fixture",
+  "requests": [
+    {
+      "kind": "ranking",
+      "url": "fixture:research/fixtures/rakuten/facial-device.ranking.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 8
+    },
+    {
+      "kind": "search",
+      "url": "fixture:research/fixtures/rakuten/facial-device.search.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 8
+    }
+  ],
+  "ranking": [
+    {
+      "source": "rakuten-ranking",
+      "rank": 1,
+      "itemName": "（テスト）RF ラジオ波 美顔器 LED",
+      "itemCode": "test-shop-facial-device:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3435,
+      "reviewAverage": 3.82,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 2,
+      "itemName": "（テスト）超音波 ウォーターピーリング",
+      "itemCode": "test-shop-facial-device:1005",
+      "shopName": "テストショップ6",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1005/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1005/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3303,
+      "reviewAverage": 4.11,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1005.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 3,
+      "itemName": "（テスト）EMS温冷美顔器 3モード",
+      "itemCode": "test-shop-facial-device:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 3181,
+      "reviewAverage": 4.02,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 4,
+      "itemName": "（テスト）マイクロカレント ローラー美顔器",
+      "itemCode": "test-shop-facial-device:1006",
+      "shopName": "テストショップ7",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1006/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1006/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3034,
+      "reviewAverage": 3.72,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1006.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 5,
+      "itemName": "（テスト）ハンディ EMS 美顔器 USB-C",
+      "itemCode": "test-shop-facial-device:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2723,
+      "reviewAverage": 3.87,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 6,
+      "itemName": "（テスト）LED 美顔マスク 7色",
+      "itemCode": "test-shop-facial-device:1007",
+      "shopName": "テストショップ8",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1007/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 49800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1007/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1988,
+      "reviewAverage": 4.09,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1007.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 7,
+      "itemName": "（テスト）イオン導出 美顔器 毛穴ケアモード",
+      "itemCode": "test-shop-facial-device:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1049,
+      "reviewAverage": 4.04,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 8,
+      "itemName": "（テスト）目元用 温熱 美顔器",
+      "itemCode": "test-shop-facial-device:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 738,
+      "reviewAverage": 4.03,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1004.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "search": [
+    {
+      "source": "rakuten-search",
+      "rank": 1,
+      "itemName": "（テスト）EMS温冷美顔器 3モード",
+      "itemCode": "test-shop-facial-device:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 3181,
+      "reviewAverage": 4.02,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 2,
+      "itemName": "（テスト）RF ラジオ波 美顔器 LED",
+      "itemCode": "test-shop-facial-device:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3435,
+      "reviewAverage": 3.82,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 3,
+      "itemName": "（テスト）イオン導出 美顔器 毛穴ケアモード",
+      "itemCode": "test-shop-facial-device:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1049,
+      "reviewAverage": 4.04,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 4,
+      "itemName": "（テスト）ハンディ EMS 美顔器 USB-C",
+      "itemCode": "test-shop-facial-device:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2723,
+      "reviewAverage": 3.87,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 5,
+      "itemName": "（テスト）目元用 温熱 美顔器",
+      "itemCode": "test-shop-facial-device:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 738,
+      "reviewAverage": 4.03,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1004.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 6,
+      "itemName": "（テスト）超音波 ウォーターピーリング",
+      "itemCode": "test-shop-facial-device:1005",
+      "shopName": "テストショップ6",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1005/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1005/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3303,
+      "reviewAverage": 4.11,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1005.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 7,
+      "itemName": "（テスト）マイクロカレント ローラー美顔器",
+      "itemCode": "test-shop-facial-device:1006",
+      "shopName": "テストショップ7",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1006/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 19800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1006/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 10,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3034,
+      "reviewAverage": 3.72,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1006.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 8,
+      "itemName": "（テスト）LED 美顔マスク 7色",
+      "itemCode": "test-shop-facial-device:1007",
+      "shopName": "テストショップ8",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-device-1007/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 49800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/facial-device-1007/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 1988,
+      "reviewAverage": 4.09,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1007.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "fetchedAt": "2026-11-20T19:49:55+09:00"
+}

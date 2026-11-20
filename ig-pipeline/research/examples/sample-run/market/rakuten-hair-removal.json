@@ -1,0 +1,249 @@
+{
+  "category": {
+    "key": "hair-removal",
+    "label": "脱毛器",
+    "labelEn": "Hair Removal Device",
+    "group": "脱毛器",
+    "keywords": [
+      "光美容器 脱毛器"
+    ],
+    "genreId": null,
+    "minPrice": 5000
+  },
+  "mode": "fixture",
+  "requests": [
+    {
+      "kind": "ranking",
+      "url": "fixture:research/fixtures/rakuten/hair-removal.ranking.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 4
+    },
+    {
+      "kind": "search",
+      "url": "fixture:research/fixtures/rakuten/hair-removal.search.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 4
+    }
+  ],
+  "ranking": [
+    {
+      "source": "rakuten-ranking",
+      "rank": 1,
+      "itemName": "（テスト）サファイア冷却 光美容器",
+      "itemCode": "test-shop-hair-removal:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3589,
+      "reviewAverage": 4.17,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 2,
+      "itemName": "（テスト）IPL 光美容器 冷却機能",
+      "itemCode": "test-shop-hair-removal:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 2877,
+      "reviewAverage": 4.01,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 3,
+      "itemName": "（テスト）全身用 光美容器 50万発",
+      "itemCode": "test-shop-hair-removal:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 2854,
+      "reviewAverage": 4.39,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 4,
+      "itemName": "（テスト）コンパクト 光美容器 VIO対応",
+      "itemCode": "test-shop-hair-removal:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1963,
+      "reviewAverage": 4.04,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1002.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "search": [
+    {
+      "source": "rakuten-search",
+      "rank": 1,
+      "itemName": "（テスト）IPL 光美容器 冷却機能",
+      "itemCode": "test-shop-hair-removal:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 16800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 2877,
+      "reviewAverage": 4.01,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 2,
+      "itemName": "（テスト）サファイア冷却 光美容器",
+      "itemCode": "test-shop-hair-removal:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3589,
+      "reviewAverage": 4.17,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 3,
+      "itemName": "（テスト）コンパクト 光美容器 VIO対応",
+      "itemCode": "test-shop-hair-removal:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1963,
+      "reviewAverage": 4.04,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 4,
+      "itemName": "（テスト）全身用 光美容器 50万発",
+      "itemCode": "test-shop-hair-removal:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-removal-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 39800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-removal-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": null,
+      "reviewCount": 2854,
+      "reviewAverage": 4.39,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-removal-1003.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "fetchedAt": "2026-11-20T19:49:55+09:00"
+}

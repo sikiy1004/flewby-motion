@@ -1,0 +1,43 @@
+{
+  "runId": "20261120-r2test",
+  "createdAt": "2026-11-20T19:49:55+09:00",
+  "testData": true,
+  "summary": "テスト用データ（架空の商品）で作った、投稿案リストの見本です。セール暦・トレンド・競合の調査は R4 以降で実装するため、タイミングはテスト用データのタイムセール期間を使っています。",
+  "ideas": [
+    {
+      "id": "I01", "theme": "温冷とEMSを1台で。朝の時短ケア", "angle": "時短ケア", "design": "A", "format": "single",
+      "products": [{ "productId": "test-ems-device", "label": "（テスト）EMS温冷美顔器 3モード", "evidence": "evidence/test-ems-device.json" }],
+      "cover": { "word": "Warm", "wordAlternatives": ["Ritual", "Glow"], "kicker": "Facial Device — Official Spec", "lead": "温冷とEMSを、1台で。\n朝の5分のための仕様を読む。" },
+      "aurora": "ember",
+      "timing": { "recommended": "2026-11-21", "event": "（テスト）ショップのタイムセール", "windowStart": "2026-11-21T20:00:00+09:00", "windowEnd": "2026-11-27T01:59:00+09:00", "reason": "セール開始当日の朝に投稿し、セール期間中に保存・再訪してもらう", "source": { "url": "fixture:research/fixtures/rakuten/facial-device.search.json", "fetchedAt": "2026-11-20T19:49:55+09:00" } },
+      "why": "楽天の検索でレビュー件数が上位（テスト用データ）。価格帯の中央値付近で、時短という切り口が作りやすい",
+      "risks": ["「リフトアップ」等の効能表現は使わず、公式スペック（モード・重さ）の紹介に限定する"],
+      "hashtags": ["#美顔器", "#時短美容"],
+      "sources": [{ "url": "fixture:research/fixtures/rakuten/facial-device.search.json", "title": "楽天市場 検索結果（テスト用データ）", "fetchedAt": "2026-11-20T19:49:55+09:00" }]
+    },
+    {
+      "id": "I02", "theme": "軽さで選ぶドライヤー2台の比較", "angle": "重さ・風量の数値比較", "design": "A", "format": "compare",
+      "products": [
+        { "productId": "test-light-dryer", "label": "（テスト）軽量 320g ドライヤー", "evidence": "evidence/test-light-dryer.json" },
+        { "productId": "test-scalp-dryer", "label": "（テスト）スカルプモード付き ドライヤー", "evidence": "evidence/test-scalp-dryer.json" }
+      ],
+      "cover": { "word": "Flow", "wordAlternatives": ["Light"], "kicker": "Hair Dryer — 2 Items", "lead": "重さと風量を、\n数字で並べて比べる。" },
+      "aurora": "shift",
+      "timing": { "recommended": "2026-11-24", "reason": "週明けの夜（保存されやすい時間帯）。連動セールなし" },
+      "why": "ドライヤーは重さ・風量など比較しやすい数値が公式に出ているため、比較ページと相性がよい",
+      "hashtags": ["#ドライヤー", "#ヘアケア家電"],
+      "sources": [{ "url": "fixture:research/fixtures/rakuten/hair-dryer.search.json", "title": "楽天市場 検索結果（テスト用データ）", "fetchedAt": "2026-11-20T19:49:55+09:00" }]
+    },
+    {
+      "id": "I03", "theme": "洗顔ブラシは、防水と振動数で選ぶ", "angle": "選び方の結論", "design": "B", "format": "reel-conclusion",
+      "products": [{ "productId": "test-sonic-brush", "label": "（テスト）音波 洗顔ブラシ シリコン", "evidence": "evidence/test-sonic-brush.json" }],
+      "cover": { "word": "Clear", "lead": "防水と振動数で、\n洗顔ブラシを選ぶ。" },
+      "reel": { "headline": "洗顔ブラシは、\nここを見る。", "sub": "防水等級と振動数の公式値", "accent": "the point" },
+      "aurora": "tide",
+      "timing": { "recommended": "2026-11-26", "reason": "B案（結論系）は週1本程度に抑え、A案の間に入れる" },
+      "why": "選び方の軸を2つに絞る結論系はリールと相性がよい",
+      "risks": ["「毛穴がなくなる」等の効能表現は使わない"],
+      "sources": [{ "url": "fixture:research/fixtures/rakuten/cleansing-brush.search.json", "title": "楽天市場 検索結果（テスト用データ）", "fetchedAt": "2026-11-20T19:49:55+09:00" }]
+    }
+  ]
+}

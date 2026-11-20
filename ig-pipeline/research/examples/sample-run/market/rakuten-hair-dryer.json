@@ -1,0 +1,377 @@
+{
+  "category": {
+    "key": "hair-dryer",
+    "label": "ヘアドライヤー",
+    "labelEn": "Hair Dryer",
+    "group": "ヘアケア家電",
+    "keywords": [
+      "ドライヤー 美容"
+    ],
+    "genreId": null,
+    "minPrice": 5000
+  },
+  "mode": "fixture",
+  "requests": [
+    {
+      "kind": "ranking",
+      "url": "fixture:research/fixtures/rakuten/hair-dryer.ranking.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 6
+    },
+    {
+      "kind": "search",
+      "url": "fixture:research/fixtures/rakuten/hair-dryer.search.json",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "count": 6
+    }
+  ],
+  "ranking": [
+    {
+      "source": "rakuten-ranking",
+      "rank": 1,
+      "itemName": "（テスト）速乾 イオンドライヤー 折りたたみ",
+      "itemCode": "test-shop-hair-dryer:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3777,
+      "reviewAverage": 3.74,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 2,
+      "itemName": "（テスト）スカルプモード付き ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3151,
+      "reviewAverage": 4,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 3,
+      "itemName": "（テスト）高速モーター ドライヤー 11万回転",
+      "itemCode": "test-shop-hair-dryer:1005",
+      "shopName": "テストショップ6",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1005/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1005/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2710,
+      "reviewAverage": 4.01,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1005.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 4,
+      "itemName": "（テスト）軽量 320g ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2601,
+      "reviewAverage": 4.61,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 5,
+      "itemName": "（テスト）低温ケア ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 5980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1682,
+      "reviewAverage": 4.34,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1004.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-ranking",
+      "rank": 6,
+      "itemName": "（テスト）大風量 ヘアドライヤー 1600W",
+      "itemCode": "test-shop-hair-dryer:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 460,
+      "reviewAverage": 4.5,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1000.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "search": [
+    {
+      "source": "rakuten-search",
+      "rank": 1,
+      "itemName": "（テスト）大風量 ヘアドライヤー 1600W",
+      "itemCode": "test-shop-hair-dryer:1000",
+      "shopName": "テストショップ1",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1000/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1000/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 460,
+      "reviewAverage": 4.5,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1000.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 2,
+      "itemName": "（テスト）軽量 320g ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1001",
+      "shopName": "テストショップ2",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 5,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2601,
+      "reviewAverage": 4.61,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1001.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 3,
+      "itemName": "（テスト）スカルプモード付き ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1002",
+      "shopName": "テストショップ3",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 29800,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3151,
+      "reviewAverage": 4,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1002.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 4,
+      "itemName": "（テスト）速乾 イオンドライヤー 折りたたみ",
+      "itemCode": "test-shop-hair-dryer:1003",
+      "shopName": "テストショップ4",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1003/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 3980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1003/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": {
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00",
+        "note": "ショップのタイムセール期間（API の startTime / endTime）"
+      },
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 3777,
+      "reviewAverage": 3.74,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1003.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 5,
+      "itemName": "（テスト）低温ケア ドライヤー",
+      "itemCode": "test-shop-hair-dryer:1004",
+      "shopName": "テストショップ5",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1004/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 5980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1004/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": null,
+      "reviewCount": 1682,
+      "reviewAverage": 4.34,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1004.jpg?_ex=1000x1000"
+      ]
+    },
+    {
+      "source": "rakuten-search",
+      "rank": 6,
+      "itemName": "（テスト）高速モーター ドライヤー 11万回転",
+      "itemCode": "test-shop-hair-dryer:1005",
+      "shopName": "テストショップ6",
+      "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-dryer-1005/",
+      "affiliateUrl": null,
+      "price": {
+        "value": 8980,
+        "label": "取得時点の販売価格（税込・送料別の場合あり）",
+        "taxIncluded": true,
+        "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1005/",
+        "fetchedAt": "2026-11-20T19:49:55+09:00"
+      },
+      "timeSale": null,
+      "pointCampaign": {
+        "rate": 2,
+        "start": "2026-11-21T20:00:00+09:00",
+        "end": "2026-11-27T01:59:00+09:00"
+      },
+      "reviewCount": 2710,
+      "reviewAverage": 4.01,
+      "genreId": "000000",
+      "imageUrls": [
+        "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1005.jpg?_ex=1000x1000"
+      ]
+    }
+  ],
+  "fetchedAt": "2026-11-20T19:49:55+09:00"
+}
