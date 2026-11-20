@@ -44,7 +44,7 @@ export function scaffold(runId, productId, from, list) {
     productId,
     runId,
     status: "scaffold",
-    fields: {},
+    fields: { category: { value: m.category.label, url: it.itemUrl, fetchedAt: it.price.fetchedAt, note: `research/config.json のカテゴリ ${m.category.key}` } },
     price: {
       display: it.price.value,
       basis: "unverified",

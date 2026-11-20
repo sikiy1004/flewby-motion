@@ -1,0 +1,3 @@
+﻿id,category,categoryEn,brand,name,nameJa,price,image,displayHeight,spec1_label,spec1_value,spec2_label,spec2_value,spec3_label,spec3_value,spec4_label,spec4_value,spec5_label,spec5_value,spec6_label,spec6_value,point1,point2,point3,rakuten,amazon
+test-light-dryer,ヘアドライヤー,Hair Dryer,TESTAIR,Feather 320,,3980,assets/products/raw/test-light-dryer.jpg,,重さ,320g,風量,1.8㎥/分,,,,,,,,,320gの本体,風量1.8㎥/分,,https://item.rakuten.co.jp/test-shop/hair-dryer-1001/,
+test-scalp-dryer,ヘアドライヤー,Hair Dryer,TESTAIR,Scalp Pro,,29800,assets/products/raw/test-scalp-dryer.jpg,,重さ,410g,風量,2.1㎥/分,,,,,,,,,410gの本体,風量2.1㎥/分,,https://item.rakuten.co.jp/test-shop/hair-dryer-1002/,

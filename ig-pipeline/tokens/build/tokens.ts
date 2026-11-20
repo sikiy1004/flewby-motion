@@ -392,6 +392,7 @@ export const tokens = {
     "handle": "@your_account",
     "prLabel": "PR",
     "prNotice": "本投稿はアフィリエイト広告（PR）を含みます",
+    "sourceNote": "紹介内容はメーカー公式情報・仕様に基づきます（使用レビューではありません）。",
     "cta": "商品リンクは\nプロフィールから。",
     "stores": [
       "楽天ROOM",

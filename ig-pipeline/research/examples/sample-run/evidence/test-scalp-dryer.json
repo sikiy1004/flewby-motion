@@ -1,12 +1,34 @@
 {
   "productId": "test-scalp-dryer",
   "runId": "20261120-r2test",
-  "status": "scaffold",
-  "fields": {},
+  "status": "complete",
+  "fields": {
+    "category": {
+      "value": "ヘアドライヤー",
+      "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "note": "research/config.json のカテゴリ"
+    },
+    "brand": {
+      "value": "TESTAIR",
+      "url": "fixture:official/test-scalp-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "name": {
+      "value": "Scalp Pro",
+      "url": "fixture:official/test-scalp-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
   "price": {
     "display": 29800,
-    "basis": "unverified",
-    "regular": null,
+    "basis": "regular",
+    "regular": {
+      "value": 29800,
+      "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",
+      "fetchedAt": "2026-11-20T19:55:25+09:00",
+      "label": "楽天ショップ通常価格"
+    },
     "sale": null,
     "rakuten": {
       "value": 29800,
@@ -16,8 +38,30 @@
       "itemCode": "test-shop-hair-dryer:1002"
     }
   },
-  "specs": {},
-  "points": [],
+  "specs": {
+    "重さ": {
+      "value": "410g",
+      "url": "fixture:official/test-scalp-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "風量": {
+      "value": "2.1㎥/分",
+      "url": "fixture:official/test-scalp-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
+  "points": [
+    {
+      "text": "410gの本体",
+      "basis": "spec",
+      "specRef": "重さ"
+    },
+    {
+      "text": "風量2.1㎥/分",
+      "basis": "spec",
+      "specRef": "風量"
+    }
+  ],
   "image": {
     "sourceUrl": "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1002.jpg?_ex=1000x1000",
     "sourcePage": "https://item.rakuten.co.jp/test-shop/hair-dryer-1002/",

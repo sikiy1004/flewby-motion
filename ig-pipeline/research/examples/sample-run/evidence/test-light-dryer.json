@@ -1,12 +1,34 @@
 {
   "productId": "test-light-dryer",
   "runId": "20261120-r2test",
-  "status": "scaffold",
-  "fields": {},
+  "status": "complete",
+  "fields": {
+    "category": {
+      "value": "ヘアドライヤー",
+      "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+      "fetchedAt": "2026-11-20T19:49:55+09:00",
+      "note": "research/config.json のカテゴリ"
+    },
+    "brand": {
+      "value": "TESTAIR",
+      "url": "fixture:official/test-light-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "name": {
+      "value": "Feather 320",
+      "url": "fixture:official/test-light-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
   "price": {
     "display": 3980,
-    "basis": "unverified",
-    "regular": null,
+    "basis": "regular",
+    "regular": {
+      "value": 3980,
+      "url": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",
+      "fetchedAt": "2026-11-20T19:55:25+09:00",
+      "label": "楽天ショップ通常価格"
+    },
     "sale": null,
     "rakuten": {
       "value": 3980,
@@ -16,8 +38,30 @@
       "itemCode": "test-shop-hair-dryer:1001"
     }
   },
-  "specs": {},
-  "points": [],
+  "specs": {
+    "重さ": {
+      "value": "320g",
+      "url": "fixture:official/test-light-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "風量": {
+      "value": "1.8㎥/分",
+      "url": "fixture:official/test-light-dryer",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
+  "points": [
+    {
+      "text": "320gの本体",
+      "basis": "spec",
+      "specRef": "重さ"
+    },
+    {
+      "text": "風量1.8㎥/分",
+      "basis": "spec",
+      "specRef": "風量"
+    }
+  ],
   "image": {
     "sourceUrl": "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-dryer-1001.jpg?_ex=1000x1000",
     "sourcePage": "https://item.rakuten.co.jp/test-shop/hair-dryer-1001/",

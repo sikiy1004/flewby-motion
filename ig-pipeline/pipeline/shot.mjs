@@ -48,7 +48,7 @@ export async function shoot(browser, inFile, outFile, { width = 1080, height = 1
 }
 
 // CLI
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [inFile, outFile, ...rest] = process.argv.slice(2);
   const opt = {};
   for (let i = 0; i < rest.length; i++) {

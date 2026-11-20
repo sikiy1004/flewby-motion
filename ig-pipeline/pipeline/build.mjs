@@ -142,7 +142,7 @@ export async function buildPost(postFile, { only, fonts } = {}) {
   return results;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const args = process.argv.slice(2);
   const files = args.filter((a) => a.endsWith(".json"));
   const oi = args.indexOf("--only");

@@ -35,7 +35,7 @@ export function validatePost(post, products, file = "post") {
   if (problems.length) throw new Error(`${file} is invalid:\n` + problems.join("\n"));
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const list = load("data/products.json");
   validateProducts(list);
   const byId = Object.fromEntries(list.map((p) => [p.id, p]));

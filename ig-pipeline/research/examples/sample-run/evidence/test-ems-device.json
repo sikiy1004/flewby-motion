@@ -1,20 +1,47 @@
 {
   "productId": "test-ems-device",
   "runId": "20261120-r2test",
-  "status": "scaffold",
-  "fields": {},
-  "price": {
-    "display": 29800,
-    "basis": "unverified",
-    "regular": null,
-    "sale": {
-      "value": 29800,
+  "status": "complete",
+  "fields": {
+    "category": {
+      "value": "美顔器",
       "url": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
       "fetchedAt": "2026-11-20T19:49:55+09:00",
-      "label": "楽天ショップのタイムセール価格（要確認）",
+      "note": "research/config.json のカテゴリ"
+    },
+    "brand": {
+      "value": "TESTBRAND",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "name": {
+      "value": "Warm EMS One",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "nameJa": {
+      "value": "ウォームEMSワン",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
+  "price": {
+    "display": 24800,
+    "basis": "sale",
+    "regular": {
+      "value": 29800,
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00",
+      "label": "メーカー希望小売価格"
+    },
+    "sale": {
+      "value": 24800,
+      "url": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",
+      "fetchedAt": "2026-11-20T19:55:25+09:00",
+      "label": "楽天スーパーSALE価格",
+      "event": "（テスト）楽天スーパーSALE",
       "start": "2026-11-21T20:00:00+09:00",
-      "end": "2026-11-27T01:59:00+09:00",
-      "itemCode": "test-shop-facial-device:1000"
+      "end": "2026-11-27T01:59:00+09:00"
     },
     "rakuten": {
       "value": 29800,
@@ -24,8 +51,46 @@
       "itemCode": "test-shop-facial-device:1000"
     }
   },
-  "specs": {},
-  "points": [],
+  "specs": {
+    "モード": {
+      "value": "温熱 / EMS / クール",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "重さ": {
+      "value": "130g",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "タイマー": {
+      "value": "5分でオートオフ",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    },
+    "防水": {
+      "value": "IPX5",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  },
+  "points": [
+    {
+      "text": "温熱・EMS・クールのモード",
+      "basis": "spec",
+      "specRef": "モード"
+    },
+    {
+      "text": "5分でオートオフ",
+      "basis": "spec",
+      "specRef": "タイマー"
+    },
+    {
+      "text": "「毎朝のお手入れに」",
+      "basis": "official-quote",
+      "url": "fixture:official/ems",
+      "fetchedAt": "2026-11-20T19:55:25+09:00"
+    }
+  ],
   "image": {
     "sourceUrl": "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-device-1000.jpg?_ex=1000x1000",
     "sourcePage": "https://item.rakuten.co.jp/test-shop/facial-device-1000/",

@@ -1,0 +1,15 @@
+{
+  "_doc": "Copy rules applied to every text that goes into a post (cover, reel, compare, product names/points/specs, caption). Heuristics for 医薬品医療機器等法・景品表示法 and this account's 'no reviews of products we have not used' rule — not legal advice. level 'error' blocks draft install; 'warn' must be explained in the check report. Add rules freely; never loosen a rule just to make a draft pass.",
+  "rules": [
+    { "id": "efficacy-skin", "level": "error", "pattern": "(シミ|しみ|シワ|しわ|たるみ|クマ|くま|ほうれい線|毛穴|ニキビ|くすみ)(が|を|も)?(消え|消す|なくな|無くな|取れ|治|解消|改善|薄く)", "reason": "肌の悩みが消える・治るといった効能の断定（薬機法）", "suggest": "仕様（モード・温度・振動数など）の紹介に置き換える" },
+    { "id": "efficacy-medical", "level": "error", "pattern": "若返|治る|治す|治療|治癒|再生(する|させ)|細胞|医学的(に|な)効", "reason": "医薬品・医療機器のような効能の表現（薬機法）", "suggest": "削除するか、仕様の説明に置き換える" },
+    { "id": "efficacy-body", "level": "error", "pattern": "痩せ|やせる|ヤセ|-\\s?\\d+\\s?(kg|キロ)|−\\s?\\d+\\s?(kg|キロ)|小顔に(なる|なれ)|脂肪(燃焼|分解)|セルライト", "reason": "身体の変化を断定する表現（薬機法・景表法）", "suggest": "削除する" },
+    { "id": "efficacy-hair", "level": "error", "pattern": "発毛|育毛|増毛|抜け毛(が|を)?(防|止|減)|白髪(が|を)?(治|減|防|なくな)|永久脱毛", "reason": "医薬品・医療機器の効能に当たる表現（薬機法）。家庭用光美容器に「永久脱毛」は使えない", "suggest": "「ムダ毛のお手入れ」「光美容器」など、公式の表記に合わせる" },
+    { "id": "efficacy-guarantee", "level": "error", "pattern": "効果(が|は)?(ある|抜群|絶大|保証|実証)|即効|効き目|効く", "reason": "効果の断定・保証（薬機法・景表法）", "suggest": "仕様の説明にとどめる" },
+    { "id": "usage-claim", "level": "error", "pattern": "使ってみ|使ってる|使っている|使い続け|使い比べ|実際に使|試してみ|試した|愛用|リピ|手放せな|毎日使って|\\d+\\s?(年|ヶ月|か月|カ月)使|使用感|使い心地|私の肌|肌が変わ|レビューします|本音レビュー", "reason": "実際に使っていない商品の感想・レビューに当たる表現（このアカウントのルール）", "suggest": "「公式スペックでは〜」「〜の仕様」など、公式情報に基づく書き方にする" },
+    { "id": "lift-whitening", "level": "warn", "pattern": "リフトアップ|引き上げ|ハリが(出|戻)|美白|ホワイトニング|エイジングケア|アンチエイジング", "reason": "美顔器（雑貨）では使えない効能に当たる場合がある。美白は医薬部外品の承認表現に限る", "suggest": "メーカー公式の表記をそのまま引用（「」）し、注記の有無も公式どおりにする。根拠がなければ削除" },
+    { "id": "medical-grade", "level": "warn", "pattern": "医療(用|レベル|機関|現場|機器並)|クリニック級|エステ級|サロン級|プロ仕様|業務用", "reason": "医療・業務用と同等であるかのような印象（優良誤認のおそれ）", "suggest": "素材名なら「医療用シリコン（素材）」のように素材だと分かる書き方に。同等性の主張は根拠がなければ削除" },
+    { "id": "superlative", "level": "warn", "pattern": "No\\.?\\s?1|ナンバーワン|ランキング1位|売上1位|日本一|世界一|業界初|世界初|最安|最高峰|最強|一番", "reason": "No.1・最上級表示は、調査元・時期・対象の明記が必要（景表法）", "suggest": "出典（例：楽天市場 美顔器ランキング 2026/11/20 デイリー）を出典ファイルとキャプションに入れる。なければ削除" },
+    { "id": "absolute", "level": "warn", "pattern": "絶対|必ず|100\\s?%|誰でも|完全(?!防水)|永久", "reason": "断定・誇大表現（景表法）", "suggest": "条件を添えるか、表現をやわらげる" }
+  ]
+}

@@ -6,7 +6,7 @@
 // a real newline (Alt+Enter in Excel) or the two characters \n.
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { validateProducts, validatePost } from "./validate.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -35,7 +35,7 @@ export function parseCsv(text) {
   return body.map((r) => Object.fromEntries(head.map((h, i) => [h.trim(), (r[i] ?? "").trim()])));
 }
 const esc = (v) => (/[",\n\r]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
-const writeCsv = (file, header, rows) =>
+export const writeCsv = (file, header, rows) =>
   fs.writeFileSync(file, "﻿" + [header, ...rows.map((r) => header.map((h) => r[h] ?? ""))].map((r) => r.map((v) => esc(String(v))).join(",")).join("\r\n") + "\r\n");
 
 const nl = (s) => s.replace(/\\n/g, "\n");
@@ -48,10 +48,10 @@ const clean = (o) => {
 };
 
 /* ---------- columns ---------- */
-const PRODUCT_COLS = ["id", "category", "categoryEn", "brand", "name", "nameJa", "price", "image", "displayHeight",
+export const PRODUCT_COLS = ["id", "category", "categoryEn", "brand", "name", "nameJa", "price", "image", "displayHeight",
   ...Array.from({ length: MAX_SPECS }, (_, i) => [`spec${i + 1}_label`, `spec${i + 1}_value`]).flat(),
   "point1", "point2", "point3", "rakuten", "amazon"];
-const POST_COLS = ["id", "collection", "issue", "priceDate", "word", "kicker", "lead", "aurora", "hero", "products",
+export const POST_COLS = ["id", "collection", "issue", "priceDate", "word", "kicker", "lead", "aurora", "hero", "products",
   "compare_word", "compare_kicker", "compare_lead", "compare_rows", "summary_word",
   "reel_headline", "reel_sub", "reel_accent", "reel_kicker", "reel_seed", "reel_layout", "hashtags"];
 
@@ -64,7 +64,7 @@ function rowToProduct(r) {
     specs, points: [r.point1, r.point2, r.point3].filter(Boolean), links: { rakuten: r.rakuten, amazon: r.amazon },
   });
 }
-function productToRow(p) {
+export function productToRow(p) {
   const r = { ...p, links: undefined, specs: undefined, points: undefined, rakuten: p.links?.rakuten, amazon: p.links?.amazon };
   Object.entries(p.specs ?? {}).forEach(([k, v], i) => { r[`spec${i + 1}_label`] = k; r[`spec${i + 1}_value`] = v; });
   (p.points ?? []).forEach((v, i) => (r[`point${i + 1}`] = v));
@@ -87,7 +87,7 @@ function rowToPost(r) {
     hashtags: r.hashtags ? r.hashtags.split(/\s+/).filter(Boolean) : undefined,
   });
 }
-function postToRow(p) {
+export function postToRow(p) {
   const n = (s) => (s ?? "").replace(/\n/g, "\\n");
   return {
     id: p.id, collection: p.collection.number, issue: p.collection.issue, priceDate: p.priceDate,
@@ -98,37 +98,39 @@ function postToRow(p) {
   };
 }
 
-/* ---------- commands ---------- */
-const [cmd, file] = process.argv.slice(2);
-if (cmd === "import") {
-  const rows = parseCsv(fs.readFileSync(file, "utf8"));
-  const head = Object.keys(rows[0] ?? {});
-  if (head.includes("price")) {
-    const list = rows.map(rowToProduct);
-    validateProducts(list);
-    const dst = path.join(ROOT, "data/products.json");
-    if (fs.existsSync(dst)) fs.copyFileSync(dst, dst + ".bak");
-    fs.writeFileSync(dst, JSON.stringify(list, null, 2) + "\n");
-    console.log(`imported ${list.length} products → data/products.json (previous saved as .bak)`);
-  } else if (head.includes("word")) {
-    const products = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8")).map((p) => [p.id, p]));
-    for (const r of rows) {
-      const post = rowToPost(r);
-      validatePost(post, products, `${file} row "${r.id}"`);
-      fs.writeFileSync(path.join(ROOT, "data/posts", `${post.id}.json`), JSON.stringify(post, null, 2) + "\n");
-      console.log(`imported post → data/posts/${post.id}.json`);
-    }
-  } else throw new Error("unknown CSV: header must contain 'price' (products) or 'word' (posts)");
-} else if (cmd === "export") {
-  const dir = path.join(ROOT, "data/csv");
-  fs.mkdirSync(dir, { recursive: true });
-  const products = JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8"));
-  writeCsv(path.join(dir, "products.csv"), PRODUCT_COLS, products.map(productToRow));
-  const posts = fs.readdirSync(path.join(ROOT, "data/posts")).filter((f) => f.endsWith(".json")).sort()
-    .map((f) => JSON.parse(fs.readFileSync(path.join(ROOT, "data/posts", f), "utf8")));
-  writeCsv(path.join(dir, "posts.csv"), POST_COLS, posts.map(postToRow));
-  console.log(`exported → data/csv/products.csv (${products.length}), data/csv/posts.csv (${posts.length})`);
-} else {
-  console.log("usage: node pipeline/csv.mjs import <file.csv> | export");
-  process.exit(1);
+/* ---------- commands (only when run directly, so the functions above can be imported) ---------- */
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const [cmd, file] = process.argv.slice(2);
+  if (cmd === "import") {
+    const rows = parseCsv(fs.readFileSync(file, "utf8"));
+    const head = Object.keys(rows[0] ?? {});
+    if (head.includes("price")) {
+      const list = rows.map(rowToProduct);
+      validateProducts(list);
+      const dst = path.join(ROOT, "data/products.json");
+      if (fs.existsSync(dst)) fs.copyFileSync(dst, dst + ".bak");
+      fs.writeFileSync(dst, JSON.stringify(list, null, 2) + "\n");
+      console.log(`imported ${list.length} products → data/products.json (previous saved as .bak)`);
+    } else if (head.includes("word")) {
+      const products = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8")).map((p) => [p.id, p]));
+      for (const r of rows) {
+        const post = rowToPost(r);
+        validatePost(post, products, `${file} row "${r.id}"`);
+        fs.writeFileSync(path.join(ROOT, "data/posts", `${post.id}.json`), JSON.stringify(post, null, 2) + "\n");
+        console.log(`imported post → data/posts/${post.id}.json`);
+      }
+    } else throw new Error("unknown CSV: header must contain 'price' (products) or 'word' (posts)");
+  } else if (cmd === "export") {
+    const dir = path.join(ROOT, "data/csv");
+    fs.mkdirSync(dir, { recursive: true });
+    const products = JSON.parse(fs.readFileSync(path.join(ROOT, "data/products.json"), "utf8"));
+    writeCsv(path.join(dir, "products.csv"), PRODUCT_COLS, products.map(productToRow));
+    const posts = fs.readdirSync(path.join(ROOT, "data/posts")).filter((f) => f.endsWith(".json")).sort()
+      .map((f) => JSON.parse(fs.readFileSync(path.join(ROOT, "data/posts", f), "utf8")));
+    writeCsv(path.join(dir, "posts.csv"), POST_COLS, posts.map(postToRow));
+    console.log(`exported → data/csv/products.csv (${products.length}), data/csv/posts.csv (${posts.length})`);
+  } else {
+    console.log("usage: node pipeline/csv.mjs import <file.csv> | export");
+    process.exit(1);
+  }
 }
