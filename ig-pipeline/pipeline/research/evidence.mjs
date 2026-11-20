@@ -64,7 +64,15 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const a = parseArgs(process.argv.slice(2));
   const [cmd, runArg, productId] = a._;
   const runId = runArg === "latest" ? latestRun() : runArg;
-  if (cmd === "new") {
+  if (cmd === "new" && !a.from) {
+    // no market data (e.g. no Rakuten keys): an empty scaffold to fill from official pages
+    if (!runId || !productId) { console.log("usage: npm run research:evidence -- new <run|latest> <product-id> [--from <category>:<rank|itemCode>]"); process.exit(1); }
+    const ev = { productId, runId, status: "scaffold", fields: {}, price: { display: null, basis: "unverified", regular: null, sale: null, rakuten: null }, specs: {}, points: [], image: { sourceUrl: null, rights: "placeholder" }, links: { rakuten: null, amazon: null, official: null }, notes: "empty scaffold: fill every value from official pages with URL + fetchedAt" };
+    const out = path.join(runDir(runId), "evidence", `${productId}.json`);
+    if (fs.existsSync(out) && !a.force) throw new Error(`${path.relative(ROOT, out)} already exists (--force to overwrite)`);
+    writeJson(out, ev);
+    console.log(`→ ${path.relative(ROOT, out)}`);
+  } else if (cmd === "new") {
     if (!runId || !productId || !a.from) { console.log("usage: npm run research:evidence -- new <run|latest> <product-id> --from <category>:<rank|itemCode> [--list search|ranking]"); process.exit(1); }
     if (!/^[a-z0-9][a-z0-9-]*$/.test(productId)) throw new Error("product-id は英小文字・数字・ハイフン");
     const ev = scaffold(runId, productId, a.from, a.list);

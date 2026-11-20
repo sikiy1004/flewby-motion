@@ -7,3 +7,5 @@ out/**/*.tmp
 .env
 research/runs/*/
 !research/runs/.gitkeep
+assets/products/raw/test-*
+assets/products/cutout/test-*

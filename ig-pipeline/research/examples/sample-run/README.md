@@ -8,7 +8,7 @@
 |---|---|
 | market.md / market/ | 楽天の取得結果（テスト用データ） |
 | evidence/ | 出典ファイル。test-ems-device・test-light-dryer・test-scalp-dryer は記入済み、test-sonic-brush は雛形のまま |
-| ideas.json | 投稿案の元データ（I09 は、チェックが違反を止めることを示すための「違反の見本」） |
+| ideas.json | 投稿案の元データ |
 | ideas.md | 投稿案リスト |
 | drafts/<投稿ID>/ | 原稿データ一式：post.json・products.json（既存スキーマ準拠）、posts.csv・products.csv、caption.txt、check.md（判定と出典の一覧） |
 

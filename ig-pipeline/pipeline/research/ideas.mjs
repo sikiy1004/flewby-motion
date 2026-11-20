@@ -8,6 +8,7 @@ import { pathToFileURL } from "node:url";
 import Ajv from "ajv";
 import { readJson, runDir, parseArgs, latestRun, config, jstIso } from "./lib.mjs";
 import { loadEvidence } from "./evidence.mjs";
+import { lintTexts } from "./lint.mjs";
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 const validate = ajv.compile(readJson("research/schema/ideas.schema.json"));
@@ -31,6 +32,9 @@ export function checkIdeas(doc, runId, now = new Date()) {
     const P = idea.id;
     if (ids.has(P)) errors.push(`${P}: id が重複しています`);
     ids.add(P);
+    // copy rules already at idea stage, so a violating idea never reaches the owner's list
+    for (const f of lintTexts([["theme", idea.theme], ["cover.kicker", idea.cover?.kicker], ["cover.lead", idea.cover?.lead], ["reel.headline", idea.reel?.headline], ["reel.sub", idea.reel?.sub], ["reel.accent", idea.reel?.accent]]))
+      (f.level === "error" ? errors : warnings).push(`${P}: ${f.where}「${f.match}」${f.reason}`);
     if (idea.design === "B" && !idea.reel) errors.push(`${P}: B案には reel.headline が必要です`);
     if (idea.design === "A" && idea.format.startsWith("reel")) errors.push(`${P}: A案に reel の形式は使えません`);
     if (idea.format === "compare" && idea.products.length < 2) errors.push(`${P}: 比較は商品2〜4点です`);

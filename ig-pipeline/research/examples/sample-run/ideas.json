@@ -136,56 +136,6 @@
           "fetchedAt": "2026-11-20T19:49:55+09:00"
         }
       ]
-    },
-    {
-      "id": "I09",
-      "theme": "（違反の見本）",
-      "angle": "時短ケア",
-      "design": "A",
-      "format": "single",
-      "products": [
-        {
-          "productId": "test-ems-device",
-          "label": "（テスト）EMS温冷美顔器 3モード",
-          "evidence": "evidence/test-ems-device.json"
-        }
-      ],
-      "cover": {
-        "word": "Warm",
-        "wordAlternatives": [
-          "Ritual",
-          "Glow"
-        ],
-        "kicker": "Facial Device — Official Spec",
-        "lead": "3年使ってみた結論。\nシミが消える7つの理由"
-      },
-      "aurora": "ember",
-      "timing": {
-        "recommended": "2026-11-21",
-        "event": "（テスト）ショップのタイムセール",
-        "windowStart": "2026-11-21T20:00:00+09:00",
-        "windowEnd": "2026-11-27T01:59:00+09:00",
-        "reason": "セール開始当日の朝に投稿し、セール期間中に保存・再訪してもらう",
-        "source": {
-          "url": "fixture:research/fixtures/rakuten/facial-device.search.json",
-          "fetchedAt": "2026-11-20T19:49:55+09:00"
-        }
-      },
-      "why": "楽天の検索でレビュー件数が上位（テスト用データ）。価格帯の中央値付近で、時短という切り口が作りやすい",
-      "risks": [
-        "「リフトアップ」等の効能表現は使わず、公式スペック（モード・重さ）の紹介に限定する"
-      ],
-      "hashtags": [
-        "#美顔器",
-        "#時短美容"
-      ],
-      "sources": [
-        {
-          "url": "fixture:research/fixtures/rakuten/facial-device.search.json",
-          "title": "楽天市場 検索結果（テスト用データ）",
-          "fetchedAt": "2026-11-20T19:49:55+09:00"
-        }
-      ]
     }
   ]
 }

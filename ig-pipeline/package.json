@@ -26,7 +26,8 @@
     "research:approve": "node pipeline/research/approve.mjs",
     "research:lint": "node pipeline/research/lint.mjs",
     "research:draft": "node pipeline/research/draft.mjs",
-    "research:install": "node pipeline/research/install.mjs"
+    "research:install": "node pipeline/research/install.mjs",
+    "research:sample": "node pipeline/research/sample.mjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

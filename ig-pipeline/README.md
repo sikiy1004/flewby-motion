@@ -359,3 +359,34 @@ ig-pipeline/
 - 同梱フォント：SIL Open Font License 1.1（`assets/fonts/fallback/LICENSES.md`）
 - 使用しているライブラリ：Playwright（Apache-2.0）、Nunjucks（BSD-2）、Ajv（MIT）、rembg（MIT）、numpy / scipy / Pillow（BSD 系）、onnxruntime（MIT）
 - 背景アセットとモック画像は、このリポジトリのスクリプトで生成したものです。
+
+---
+
+## 13. リサーチ層（投稿案と原稿データを作る）
+
+描画エンジンの前段で、最新情報を調べて「投稿案」と「原稿データ」を作ります。描画は既存エンジンに任せます。
+使い方は [`docs/research-quickstart.md`](docs/research-quickstart.md)、設計と承認済みの方針は [`docs/research-layer-plan.md`](docs/research-layer-plan.md)、
+Claude Code が守るルールは [`CLAUDE.md`](CLAUDE.md) にあります。
+
+```
+/research（Claude Code）→ research/runs/<実行ID>/ideas.md
+   → npm run research:approve -- <実行ID> I01   ← あなたが端末で承認
+   → /research-draft I01 → research:draft（原稿＋チェック）→ research:install（data/ へ）
+   → npm run build（既存エンジンで描画）
+```
+
+| コマンド | 内容 |
+|---|---|
+| `npm run research:rakuten [-- <カテゴリ>] [--fixture]` | 楽天のランキング・検索を取得（`--fixture` はテスト用データ） |
+| `npm run research:evidence -- new <実行ID> <商品ID> [--from <カテゴリ>:<順位>]` | 出典ファイルの雛形（`validate` で形式確認） |
+| `npm run research:ideas -- render <実行ID>` | 投稿案リスト `ideas.md` を作る（期限切れ・古い価格・NG表現で止まる） |
+| `npm run research:approve -- <実行ID> I01 I03` | **オーナーが端末で実行する承認**（`status` で確認） |
+| `npm run research:draft -- <実行ID> <案ID>` | 承認済みの案から原稿データを作ってチェック |
+| `npm run research:install -- <実行ID> <案ID>` | チェックを通った原稿を data/ に取り込む |
+| `npm run research:lint [-- data/posts/x.json]` | 表現チェック（薬機法・景表法・使用感） |
+| `npm run research:sample [-- --clean]` | テスト用データで流れを試す／片付ける |
+
+- 設定：`research/config.json`（カテゴリと優先順・楽天の接続先・鮮度の上限 72 時間）、表現ルール：`research/compliance.json`
+- 楽天のキーは `.env`（`.env.example` を参照。Git には上がりません）
+- 出典ファイル（`research/schema/evidence.schema.json`）に、すべての値の取得元 URL と取得日時、通常価格とセール価格・期間、画像の取得元を記録します。
+  既存の入力スキーマは変更していません（セール期間は `priceDate` に入ります）。
