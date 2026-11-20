@@ -38,13 +38,21 @@ brew --version
 ### 1-2. git・Node.js・Python・GitHub CLI
 
 ```bash
-brew install git node python gh
+brew install git node python@3.13 gh
 ```
+
+※ Python は 3.13 を使います。最新の 3.15 には、背景除去のライブラリがまだ対応していない場合があります。
 
 入ったか確認します（それぞれバージョン番号が出れば OK）。
 
 ```bash
-node -v && python3 --version && gh --version
+node -v && npm -v && python3.13 --version && gh --version
+```
+
+`npm -v` で `dyld: Symbol not found` と出て止まる場合は、Node.js と部品のバージョンがずれています。次のコマンドで直します。
+
+```bash
+brew update && brew upgrade simdutf node
 ```
 
 ### 1-3. Claude Code
@@ -117,7 +125,7 @@ npx playwright install chromium
 ```
 
 ```bash
-python3 -m venv .venv
+python3.13 -m venv .venv
 ```
 
 ```bash
@@ -209,4 +217,6 @@ cd ~/Documents/flewby-motion/ig-pipeline && git pull && claude
 | `command not found: brew` | ステップ1-1 の最後に表示された「Next steps」のコマンドを実行してから、ターミナルを開き直す |
 | `gh repo clone` で「not found」 | `gh auth login` を、リポジトリの持ち主（sikiy1004）の GitHub アカウントでやり直す |
 | `npm run all` が背景除去の途中で止まる | ほかのアプリを閉じてから、もう一度実行する（メモリが足りないと、軽いモデルに自動で切り替わります） |
+| `npm` で `dyld: Symbol not found` | `brew update && brew upgrade simdutf node` を実行する。直らなければ `which -a node npm` の結果を Claude Code に見せる |
+| `pip install` で onnxruntime などが見つからない | Python が新しすぎます。`brew install python@3.13` のあと、`rm -rf .venv && python3.13 -m venv .venv` で作り直す |
 | 何かのエラーで止まった | エラーの文章をコピーして、Claude Code に「このエラーを直して」と送る |
