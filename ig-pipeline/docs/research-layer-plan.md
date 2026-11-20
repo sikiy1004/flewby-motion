@@ -113,4 +113,5 @@ CLAUDE.md  .env.example
 - R4 Claude Code のスキル（/research・/research-draft）、CLAUDE.md、README、見本の流れ（research:sample）：完了
 - 見本の流れ：オーナーが Mac で承認〜描画まで確認済み（2026-11-20）
 - R5 セール暦（research/calendar.json・確度つき）とトレンド記録（trends.json）、投稿案との照合：完了
-- 次：R6 競合の記録表 → R7 定期実行の設定・楽天の公式仕様の確定と本番実行
+- R6 競合の記録表（research/competitors/log.csv・/competitor-log・集計）：完了
+- 次：R7 定期実行の設定・楽天の公式仕様の確定と本番実行

@@ -28,7 +28,8 @@ CLAUDE.md のルールをすべて守る。各段階の終わりに、何をし�
 3. **トレンド（切り口）→ `research/runs/<実行ID>/trends.json`**（形式：`research/schema/trends.schema.json`）：美容ガジェットで話題のテーマ
    （例：韓国美容デバイス、時短ケア）を T01, T02… として、事実の要約・切り口・出典を記録する。効能の主張は書かない。
    **デザイン（トークン・テンプレート・世界観）には反映しない。**
-4. **競合の「型」**：`research/competitors/` にオーナーが記録したものがあれば参考にする（自分で Instagram を収集しない）。
+4. **競合の「型」**：`npm run research:competitors -- summary` を実行し、`research/competitors/summary.md` の傾向（よく使われる見出しの作り方・構成・テーマ）を参考にする。
+   文言・画像は真似しない。記録が古い・少ない場合は、オーナーに `/competitor-log` での記録を提案する（自分で Instagram を収集しない）。
 
 ## 3. 商品ごとの出典ファイル
 - 楽天の取得結果から雛形を作る：`npm run research:evidence -- new <実行ID> <商品ID> --from <カテゴリキー>:<順位>`（商品IDは英小文字・数字・ハイフン）。

@@ -106,6 +106,20 @@ Claude Code に送る文の例：
 **楽天のキーについて**：楽天ウェブサービスの管理画面が復旧してキーを `.env` に入れるまでは、楽天のデータなしで、メーカー公式サイトなどの
 Web 調査だけで進みます。最初の本番実行時に、Claude Code が楽天の公式仕様を確認してから API を使います。
 
+## C. 競合の投稿を記録する（半自動）
+
+Instagram のアプリで競合（@cospa_biyou_lab など）の新しい投稿を見たら、Claude Code に次のように送ります。
+
+```
+/competitor-log
+https://www.instagram.com/p/（投稿のURL）
+（キャプション本文を貼る。またはスクリーンショットを添付。枚数・投稿日が分かれば添える）
+```
+
+Claude Code が「型」（テーマ・構成・見出しの作り方）を分類して見せるので、了承すると `research/competitors/log.csv` に記録されます。
+キャプション本文は保存されません。Claude Code が Instagram を自分で見に行くことはありません。
+記録表は Numbers や Excel で直接編集してもよく、編集後は `npm run research:competitors -- check` で形式を確認できます。
+
 ## 定期実行（週1回など）にするとき
 
 リサーチ（投稿案リストの作成）だけを定期実行し、承認・原稿データ・描画は今までどおり手動で行います。例（macOS の launchd や cron から）：

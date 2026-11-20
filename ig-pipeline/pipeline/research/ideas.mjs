@@ -10,6 +10,7 @@ import { readJson, runDir, parseArgs, latestRun, config, jstIso } from "./lib.mj
 import { loadEvidence } from "./evidence.mjs";
 import { lintTexts } from "./lint.mjs";
 import { findEvent, upcoming, calendarTable, loadCalendar } from "./calendar.mjs";
+import { loadLog } from "./competitors.mjs";
 
 const ajv = new Ajv({ allErrors: true, strict: false });
 const validate = ajv.compile(readJson("research/schema/ideas.schema.json"));
@@ -100,6 +101,11 @@ export function renderIdeas(doc, runId, checks) {
   if (trends?.topics?.length) {
     md += `\n## トレンドの要点\n\n| ID | テーマ | 切り口 | 要点 | 出典 |\n|---|---|---|---|---|\n`;
     for (const t of trends.topics) md += `| ${t.id} | ${t.topic} | ${t.angle ?? ""} | ${t.summary} | ${t.sources.map((x) => `[${x.title ?? "出典"}](${x.url})`).join("<br>")} |\n`;
+  }
+  const recent = loadLog().filter((r) => new Date(r.recordedAt) >= new Date(Date.now() - 30 * 864e5));
+  if (recent.length) {
+    const top = (k) => Object.entries(recent.reduce((m, r) => ((m[r[k]] = (m[r[k]] ?? 0) + 1), m), {})).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([v, n]) => `${v}（${n}）`).join("、");
+    md += `\n## 競合の型（直近30日・${recent.length}件）\n\n- 見出しの作り方：${top("headlinePattern")}\n- 構成：${top("structure")}\n- テーマ：${top("theme")}\n\n詳細は research/competitors/summary.md。文言・画像は真似しない。\n`;
   }
   md += `\n## 各案の詳細\n`;
   for (const i of doc.ideas) {
