@@ -19,7 +19,9 @@
     "validate": "node pipeline/validate.mjs",
     "preview": "node pipeline/preview.mjs",
     "csv:import": "node pipeline/csv.mjs import",
-    "csv:export": "node pipeline/csv.mjs export"
+    "csv:export": "node pipeline/csv.mjs export",
+    "research:rakuten": "node pipeline/research/rakuten.mjs",
+    "research:evidence": "node pipeline/research/evidence.mjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

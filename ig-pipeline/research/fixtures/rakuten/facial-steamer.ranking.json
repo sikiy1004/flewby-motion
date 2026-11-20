@@ -1,0 +1,107 @@
+{
+ "_doc": "FAKE test data in the Rakuten formatVersion=2 response shape. Every itemName starts with （テスト）. Not real products, prices or shops.",
+ "count": 4,
+ "page": 1,
+ "Items": [
+  {
+   "rank": 1,
+   "itemName": "（テスト）ナノスチーマー 温冷",
+   "catchcopy": "",
+   "itemCode": "test-shop-facial-steamer:1000",
+   "itemPrice": 19800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-steamer-1000/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ1",
+   "shopCode": "test-shop",
+   "reviewCount": 3808,
+   "reviewAverage": 3.74,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-steamer-1000.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 10,
+   "pointRateStartTime": "2026-11-21 20:00",
+   "pointRateEndTime": "2026-11-27 01:59",
+   "startTime": "2026-11-21 20:00",
+   "endTime": "2026-11-27 01:59"
+  },
+  {
+   "rank": 2,
+   "itemName": "（テスト）ハンディ スチーマー コードレス",
+   "catchcopy": "",
+   "itemCode": "test-shop-facial-steamer:1002",
+   "itemPrice": 12800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-steamer-1002/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ3",
+   "shopCode": "test-shop",
+   "reviewCount": 2731,
+   "reviewAverage": 3.88,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-steamer-1002.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 1,
+   "pointRateStartTime": "",
+   "pointRateEndTime": "",
+   "startTime": "",
+   "endTime": ""
+  },
+  {
+   "rank": 3,
+   "itemName": "（テスト）ダブル噴射 スチーマー",
+   "catchcopy": "",
+   "itemCode": "test-shop-facial-steamer:1003",
+   "itemPrice": 49800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-steamer-1003/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ4",
+   "shopCode": "test-shop",
+   "reviewCount": 2724,
+   "reviewAverage": 4.24,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-steamer-1003.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 5,
+   "pointRateStartTime": "2026-11-21 20:00",
+   "pointRateEndTime": "2026-11-27 01:59",
+   "startTime": "2026-11-21 20:00",
+   "endTime": "2026-11-27 01:59"
+  },
+  {
+   "rank": 4,
+   "itemName": "（テスト）卓上 フェイススチーマー アロマ",
+   "catchcopy": "",
+   "itemCode": "test-shop-facial-steamer:1001",
+   "itemPrice": 5980,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/facial-steamer-1001/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ2",
+   "shopCode": "test-shop",
+   "reviewCount": 527,
+   "reviewAverage": 4.1,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/facial-steamer-1001.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 5,
+   "pointRateStartTime": "2026-11-21 20:00",
+   "pointRateEndTime": "2026-11-27 01:59",
+   "startTime": "",
+   "endTime": ""
+  }
+ ]
+}

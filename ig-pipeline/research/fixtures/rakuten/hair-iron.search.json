@@ -1,0 +1,132 @@
+{
+ "_doc": "FAKE test data in the Rakuten formatVersion=2 response shape. Every itemName starts with （テスト）. Not real products, prices or shops.",
+ "count": 5,
+ "page": 1,
+ "Items": [
+  {
+   "rank": 1,
+   "itemName": "（テスト）ストレートアイロン 230℃",
+   "catchcopy": "",
+   "itemCode": "test-shop-hair-iron:1000",
+   "itemPrice": 24800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1000/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ1",
+   "shopCode": "test-shop",
+   "reviewCount": 1079,
+   "reviewAverage": 3.73,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1000.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 5,
+   "pointRateStartTime": "2026-11-21 20:00",
+   "pointRateEndTime": "2026-11-27 01:59",
+   "startTime": "2026-11-21 20:00",
+   "endTime": "2026-11-27 01:59"
+  },
+  {
+   "rank": 2,
+   "itemName": "（テスト）2way カールアイロン 32mm",
+   "catchcopy": "",
+   "itemCode": "test-shop-hair-iron:1001",
+   "itemPrice": 16800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1001/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ2",
+   "shopCode": "test-shop",
+   "reviewCount": 161,
+   "reviewAverage": 4.0,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1001.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 1,
+   "pointRateStartTime": "",
+   "pointRateEndTime": "",
+   "startTime": "",
+   "endTime": ""
+  },
+  {
+   "rank": 3,
+   "itemName": "（テスト）コードレス ミニアイロン",
+   "catchcopy": "",
+   "itemCode": "test-shop-hair-iron:1002",
+   "itemPrice": 8980,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1002/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ3",
+   "shopCode": "test-shop",
+   "reviewCount": 126,
+   "reviewAverage": 4.71,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1002.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 1,
+   "pointRateStartTime": "",
+   "pointRateEndTime": "",
+   "startTime": "",
+   "endTime": ""
+  },
+  {
+   "rank": 4,
+   "itemName": "（テスト）ブラシ型 ストレートアイロン",
+   "catchcopy": "",
+   "itemCode": "test-shop-hair-iron:1003",
+   "itemPrice": 16800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1003/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ4",
+   "shopCode": "test-shop",
+   "reviewCount": 3094,
+   "reviewAverage": 3.97,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1003.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 10,
+   "pointRateStartTime": "2026-11-21 20:00",
+   "pointRateEndTime": "2026-11-27 01:59",
+   "startTime": "2026-11-21 20:00",
+   "endTime": "2026-11-27 01:59"
+  },
+  {
+   "rank": 5,
+   "itemName": "（テスト）マイナスイオン ヘアアイロン 25mm",
+   "catchcopy": "",
+   "itemCode": "test-shop-hair-iron:1004",
+   "itemPrice": 16800,
+   "itemUrl": "https://item.rakuten.co.jp/test-shop/hair-iron-1004/",
+   "affiliateUrl": "",
+   "shopName": "テストショップ5",
+   "shopCode": "test-shop",
+   "reviewCount": 449,
+   "reviewAverage": 4.09,
+   "mediumImageUrls": [
+    "https://thumbnail.image.rakuten.co.jp/@0_mall/test-shop/hair-iron-1004.jpg?_ex=128x128"
+   ],
+   "genreId": "000000",
+   "taxFlag": 0,
+   "postageFlag": 0,
+   "availability": 1,
+   "pointRate": 1,
+   "pointRateStartTime": "",
+   "pointRateEndTime": "",
+   "startTime": "",
+   "endTime": ""
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+  "_doc": "Research-layer settings (not read by the rendering engine). Categories are in priority order. genreId: the number in the category's Rakuten ranking URL; leave null until confirmed.",
+  "rakuten": {
+    "specVerified": false,
+    "specNote": "Endpoints/params from the official docs as seen via search on 2026-11-19 (portal was down: 503). Confirm on the official pages and set specVerified to true before the first real run.",
+    "searchEndpoint": "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701",
+    "rankingEndpoint": "https://openapi.rakuten.co.jp/ichibaranking/api/IchibaItem/Ranking/20220601",
+    "hits": 30,
+    "minIntervalMs": 1100
+  },
+  "categories": [
+    { "key": "facial-device",   "label": "美顔器",         "labelEn": "Facial Device",         "group": "美顔器",           "keywords": ["美顔器"],               "genreId": null, "minPrice": 3000 },
+    { "key": "hair-dryer",      "label": "ヘアドライヤー", "labelEn": "Hair Dryer",            "group": "ヘアケア家電",     "keywords": ["ドライヤー 美容"],      "genreId": null, "minPrice": 5000 },
+    { "key": "hair-iron",       "label": "ヘアアイロン",   "labelEn": "Hair Iron",             "group": "ヘアケア家電",     "keywords": ["ヘアアイロン"],         "genreId": null, "minPrice": 3000 },
+    { "key": "cleansing-brush", "label": "電動洗顔ブラシ", "labelEn": "Sonic Cleansing Brush", "group": "電動洗顔ブラシ",   "keywords": ["洗顔ブラシ 電動"],      "genreId": null, "minPrice": 2000 },
+    { "key": "facial-steamer",  "label": "スチーマー",     "labelEn": "Facial Steamer",        "group": "スチーマー",       "keywords": ["フェイススチーマー"],   "genreId": null, "minPrice": 3000 },
+    { "key": "hair-removal",    "label": "脱毛器",         "labelEn": "Hair Removal Device",   "group": "脱毛器",           "keywords": ["光美容器 脱毛器"],      "genreId": null, "minPrice": 5000 }
+  ],
+  "freshness": { "priceMaxAgeHours": 72, "newsWindowDays": 90 },
+  "postMix": { "aCarousel": 0.8, "bReel": 0.2 },
+  "competitors": ["@cospa_biyou_lab", "@zutto_kirei_shuhu", "@cosme_bigan"]
+}

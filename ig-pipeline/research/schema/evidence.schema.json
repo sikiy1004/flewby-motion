@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "evidence.schema.json",
+  "title": "Evidence (research layer only — the rendering engine never reads this)",
+  "description": "One file per product per run: every value that ends up in data/products.json or a post, with the URL and time it was taken from.",
+  "type": "object",
+  "required": ["productId", "runId", "fields", "price", "specs", "points", "image"],
+  "additionalProperties": false,
+  "definitions": {
+    "time": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?\\+09:00$", "description": "ISO 8601 in JST, e.g. 2026-11-20T14:05:00+09:00" },
+    "url": { "type": "string", "pattern": "^(https://|fixture:)" },
+    "sourced": {
+      "type": "object", "required": ["value", "url", "fetchedAt"], "additionalProperties": false,
+      "properties": {
+        "value": { "type": ["string", "integer", "null"] },
+        "url": { "$ref": "#/definitions/url" },
+        "fetchedAt": { "$ref": "#/definitions/time" },
+        "title": { "type": "string" },
+        "quote": { "type": "boolean", "description": "true = メーカー公式の表現をそのまま引用（表示時は引用と分かる形にする）" },
+        "note": { "type": "string" }
+      }
+    },
+    "money": {
+      "type": "object", "required": ["value", "url", "fetchedAt", "label"], "additionalProperties": false,
+      "properties": {
+        "value": { "type": ["integer", "null"], "minimum": 0 },
+        "url": { "$ref": "#/definitions/url" },
+        "fetchedAt": { "$ref": "#/definitions/time" },
+        "label": { "type": "string", "description": "例：メーカー希望小売価格 / 公式ストア通常価格 / 楽天スーパーSALE価格" },
+        "event": { "type": "string" },
+        "start": { "$ref": "#/definitions/time" },
+        "end": { "$ref": "#/definitions/time" },
+        "itemCode": { "type": "string" }
+      }
+    }
+  },
+  "properties": {
+    "productId": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$" },
+    "runId": { "type": "string" },
+    "status": { "enum": ["scaffold", "complete"], "description": "scaffold = 雛形（未確認の項目あり） / complete = 全項目に出典あり" },
+    "fields": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "brand": { "$ref": "#/definitions/sourced" },
+        "name": { "$ref": "#/definitions/sourced" },
+        "nameJa": { "$ref": "#/definitions/sourced" },
+        "category": { "$ref": "#/definitions/sourced" }
+      }
+    },
+    "price": {
+      "type": "object", "required": ["display", "basis"], "additionalProperties": false,
+      "properties": {
+        "display": { "type": ["integer", "null"], "description": "data/products.json の price に入れる値" },
+        "basis": { "enum": ["regular", "sale", "unverified"], "description": "display が通常価格かセール価格か" },
+        "regular": { "oneOf": [{ "$ref": "#/definitions/money" }, { "type": "null" }] },
+        "sale": { "oneOf": [{ "$ref": "#/definitions/money" }, { "type": "null" }] },
+        "rakuten": { "oneOf": [{ "$ref": "#/definitions/money" }, { "type": "null" }], "description": "楽天 API の取得時点の販売価格（参考）" }
+      }
+    },
+    "specs": { "type": "object", "maxProperties": 6, "additionalProperties": { "$ref": "#/definitions/sourced" }, "description": "キーは products.json の specs と同じ項目名" },
+    "points": {
+      "type": "array", "maxItems": 3,
+      "items": {
+        "type": "object", "required": ["text", "basis"], "additionalProperties": false,
+        "properties": {
+          "text": { "type": "string", "maxLength": 20 },
+          "basis": { "enum": ["spec", "official-quote"], "description": "spec = スペックに基づく要約 / official-quote = 公式表現の引用（「」で囲む）" },
+          "specRef": { "type": "string" },
+          "url": { "$ref": "#/definitions/url" },
+          "fetchedAt": { "$ref": "#/definitions/time" }
+        }
+      }
+    },
+    "image": {
+      "type": "object", "required": ["rights"], "additionalProperties": false,
+      "properties": {
+        "sourceUrl": { "type": ["string", "null"] },
+        "sourcePage": { "type": ["string", "null"] },
+        "fetchedAt": { "$ref": "#/definitions/time" },
+        "rights": { "enum": ["own", "permitted", "placeholder"], "description": "own = 自分で撮影 / permitted = 使用許諾あり / placeholder = レイアウト確認用（公開不可）" },
+        "note": { "type": "string" }
+      }
+    },
+    "links": {
+      "type": "object", "additionalProperties": false,
+      "properties": { "rakuten": { "type": ["string", "null"] }, "amazon": { "type": ["string", "null"] }, "official": { "type": ["string", "null"] } }
+    },
+    "notes": { "type": "string" }
+  }
+}

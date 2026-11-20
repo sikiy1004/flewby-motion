@@ -4,3 +4,6 @@ __pycache__/
 node_modules/
 out/
 out/**/*.tmp
+.env
+research/runs/*/
+!research/runs/.gitkeep
