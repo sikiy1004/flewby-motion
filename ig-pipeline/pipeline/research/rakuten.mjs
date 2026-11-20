@@ -3,6 +3,8 @@
 //   npm run research:rakuten -- facial-device hair-dryer
 //   npm run research:rakuten -- --fixture             offline: research/fixtures/rakuten/*.json (fake data)
 //   npm run research:rakuten -- --run 20261120-1405   write into an existing run
+//   npm run research:rakuten -- --check-setup         .env / config readiness (never prints key values)
+//   npm run research:rakuten -- --ping                one 1-item search request to confirm the keys work
 // Every item keeps the price it had at fetch time with fetchedAt and the source URL. itemPrice is the shop's
 // current selling price; it is NOT a regular (通常) price. Regular price and sale periods come from evidence work.
 import fs from "node:fs";
@@ -111,8 +113,36 @@ export async function scan({ categories, fixture, run }) {
   return runId;
 }
 
+function checkSetup() {
+  const cfg = config(), R = cfg.rakuten, env = process.env;
+  const mark = (ok) => (ok ? "✓" : "✗");
+  const mask = (v) => (v ? `設定あり（${v.length}文字）` : "未設定");
+  console.log(`${mark(!!env.RAKUTEN_APP_ID)} RAKUTEN_APP_ID：${mask(env.RAKUTEN_APP_ID)}`);
+  console.log(`${mark(/^pk_/.test(env.RAKUTEN_ACCESS_KEY ?? ""))} RAKUTEN_ACCESS_KEY：${mask(env.RAKUTEN_ACCESS_KEY)}${env.RAKUTEN_ACCESS_KEY && !/^pk_/.test(env.RAKUTEN_ACCESS_KEY) ? "（pk_ で始まっていません）" : ""}`);
+  let refOk = false; try { refOk = !!env.RAKUTEN_REFERER && new URL(env.RAKUTEN_REFERER).protocol === "https:"; } catch {}
+  console.log(`${mark(refOk)} RAKUTEN_REFERER：${env.RAKUTEN_REFERER ? (refOk ? new URL(env.RAKUTEN_REFERER).origin : "https:// から始まる URL にしてください") : "未設定（アプリの「許可されたWebサイト」と同じドメイン）"}`);
+  console.log(`・ RAKUTEN_AFFILIATE_ID：${mask(env.RAKUTEN_AFFILIATE_ID)}（任意）`);
+  console.log(`${mark(R.specVerified)} 公式仕様の確認（research/config.json rakuten.specVerified）：${R.specVerified ? "確認済み" : "未確認 → Claude Code で /research を実行すると最初に確認します"}`);
+  console.log(`・ 接続先：${R.searchEndpoint}\n         ${R.rankingEndpoint}`);
+  const noGenre = cfg.categories.filter((c) => !c.genreId).map((c) => c.key);
+  console.log(`・ genreId 未設定のカテゴリ：${noGenre.length ? noGenre.join(", ") + "（ランキングは取得せず、検索だけ行います）" : "なし"}`);
+}
+
+async function ping() {
+  const R = config().rakuten;
+  const t = jstIso();
+  const json = await call(R.searchEndpoint, { keyword: "美顔器", hits: "1", availability: "1" });
+  const it = normalize(json, "rakuten-search", t)[0];
+  console.log(`✓ 楽天 API に接続できました（${t}）`);
+  if (it) console.log(`  例：${it.itemName?.slice(0, 40)} ／ ¥${it.price.value?.toLocaleString("ja-JP")} ／ ${it.shopName}`);
+  const keys = Object.keys((json.Items ?? json.items ?? [])[0]?.Item ?? (json.Items ?? json.items ?? [])[0] ?? {});
+  console.log(`  返ってきた項目（公式仕様の確認用）：${keys.join(", ")}`);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   loadEnv();
   const a = parseArgs(process.argv.slice(2));
-  scan({ categories: a._, fixture: !!a.fixture, run: a.run }).catch((e) => { console.error(e.message); process.exit(1); });
+  if (a["check-setup"]) { checkSetup(); process.exit(0); }
+  if (a.ping) { ping().catch((e) => { console.error("✗ " + e.message); process.exit(1); }); }
+  else scan({ categories: a._, fixture: !!a.fixture, run: a.run }).catch((e) => { console.error(e.message); process.exit(1); });
 }

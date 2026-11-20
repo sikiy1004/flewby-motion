@@ -377,7 +377,7 @@ Claude Code が守るルールは [`CLAUDE.md`](CLAUDE.md) にあります。
 
 | コマンド | 内容 |
 |---|---|
-| `npm run research:rakuten [-- <カテゴリ>] [--fixture]` | 楽天のランキング・検索を取得（`--fixture` はテスト用データ） |
+| `npm run research:rakuten [-- <カテゴリ>] [--fixture]` | 楽天のランキング・検索を取得（`--fixture` はテスト用データ、`--check-setup` で設定確認、`--ping` で接続テスト） |
 | `npm run research:evidence -- new <実行ID> <商品ID> [--from <カテゴリ>:<順位>]` | 出典ファイルの雛形（`validate` で形式確認） |
 | `npm run research:calendar [-- check / snapshot <実行ID>]` | セール暦（`research/calendar.json`）の一覧・検査・実行ごとの控え |
 | `npm run research:competitors -- add / check / summary` | 競合の投稿の「型」の記録表（`research/competitors/log.csv`）。記録は `/competitor-log` で |
@@ -392,3 +392,5 @@ Claude Code が守るルールは [`CLAUDE.md`](CLAUDE.md) にあります。
 - 楽天のキーは `.env`（`.env.example` を参照。Git には上がりません）
 - 出典ファイル（`research/schema/evidence.schema.json`）に、すべての値の取得元 URL と取得日時、通常価格とセール価格・期間、画像の取得元を記録します。
   既存の入力スキーマは変更していません（セール期間は `priceDate` に入ります）。
+- 定期実行（週1回・投稿案リストの作成まで）：`zsh scripts/schedule/install-weekly.sh`（詳細は docs/research-quickstart.md の E）
+- 承認の代行は、ルール（CLAUDE.md）に加えて、プロジェクトの Claude Code 設定（`.claude/settings.json` の deny）でも禁止しています。

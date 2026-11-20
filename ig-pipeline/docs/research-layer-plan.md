@@ -114,4 +114,5 @@ CLAUDE.md  .env.example
 - 見本の流れ：オーナーが Mac で承認〜描画まで確認済み（2026-11-20）
 - R5 セール暦（research/calendar.json・確度つき）とトレンド記録（trends.json）、投稿案との照合：完了
 - R6 競合の記録表（research/competitors/log.csv・/competitor-log・集計）：完了
-- 次：R7 定期実行の設定・楽天の公式仕様の確定と本番実行
+- R7 定期実行（launchd・投稿案リストまで）、承認代行の設定での禁止、楽天の本番切り替えの確認（--check-setup / --ping）：完了
+- 残り：楽天の管理画面の復旧後に、アプリ登録 → .env → /research で公式仕様を確定（specVerified）→ 本番のリサーチ

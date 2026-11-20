@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(npm run research:approve*)",
+      "Bash(node pipeline/research/approve.mjs*)",
+      "Bash(*research/approve.mjs*)",
+      "Edit(research/runs/**/approval.json)",
+      "Write(research/runs/**/approval.json)"
+    ]
+  }
+}

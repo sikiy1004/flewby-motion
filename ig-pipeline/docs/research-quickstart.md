@@ -120,12 +120,49 @@ Claude Code が「型」（テーマ・構成・見出しの作り方）を分�
 キャプション本文は保存されません。Claude Code が Instagram を自分で見に行くことはありません。
 記録表は Numbers や Excel で直接編集してもよく、編集後は `npm run research:competitors -- check` で形式を確認できます。
 
-## 定期実行（週1回など）にするとき
+## D. 楽天のデータを本番で使い始める（管理画面の復旧後）
 
-リサーチ（投稿案リストの作成）だけを定期実行し、承認・原稿データ・描画は今までどおり手動で行います。例（macOS の launchd や cron から）：
+1. 楽天ウェブサービスでアプリを登録し、`.env` に4行を書く（`.env.example` を参照）。
+2. 設定を確認する（キーの値は表示されません。すべて ✓ になれば OK。公式仕様の行は 4 で ✓ になります）
 
 ```bash
-cd ~/Documents/flewby-motion/ig-pipeline && claude -p "/research"
+npm run research:rakuten -- --check-setup
 ```
 
-投稿案リストができたら、内容を確認して承認してください。定期実行で承認や描画まで進むことはありません。
+3. 1件だけ取得して、キーが使えるか確かめる
+
+```bash
+npm run research:rakuten -- --ping
+```
+
+`✓ 楽天 API に接続できました` と出れば成功です。403 などが出た場合は、アプリの「許可されたWebサイト」と `RAKUTEN_REFERER` のドメインが同じか確認してください。
+
+4. Claude Code で `/research` を実行すると、最初に楽天の公式仕様（接続先・認証・価格やセールの項目・回数制限）を確認して報告します。
+   内容に問題がなければ了承してください。設定（`research/config.json` の `specVerified`）が「確認済み」になり、以降は楽天のデータを使ってリサーチします。
+
+## E. 定期実行（週1回）
+
+毎週決まった時間に、Mac が自動でリサーチして**投稿案リストを作り、通知して止まります**。承認・原稿データ・描画は今までどおり手動です。
+
+1. 一度だけ手で試す（数分かかります。終わると通知が出ます）
+
+```bash
+zsh scripts/schedule/weekly-research.sh
+```
+
+2. 週1回の実行を登録する（例は毎週月曜 7:40。曜日は 0=日〜6=土）
+
+```bash
+zsh scripts/schedule/install-weekly.sh 1 7 40
+```
+
+3. やめるとき
+
+```bash
+zsh scripts/schedule/install-weekly.sh --remove
+```
+
+- Mac がスリープ中だった場合は、次に起きたときに実行されます。電源が切れていた場合は、その週は実行されません。
+- 実行の記録は `research/logs/` に残ります（Git には上がりません）。
+- 自動実行では、承認・原稿データの生成・取り込み・描画・data/ やテンプレートの編集・git への push を**禁止**した状態で Claude Code を動かします。
+- 通知が来たら `research/runs/<実行ID>/ideas.md` を開き、承認する案を `npm run research:approve -- latest I01 …` で承認してから、Claude Code で `/research-draft I01` と送ってください。
